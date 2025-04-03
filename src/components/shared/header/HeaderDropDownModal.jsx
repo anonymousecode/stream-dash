@@ -17,7 +17,7 @@ const menuData = [
         ],
     },
     {
-        name: 'reports',
+        name: 'Projects',
         icon: 'feather-cast',
         subMenu: [
             { name: 'Sales Report', path: '/reports/sales' },
@@ -37,7 +37,7 @@ const menuData = [
         ],
     },
     {
-        name: 'payment',
+        name: 'Courses',
         icon: 'feather-dollar-sign',
         subMenu: [
             { name: "Payment", path: "/payment/list" },

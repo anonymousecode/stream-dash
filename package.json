@@ -23,7 +23,7 @@
     "feather-icons": "^4.29.2",
     "feather-icons-react": "^0.7.0",
     "jodit-react": "^4.1.2",
-    "next": "14.2.17",
+    "next": "^14.2.26",
     "perfect-scrollbar": "^1.5.5",
     "react": "^18",
     "react-apexcharts": "^1.7.0",
@@ -38,7 +38,7 @@
     "react-select": "^5.9.0",
     "react-tooltip": "^5.28.0",
     "sass": "^1.83.1",
-    "sweetalert2": "^11.14.1",
+    "sweetalert2": "^11.6.13",
     "sweetalert2-react-content": "^5.0.7"
   }
 }
