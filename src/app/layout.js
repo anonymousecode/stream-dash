@@ -5,11 +5,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datetime/css/react-datetime.css";
 import NavigationProvider from "@/contentApi/navigationProvider";
 import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
-import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
+// import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
 
 export const metadata = {
-  title: "Duralux | Dashboard",
-  description: "Duralux is a admin Dashboard create for multipurpose,",
+  title: "STREAM | Dashboard",
+  description: "",
 };
 
 export default function RootLayout({ children }) {
@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
             {children}
           </NavigationProvider>
         </SettingSideBarProvider>
-        <ThemeCustomizer />
+        {/* <ThemeCustomizer /> */}
       </body>
     </html>
   );
