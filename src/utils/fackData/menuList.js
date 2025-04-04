@@ -366,23 +366,23 @@ export const menuList = [
             {
                 id: 1,
                 name: "login",
-                path: "#",
+                path: "/authentication/login",
                 subdropdownMenu: [
-                    {
-                        id: 1,
-                        name: "Cover",
-                        path: "/authentication/login/cover",
-                    },
-                    {
-                        id: 2,
-                        name: "Minimal",
-                        path: "/authentication/login/minimal",
-                    },
-                    {
-                        id: 3,
-                        name: "Creative",
-                        path: "/authentication/login/creative",
-                    },
+                    // {
+                    //     id: 1,
+                    //     name: "Cover",
+                    //     path: "/authentication/login/cover",
+                    // },
+                    // {
+                    //     id: 2,
+                    //     name: "Minimal",
+                    //     path: "/authentication/login/minimal",
+                    // },
+                    // {
+                    //     id: 3,
+                    //     name: "Creative",
+                    //     path: "/authentication/login/creative",
+                    // },
                 ]
             },
             {
@@ -410,119 +410,91 @@ export const menuList = [
             {
                 id: 3,
                 name: "Error 404",
-                path: "#",
+                path: "/authentication/404",
                 subdropdownMenu: [
-                    {
-                        id: 1,
-                        name: "Cover",
-                        path: "/authentication/404/cover",
-                    },
-                    {
-                        id: 2,
-                        name: "Minimal",
-                        path: "/authentication/404/minimal",
-                    },
-                    {
-                        id: 3,
-                        name: "Creative",
-                        path: "/authentication/404/creative",
-                    },
+                    // {
+                    //     id: 1,
+                    //     name: "Cover",
+                    //     path: "/cover",
+                    // },
+                    // {
+                    //     id: 2,
+                    //     name: "Minimal",
+                    //     path: "/authentication/404/minimal",
+                    // },
+                    // {
+                    //     id: 3,
+                    //     name: "Creative",
+                    //     path: "/authentication/404/creative",
+                    // },
                 ]
             },
             {
                 id: 4,
-                name: "Reset Pass",
-                path: "#",
+                name: "Reset Password",
+                path: "/authentication/reset",
                 subdropdownMenu: [
-                    {
-                        id: 1,
-                        name: "Cover",
-                        path: "/authentication/reset/cover",
-                    },
-                    {
-                        id: 2,
-                        name: "Minimal",
-                        path: "/authentication/reset/minimal",
-                    },
-                    {
-                        id: 3,
-                        name: "Creative",
-                        path: "/authentication/reset/creative",
-                    },
+                    // {
+                    //     id: 1,
+                    //     name: "Cover",
+                    //     path: "/authentication/reset/cover",
+                    // },
+                    // {
+                    //     id: 2,
+                    //     name: "Minimal",
+                    //     path: "/authentication/reset/minimal",
+                    // },
+                    // {
+                    //     id: 3,
+                    //     name: "Creative",
+                    //     path: "/authentication/reset/creative",
+                    // },
                 ]
             },
             {
                 id: 5,
                 name: "Verify OTP",
-                path: "#",
+                path: "/authentication/verify",
                 subdropdownMenu: [
-                    {
-                        id: 1,
-                        name: "Cover",
-                        path: "/authentication/verify/cover",
-                    },
-                    {
-                        id: 2,
-                        name: "Minimal",
-                        path: "/authentication/verify/minimal",
-                    },
-                    {
-                        id: 3,
-                        name: "Creative",
-                        path: "/authentication/verify/creative",
-                    },
+                    // {
+                    //     id: 1,
+                    //     name: "Cover",
+                    //     path: "/authentication/verify/cover",
+                    // },
+                    // {
+                    //     id: 2,
+                    //     name: "Minimal",
+                    //     path: "/authentication/verify/minimal",
+                    // },
+                    // {
+                    //     id: 3,
+                    //     name: "Creative",
+                    //     path: "/authentication/verify/creative",
+                    // },
                 ]
             },
             {
                 id: 6,
                 name: "Maintenance",
-                path: "#",
+                path: "/authentication/maintenance",
                 subdropdownMenu: [
-                    {
-                        id: 1,
-                        name: "Cover",
-                        path: "/authentication/maintenance/cover",
-                    },
-                    {
-                        id: 2,
-                        name: "Minimal",
-                        path: "/authentication/maintenance/minimal",
-                    },
-                    {
-                        id: 3,
-                        name: "Creative",
-                        path: "/authentication/maintenance/creative",
-                    },
+                    // {
+                    //     id: 1,
+                    //     name: "Cover",
+                    //     path: "/authentication",
+                    // },
+                    // {
+                    //     id: 2,
+                    //     name: "Minimal",
+                    //     path: "/authentication/maintenance/minimal",
+                    // },
+                    // {
+                    //     id: 3,
+                    //     name: "Creative",
+                    //     path: "/authentication/maintenance/creative",
+                    // },
                 ]
             },
-        ]
-    },
-    {
-        id: 11,
-        name: "help center",
-        path: "#",
-        icon: 'feather-life-buoy',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Support",
-                path: "https://wrapbootstrap.com/user/theme_ocean",
-                target:"_blank",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "KnowledgeBase",
-                path: "/help/knowledgebase",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Documentations",
-                path: "https://duralux-next-doc.vercel.app/",
-                target:"_blank",
-                subdropdownMenu: false
-            }
         ]
     },
     
