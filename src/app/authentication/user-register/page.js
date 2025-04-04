@@ -76,7 +76,7 @@ const Page = () => {
 
           {/* Educational Details */}
           <fieldset className="mb-4 border p-3 rounded">
-            <legend className="w-auto px-2">Educational Details</legend>
+            <legend className="w-auto px-2">Work Details</legend>
             <div className="row g-3">
               <div className="col-md-6">
                 <label className="form-label">Designation<span className="text-danger">*</span></label>
