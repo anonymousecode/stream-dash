@@ -392,19 +392,19 @@ export const menuList = [
                 subdropdownMenu: [
                     {
                         id: 1,
-                        name: "Cover",
-                        path: "/authentication/register/cover",
+                        name: "User Registration",
+                        path: "/authentication/user-register",
                     },
                     {
                         id: 2,
-                        name: "Minimal",
-                        path: "/authentication/register/minimal",
+                        name: "Student Registration",
+                        path: "/authentication/student-register",
                     },
-                    {
-                        id: 3,
-                        name: "Creative",
-                        path: "/authentication/register/creative",
-                    },
+                    // {
+                    //     id: 3,
+                    //     name: "Creative",
+                    //     path: "/authentication/register/creative",
+                    // },
                 ]
             },
             {

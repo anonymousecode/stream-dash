@@ -7,14 +7,37 @@ const Page = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [state, setState] = useState("");
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    if (formSubmitted) validatePasswords(e.target.value, confirmPassword);
   };
 
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
-    setError(e.target.value !== password ? "Passwords do not match" : "");
+    if (formSubmitted) validatePasswords(password, e.target.value);
+  };
+
+  const validatePasswords = (pass, confirmPass) => {
+    if (!pass || !confirmPass) {
+      setError("Both password fields are required.");
+    } else if (pass !== confirmPass) {
+      setError("Passwords do not match.");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormSubmitted(true);
+    validatePasswords(password, confirmPassword);
+
+    if (!error && password && confirmPassword && password === confirmPassword) {
+      // Perform submit logic here
+      alert("Form submitted successfully!");
+    }
   };
 
   const keralaDistricts = [
@@ -25,7 +48,7 @@ const Page = () => {
   ];
 
   return (
-    <main className="d-flex justify-content-center align-items-center min-vh-100 bg-light p-3 ">
+    <main className="d-flex justify-content-center align-items-center min-vh-100 bg-light p-3">
       <div className="w-100" style={{ maxWidth: "900px" }}>
         <div className="text-center mb-4">
           <img
@@ -36,8 +59,9 @@ const Page = () => {
           />
         </div>
 
-        <div className="card p-2 shadow">
-        <h3 className="m-3 text-center">Register</h3>
+        <form className="card p-2 shadow" onSubmit={handleSubmit}>
+          <h3 className="m-3 text-center">Register</h3>
+
           {/* Personal Details */}
           <fieldset className="mb-4 border p-3 rounded">
             <legend className="w-auto px-2">Personal Details</legend>
@@ -60,8 +84,8 @@ const Page = () => {
                 </select>
               </div>
               <div className="col-md-6">
-                <label className="form-label">Phone<span className="text-danger">*</span></label>
-                <input type="tel" className="form-control" required />
+                <label className="form-label">Phone</label>
+                <input type="tel" className="form-control" />
               </div>
               <div className="col-12">
                 <label className="form-label">Address<span className="text-danger">*</span></label>
@@ -76,23 +100,20 @@ const Page = () => {
 
           {/* Educational Details */}
           <fieldset className="mb-4 border p-3 rounded">
-            <legend className="w-auto px-2">Work Details</legend>
+            <legend className="w-auto px-2">Educational Details</legend>
             <div className="row g-3">
               <div className="col-md-6">
-                <label className="form-label">Designation<span className="text-danger">*</span></label>
-                <select className="form-control" required>
-                  <option value="">Select Designation</option>
-                  <option>SPD</option>
-                  <option>SPO</option>
-                  <option>DPC</option>
-                  <option>DPO</option>
-                  <option>BPC</option>
-                  <option>STC</option>
-                  <option>HOI</option>
-                  <option>Project Coordinator</option>
-                  <option>Mentor</option>
-                  <option>Teacher</option>
+                <label className="form-label">Class</label>
+                <select className="form-control">
+                  <option value="">Select Class</option>
+                  {[...Array(12)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))}
                 </select>
+              </div>
+              <div className="col-md-6">
+                <label className="form-label">School</label>
+                <input type="text" className="form-control" />
               </div>
               <div className="col-md-6">
                 <label className="form-label">State</label>
@@ -128,23 +149,25 @@ const Page = () => {
             <legend className="w-auto px-2">Login Details</legend>
             <div className="row g-3">
               <div className="col-md-6">
-                <label className="form-label">Password<span className="text-danger">*</span></label>
+                <label className="form-label">
+                  Password<span className="text-danger">*</span>
+                </label>
                 <input
                   type="password"
                   className="form-control"
                   value={password}
-                  onChange={handlePasswordChange} 
-                  required
+                  onChange={handlePasswordChange}
                 />
               </div>
               <div className="col-md-6">
-                <label className="form-label">Confirm Password<span className="text-danger">*</span></label>
+                <label className="form-label">
+                  Confirm Password<span className="text-danger">*</span>
+                </label>
                 <input
                   type="password"
                   className="form-control"
                   value={confirmPassword}
-                  onChange={handleConfirmPasswordChange} 
-                  required
+                  onChange={handleConfirmPasswordChange}
                 />
                 {error && <p className="text-danger mt-1">{error}</p>}
               </div>
@@ -154,7 +177,7 @@ const Page = () => {
           <div className="m-3">
             <button className="btn btn-primary w-50 d-block mx-auto" disabled={error !== ""}>Create Account</button>
           </div>
-        </div>
+        </form>
       </div>
     </main>
   );
