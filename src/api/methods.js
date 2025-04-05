@@ -38,3 +38,27 @@ export async function login(usr, pwd) {
             toast.error("Login failed");
         });
 }
+
+
+
+export async function getUser() {
+    try {
+        const res = await fetch(
+            apiBaseUrl + "/api/method/stream.api.get_user",
+            {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": `token ${apiKey}:${apiSecret}`,
+                },
+            }
+        );
+
+        const resJson = await res.json();
+        return resJson.data;
+
+    } catch (err) {
+        return err;
+    }
+}

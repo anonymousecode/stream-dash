@@ -126,11 +126,18 @@ export function middleware(req) {
         return NextResponse.next();
     }
 
-    // ✅ Always redirect to /authentication/login if not already there or on /dashboard
-    if (pathname !== '/authentication/login' && pathname !== '/dashboard') {
+    if (pathname == '/') {
         console.log(`🔹 Redirecting to /authentication/login`);
         return NextResponse.redirect(loginUrl);
+        // return NextResponse.next();
     }
+
+    // ✅ Always redirect to /authentication/login if not already there or on /dashboard
+    // if (pathname == '/authentication/login') {
+    //     console.log(`🔹 Redirecting to /authentication/login`);
+    //     // return NextResponse.redirect(loginUrl);
+    //     return NextResponse.next();
+    // }
 
     // ✅ Let /authentication/login and /dashboard proceed
     return NextResponse.next();

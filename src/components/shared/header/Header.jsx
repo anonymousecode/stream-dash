@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { use, useContext, useEffect, useRef, useState } from 'react'
 import { FiAlignLeft, FiArrowLeft, FiArrowRight, FiMaximize, FiMinimize, FiMoon, FiSun, } from "react-icons/fi";
 import LanguagesModal from './LanguagesModal';
 import NotificationsModal from './NotificationsModal';
@@ -9,6 +9,7 @@ import TimesheetsModal from './TimesheetsModal';
 import HeaderDropDownModal from './HeaderDropDownModal';
 import MegaMenu from './megaManu/MegaMenu';
 import { NavigationContext } from '@/contentApi/navigationProvider';
+import { getUser } from '@/api/methods';
 
 
 const Header = () => {
@@ -17,6 +18,7 @@ const Header = () => {
     const [navigationExpend, setNavigationExpend] = useState(false)
     const miniButtonRef = useRef(null);
     const expendButtonRef = useRef(null);
+    const [userDetails, setUserDetails] = useState({})
 
 
     useEffect(() => {
@@ -38,6 +40,22 @@ const Header = () => {
             localStorage.setItem("skinTheme", "light");
         }
     }
+    useEffect(() => {
+
+        getUser()
+            .then((data) => {
+                console.log("User data:", data);
+                setUserDetails(data);
+                console.log("User details:", userDetails);
+
+            });
+    }, [])
+
+
+    useEffect(() => {
+        console.log("Updated user details:", userDetails); // ✅ Logs after state is actually updated
+    }, [userDetails]);
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -114,7 +132,7 @@ const Header = () => {
     const fullScreenMinimize = () => {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) { 
+        } else if (document.mozCancelFullScreen) {
             document.mozCancelFullScreen();
         } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
@@ -132,7 +150,7 @@ const Header = () => {
                 {/* <!--! [Start] Header Left !--> */}
                 <div className="header-left d-flex align-items-center gap-4">
                     {/* <!--! [Start] nxl-head-mobile-toggler !--> */}
-                    <a href="#" className="nxl-head-mobile-toggler" onClick={(e) => {e.preventDefault(), setNavigationOpen(true)}} id="mobile-collapse">
+                    <a href="#" className="nxl-head-mobile-toggler" onClick={(e) => { e.preventDefault(), setNavigationOpen(true) }} id="mobile-collapse">
                         <div className={`hamburger hamburger--arrowturn ${navigationOpen ? "is-active" : ""}`}>
                             <div className="hamburger-box">
                                 <div className="hamburger-inner"></div>
@@ -160,7 +178,7 @@ const Header = () => {
                     {/* <!--! [End] nxl-navigation-toggle !-->
                     <!--! [Start] nxl-lavel-mega-menu-toggle !--> */}
                     <div className="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
-                        <a href="#" onClick={(e) => {e.preventDefault(), setOpenMegaMenu(true)}} id="nxl-lavel-mega-menu-open">
+                        <a href="#" onClick={(e) => { e.preventDefault(), setOpenMegaMenu(true) }} id="nxl-lavel-mega-menu-open">
                             <FiAlignLeft size={24} />
                         </a>
                     </div>
@@ -168,7 +186,7 @@ const Header = () => {
                     <!--! [Start] nxl-lavel-mega-menu !--> */}
                     <div className="nxl-drp-link nxl-lavel-mega-menu">
                         <div className="nxl-lavel-mega-menu-toggle d-flex d-lg-none">
-                            <a href="#" onClick={(e) => {e.preventDefault(), setOpenMegaMenu(false)}} id="nxl-lavel-mega-menu-hide">
+                            <a href="#" onClick={(e) => { e.preventDefault(), setOpenMegaMenu(false) }} id="nxl-lavel-mega-menu-hide">
                                 <i className="me-2"><FiArrowLeft /></i>
                                 <span>Back</span>
                             </a>
@@ -204,7 +222,7 @@ const Header = () => {
                         </div>
                         <TimesheetsModal />
                         <NotificationsModal />
-                        <ProfileModal />
+                        <ProfileModal userDetails={userDetails} />
                     </div>
                 </div>
                 {/* <!--! [End] Header Right !--> */}
