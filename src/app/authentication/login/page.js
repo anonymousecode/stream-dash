@@ -1,8 +1,14 @@
 import LoginForm from '@/components/authentication/LoginForm'
 import Image from 'next/image'
 import React from 'react'
+import { login } from '@/api/methods'
 
 const page = () => {
+
+
+
+
+
     return (
         <main className="auth-cover-wrapper">
             <div className="auth-cover-content-inner">
@@ -18,7 +24,7 @@ const page = () => {
                         <div className="wd-50 mb-5">
                             <img src="/images/stream_logo.svg" alt='img' className="img-fluid" />
                         </div>
-                        <LoginForm registerPath={"/authentication/register/cover"} resetPath={"/authentication/reset/cover"} />
+                        <LoginForm registerPath={"/authentication/register/cover"} resetPath={"/authentication/reset"} />
                     </div>
                 </div>
             </div>

@@ -38,8 +38,8 @@ const Menus = () => {
             setOpenDropdown(x[1]);
             setOpenSubDropdown(x[2]);
         } else {
-            setActiveParent("dashboards");
-            setOpenDropdown("dashboards");
+            setActiveParent("dashboard");
+            setOpenDropdown("dashboard");
         }
     }, [pathName]);
 
