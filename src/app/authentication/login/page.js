@@ -4,11 +4,6 @@ import React from 'react'
 import { login } from '@/api/methods'
 
 const page = () => {
-
-
-
-
-
     return (
         <main className="auth-cover-wrapper">
             <div className="auth-cover-content-inner">
@@ -21,8 +16,8 @@ const page = () => {
             <div className="auth-cover-sidebar-inner">
                 <div className="auth-cover-card-wrapper">
                     <div className="auth-cover-card p-sm-5">
-                        <div className="wd-50 mb-5">
-                            <img src="/images/stream_logo.svg" alt='img' className="img-fluid" />
+                        <div className="d-flex justify-content-center mb-5">
+                            <img src="/images/stream_logo.svg" alt='img' className="img-fluid w-60" />
                         </div>
                         <LoginForm registerPath={"/authentication/register/cover"} resetPath={"/authentication/reset"} />
                     </div>

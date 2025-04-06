@@ -183,9 +183,9 @@ export const menuList = [
     },
     {
         id: 6,
-        name: "leads",
+        name: "actions",
         path: "#",
-        icon: 'feather-alert-circle',
+        icon: 'feather-zap',
         dropdownMenu: [
             {
                 id: 1,
@@ -211,7 +211,7 @@ export const menuList = [
         id: 7,
         name: "projects",
         path: "#",
-        icon: 'feather-briefcase',
+        icon: 'feather-clipboard',
         dropdownMenu: [
             {
                 id: 1,

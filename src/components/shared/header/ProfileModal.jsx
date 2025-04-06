@@ -1,11 +1,9 @@
 import Image from 'next/image'
 import React, { Fragment } from 'react'
-import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
+import { FiActivity, FiBell, FiChevronRight, FiClipboard, FiDollarSign, FiFolder, FiLogOut, FiSettings, FiUser, FiZap } from "react-icons/fi"
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
-const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
-const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = ({ userDetails }) => {
     return (
         userDetails && (
@@ -25,77 +23,23 @@ const ProfileModal = ({ userDetails }) => {
                             ) : (
                                 <div className="skeleton-loader" style={{ width: 40, height: 40, backgroundColor: '#ccc', borderRadius: '50%' }} />)}
                             <div>
-                                <h6 className="text-dark mb-0">{userDetails.fname}<span className="badge bg-soft-success text-success ms-1">PRO</span></h6>
+                                {/* <h6 className="text-dark mb-0">{userDetails.fname}<span className="badge bg-soft-success text-success ms-1">PRO</span></h6> */}
                                 <span className="fs-12 fw-medium text-muted">{userDetails.email}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="dropdown">
-                        <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
-                            <span className="hstack">
-                                <i className="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
-                                <span>Active</span>
-                            </span>
-                            <i className="ms-auto me-0"><FiChevronRight /></i>
-                        </a>
-                        <div className="dropdown-menu user-active">
-                            {
-                                activePosition.map((item, index) => {
-                                    return (
-                                        <Fragment key={index}>
-                                            {index === activePosition.length - 1 && <div className="dropdown-divider"></div>}
-                                            <a href="#" className="dropdown-item">
-                                                <span className="hstack">
-                                                    <i className={`wd-10 ht-10 border border-2 border-gray-1 rounded-circle me-2 ${getColor(item)}`}></i>
-                                                    <span>{item}</span>
-                                                </span>
-                                            </a>
-                                        </Fragment>
-                                    )
-                                })
-                            }
-                        </div>
-                    </div>
-                    <div className="dropdown-divider"></div>
-                    <div className="dropdown">
-                        <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
-                            <span className="hstack">
-                                <i className=" me-2"><FiDollarSign /></i>
-                                <span>Subscriptions</span>
-                            </span>
-                            <i className="ms-auto me-0"><FiChevronRight /></i>
-                        </a>
-                        <div className="dropdown-menu">
-                            {
-                                subscriptionsList.map((item, index) => {
-                                    return (
-                                        <Fragment key={index}>
-                                            {index === activePosition.length - 1 && <div className="dropdown-divider"></div>}
-                                            <a href="#" className="dropdown-item">
-                                                <span className="hstack">
-                                                    <i className="wd-5 ht-5 bg-gray-500 rounded-circle me-3"></i>
-                                                    <span>{item}</span>
-                                                </span>
-                                            </a>
-                                        </Fragment>
-                                    )
-                                })
-                            }
-
-                        </div>
-                    </div>
-                    <div className="dropdown-divider"></div>
+            
                     <a href="#" className="dropdown-item">
                         <i ><FiUser /></i>
-                        <span>Profile Details</span>
+                        <span>My Profile</span>
                     </a>
                     <a href="#" className="dropdown-item">
-                        <i ><FiActivity /></i>
-                        <span>Activity Feed</span>
+                        <i ><FiClipboard /></i>
+                        <span>Projects</span>
                     </a>
                     <a href="#" className="dropdown-item">
-                        <i ><FiDollarSign /></i>
-                        <span>Billing Details</span>
+                        <i ><FiZap /></i>
+                        <span>Actions</span>
                     </a>
                     <a href="#" className="dropdown-item">
                         <i><FiBell /></i>
@@ -116,20 +60,3 @@ const ProfileModal = ({ userDetails }) => {
 }
 
 export default ProfileModal
-
-const getColor = (item) => {
-    switch (item) {
-        case "Always":
-            return "always_clr"
-        case "Bussy":
-            return "bussy_clr"
-        case "Inactive":
-            return "inactive_clr"
-        case "Disabled":
-            return "disabled_clr"
-        case "Cutomization":
-            return "cutomization_clr"
-        default:
-            return "active-clr";
-    }
-}
