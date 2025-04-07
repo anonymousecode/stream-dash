@@ -2,7 +2,7 @@ export const menuList = [
     {
         id: 0,
         name: "dashboards",
-        path: "/",
+        path: "/dashboard",
         icon: 'feather-bar-chart-2',
         dropdownMenu: [
             // {

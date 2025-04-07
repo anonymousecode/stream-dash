@@ -13,27 +13,27 @@ const TabProjectAssigned = () => {
         <section className="step-body mt-4  body current">
             <fieldset>
                 <div className="mb-5">
-                    <h2 className="fs-16 fw-bold">Project Assagined</h2>
-                    <p className="text-muted">If you need more info, please check <a href="#">help center</a></p>
+                    <h2 className="fs-16 fw-bold">Project Assigned</h2>
+                    {/* <p className="text-muted">If you need more info, please check <a href="#">help center</a></p> */}
                 </div>
                 <fieldset>
                     <div className="mb-4">
-                        <label htmlFor="inviteTeammates" className="fw-semibold text-dark">Invite Teammates</label>
-                        <input type="text" className="form-control" id="inviteTeammates" name="inviteTeammates" placeholder="Add project memnbers by name or email.." />
+                        <label htmlFor="inviteTeammates" className="fw-semibold text-dark">Add Project Teammates</label>
+                        <input type="text" className="form-control" id="inviteTeammates" name="inviteTeammates" placeholder="Add project memnbers by name or student id.." />
                     </div>
-                    <hr className="my-5" />
+                    <hr className="my-3" />
                     <div className="mb-4 ">
                         <h6 className="fs-13 fw-semibold pb-3 mb-3 border-bottom">Team Members</h6>
                         {users.map(({ id, roles, user_email, user_img, user_name }, index) =>
                             <Card key={id} email={user_email} img={user_img} name={user_name} roles={roles} index={index} />
                         )}
                     </div>
-                    <hr className="my-5" />
+                    {/* <hr className="my-5" />
                     <div className="custom-control custom-checkbox">
                         <input type="checkbox" className="custom-control-input" id="addingUsers" defaultChecked />
                         <label className="custom-control-label c-pointer" htmlFor="addingUsers">Adding Users by Team Members</label>
                     </div>
-                    <div className="fs-12 fw-normal text-muted">If you need more info, please check budget planning</div>
+                    <div className="fs-12 fw-normal text-muted">If you need more info, please check budget planning</div> */}
                 </fieldset>
             </fieldset>
         </section>

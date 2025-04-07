@@ -42,17 +42,9 @@ const customerViewOptions = [
 ]
 
 const customerListTagsOptions = [
-    { value: 'vip', label: 'VIP', color: '#17c666' },
-    { value: 'bugs', label: 'Bugs', color: '#3dc7be' },
-    { value: 'team', label: 'Team', color: '#3454d1' },
-    { value: 'updates', label: 'Updates', color: '#17c666' },
-    { value: 'personal', label: 'Personal', color: '#ffa21d' },
-    { value: 'promotions', label: 'Promotions', color: '#ea4d4d' },
-    { value: 'high-budget', label: 'High Budget', color: '#41b2c4' },
-    { value: 'customs', label: 'Customs', color: '#6610f2' },
-    { value: 'low-budget', label: 'Low Budget', color: '#ea4d4d' },
-    { value: 'wholesale', label: 'Wholesale', color: '#3454d1' },
-    { value: 'primary', label: 'Primary', color: '#41b2c4' },
+    { value: 'engineering', label: 'Engineering', color: '#17c666' },
+    { value: 'non-engineering', label: 'Non-Engineering', color: '#3dc7be' },
+    { value: 'others', label: 'Others', color: '#3454d1' },
 ];
 const customerListStatusOptions = [
     { value: 'active', label: 'Active', color: '#17c666' },

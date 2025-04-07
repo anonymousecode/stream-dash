@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import SelectDropdown from '@/components/shared/SelectDropdown'
+// import SelectDropdown from '@/components/shared/SelectDropdown'
 import { customerListTagsOptions, projectBillingOptions, projectStatusOptions, propasalLeadOptions } from '@/utils/options'
 import MultiSelectTags from '@/components/shared/MultiSelectTags';
 import DatePicker from 'react-datepicker';
@@ -14,18 +14,16 @@ const TabProjectDetails = () => {
     const [value, setValue] = useState('');
     useEffect(() => {
         setStartDate(new Date())
-        setValue(`
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores beatae inventore reiciendis ipsum natus, porro recusandae sunt accusantium reprehenderit aliquid commodi est veniam sit molestiae, nesciunt cupiditate. Laborum, culpa maxime.
-            `)
+        setValue(`Enter Description`)
     }, []);
 
     return (
-        <section className="step-body mt-4 body current">
+        <section className="step-body mt-1 body current">
             <form id="project-details">
                 <fieldset>
-                    <div className="mb-5">
+                    <div className="mb-4">
                         <h2 className="fs-16 fw-bold">Project details</h2>
-                        <p className="text-muted">You project details gose here.</p>
+                        {/* <p className="text-muted">You project details gose here.</p> */}
                     </div>
                     <fieldset>
                         <div className="mb-4">
@@ -40,11 +38,11 @@ const TabProjectDetails = () => {
                                 onChange={(htmlString) => setValue(htmlString)}
                             />
                         </div>
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                             <label htmlFor="ratePerHour" className="form-label">Rate Per Hour <span className="text-danger">*</span></label>
                             <input type="number" className="form-control" id="ratePerHour" name="ratePerHour" defaultValue={20} required />
-                        </div>
-                        <div className="mb-4">
+                        </div> */}
+                        {/* <div className="mb-4">
                             <label htmlFor="projectClient" className="form-label">Project Client <span className="text-danger">*</span></label>
                             <SelectDropdown
                                 options={propasalLeadOptions}
@@ -52,8 +50,8 @@ const TabProjectDetails = () => {
                                 defaultSelect="ui"
                                 onSelectOption={(option) => setSelectedOption(option)}
                             />
-                        </div>
-                        <div className="mb-4">
+                        </div> */}
+                        {/* <div className="mb-4">
                             <label htmlFor="billingType" className="form-label">Billing type <span className="text-danger">*</span></label>
                             <SelectDropdown
                                 options={projectBillingOptions}
@@ -61,8 +59,8 @@ const TabProjectDetails = () => {
                                 defaultSelect="tasks-hours"
                                 onSelectOption={(option) => setSelectedOption(option)}
                             />
-                        </div>
-                        <div className="mb-4">
+                        </div> */}
+                        {/* <div className="mb-4">
 
                             <label htmlFor="projectStatus" className="form-label">Project status <span className="text-danger">*</span></label>
                             <SelectDropdown
@@ -72,9 +70,9 @@ const TabProjectDetails = () => {
                                 onSelectOption={(option) => setSelectedOption(option)}
                             />
 
-                        </div>
+                        </div> */}
                         <div className="mb-4">
-                            <label htmlFor="projectTags" className="form-label">Project tags <span className="text-danger">*</span></label>
+                            <label htmlFor="projectTags" className="form-label">Project type <span className="text-danger">*</span></label>
                             <MultiSelectTags
                                 options={customerListTagsOptions}
                                 selectedOption={selectedOption}
@@ -83,7 +81,7 @@ const TabProjectDetails = () => {
                             />
                         </div>
                         <div className="mb-4">
-                            <label htmlFor="projectReleaseDate" className="form-label">Release Date <span className="text-danger">*</span></label>
+                            <label htmlFor="projectReleaseDate" className="form-label">Start Date <span className="text-danger">*</span></label>
                             <div className='input-group date '>
                                 <DatePicker
                                     placeholderText='Pick start date'
@@ -101,7 +99,7 @@ const TabProjectDetails = () => {
                                 />
                             </div>
                         </div>
-                        <hr className="mb-5" />
+                        {/* <hr className="mb-5" />
                         <div className="custom-control custom-checkbox mb-2">
                             <input type="checkbox" className="custom-control-input" id="sendProjectEmail" defaultChecked />
                             <label className="custom-control-label c-pointer" htmlFor="sendProjectEmail">Send project created email.</label>
@@ -113,7 +111,7 @@ const TabProjectDetails = () => {
                         <div className="custom-control custom-checkbox mb-2">
                             <input type="checkbox" className="custom-control-input" id="allowNotifications" defaultChecked />
                             <label className="custom-control-label c-pointer" htmlFor="allowNotifications">Allow Notifications by Phone or Email.</label>
-                        </div>
+                        </div> */}
                     </fieldset>
                 </fieldset>
             </form>

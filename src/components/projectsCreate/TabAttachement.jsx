@@ -7,14 +7,14 @@ const TabAttachement = () => {
         <section className="step-body mt-4">
             <div>
                 <div className="mb-5">
-                    <h2 className="fs-16 fw-bold">Attachement files</h2>
-                    <p className="text-muted">If you need more info, please check <a href="#">help center</a></p>
+                    <h2 className="fs-16 fw-bold">Upload files</h2>
+                    {/* <p className="text-muted">If you need more info, please check <a href="#">help center</a></p> */}
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="choose-file" className="custom-file-upload" id="choose-file-label"> Upload Document </label>
+                    <label htmlFor="choose-file" className="custom-file-upload" id="choose-file-label"> Upload Project idea </label>
                     <input name="uploadDocument" type="file" id="choose-file" style={{ display: 'none' }} />
                 </div>
-                <div className="row">
+                {/* <div className="row"> */}
                     {/* <RecentFileCard
                         imgSrc={"/images/file-icons/zip.png"}
                         title={"UI/UX Design Templates"}
@@ -22,7 +22,7 @@ const TabAttachement = () => {
                         dashboardLink={"Dashboard"}
                         category={"Webapps"}
                     /> */}
-                    <AttachementCard
+                    {/* <AttachementCard
                         title={"UI/UX Design Templates"}
                         iconSrc={"/images/file-icons/zip.png"}
                         category1={"Project"}
@@ -49,8 +49,8 @@ const TabAttachement = () => {
                         category1={"Project"}
                         category2={"Dashboard"}
                         category3={"Webapps"}
-                    />
-                </div>
+                    /> */}
+                {/* </div> */}
             </div>
         </section>
 
