@@ -1,22 +1,18 @@
 'use client'
 import React, { useState } from 'react'
 import dynamic from 'next/dynamic'
-import TabProjectType from './TabProjectType'
-import TabProjectSettings from './TabProjectSettings';
-import TabProjectBudget from './TabProjectBudget';
+// import TabProjectType from './TabProjectType'
+// import TabProjectSettings from './TabProjectSettings';
+// import TabProjectBudget from './TabProjectBudget';
 import TabProjectAssigned from './TabProjectAssigned';
 import TabAttachement from './TabAttachement';
 import TabCompleted from './TabCompleted';
 const TabProjectDetails = dynamic(() => import('./TabProjectDetails'), { ssr: false })
-const TabProjectTarget = dynamic(() => import('./TabProjectTarget'), { ssr: false })
+// const TabProjectTarget = dynamic(() => import('./TabProjectTarget'), { ssr: false })
 
 const steps = [
-    { name: "Type", required: true },
     { name: "Details", required: false },
-    { name: "Settings", required: false },
-    { name: "Budget", required: true },
     { name: "Assagined", required: false },
-    { name: "Target", required: false },
     { name: "Attachment", required: false },
     { name: "Completed", required: false },
 ];
@@ -85,14 +81,10 @@ const ProjectCreateContent = () => {
                     </div>
 
                     <div className="content clearfix">
-                        {currentStep === 0 && <TabProjectType setFormData={setFormData} formData={formData} error={error} setError={setError} />}
-                        {currentStep === 1 && <TabProjectDetails />}
-                        {currentStep === 2 && <TabProjectSettings />}
-                        {currentStep === 3 && <TabProjectBudget setFormData={setFormData} formData={formData} error={error} setError={setError} />}
-                        {currentStep === 4 && <TabProjectAssigned />}
-                        {currentStep === 5 && <TabProjectTarget />}
-                        {currentStep === 6 && <TabAttachement />}
-                        {currentStep === 7 && <TabCompleted />}
+                        {currentStep === 0 && <TabProjectDetails />}
+                        {currentStep === 1 && <TabProjectAssigned />}
+                        {currentStep === 2 && <TabAttachement />}
+                        {currentStep === 3 && <TabCompleted />}
                     </div>
 
                     {/* Buttons */}

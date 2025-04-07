@@ -199,22 +199,22 @@ const Header = () => {
                 <!--! [Start] Header Right !--> */}
                 <div className="header-right ms-auto">
                     <div className="d-flex align-items-center">
-                        <div className="nxl-h-item d-none d-sm-flex" >
+                        {/* <div className="nxl-h-item d-none d-sm-flex" >
                             <div className="full-screen-switcher">
                                 <span className="nxl-head-link me-0">
                                     <FiMaximize size={20} className="maximize" onClick={fullScreenMaximize} />
                                     <FiMinimize size={20} className="minimize" onClick={fullScreenMinimize} />
                                 </span>
                             </div>
-                        </div>
-                        <div className="nxl-h-item dark-light-theme">
+                        </div> */}
+                        {/* <div className="nxl-h-item dark-light-theme">
                             <div className="nxl-head-link me-0 dark-button" onClick={() => handleThemeMode("dark")}>
                                 <FiMoon size={20} />
                             </div>
                             <div className="nxl-head-link me-0 light-button" onClick={() => handleThemeMode("light")} style={{ display: "none" }}>
                                 <FiSun size={20} />
                             </div>
-                        </div>
+                        </div> */}
                         <NotificationsModal />
                         <ProfileModal userDetails={userDetails} />
                     </div>
