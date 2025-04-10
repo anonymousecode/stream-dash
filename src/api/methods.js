@@ -62,3 +62,23 @@ export async function getUser() {
         return err;
     }
 }
+
+export async function getDashBoard() {
+    try {
+        const res = await fetch(
+            apiBaseUrl + "/api/method/stream.api.admin_dashboard",
+            {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": `token ${apiKey}:${apiSecret}`,
+                },
+            }
+        );
+        const resJson = await res.json();
+        return resJson.data;
+    } catch (err) {
+        return err;
+    }
+}
