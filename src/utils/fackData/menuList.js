@@ -143,14 +143,8 @@ export const menuList = [
             },
             {
                 id: 2,
-                name: "Invoice View",
-                path: "/payment/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Invoice Create",
-                path: "/payment/create",
+                name: "Create events",
+                path: "/events/create",
                 subdropdownMenu: false
             }
         ]
