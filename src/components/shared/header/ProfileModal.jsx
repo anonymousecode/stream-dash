@@ -50,7 +50,7 @@ const ProfileModal = ({ userDetails }) => {
                         <span>Account Settings</span>
                     </a>
                     <div className="dropdown-divider"></div>
-                    <a href="./auth-login-minimal.html" className="dropdown-item">
+                    <a href="/" className="dropdown-item">
                         <i> <FiLogOut /></i>
                         <span>Logout</span>
                     </a>
