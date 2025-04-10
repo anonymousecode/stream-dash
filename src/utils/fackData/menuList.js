@@ -131,14 +131,14 @@ export const menuList = [
     },
     {
         id: 4,
-        name: "payment",
+        name: "Events",
         path: "#",
         icon: 'feather-dollar-sign',
         dropdownMenu: [
             {
                 id: 1,
-                name: "Payment",
-                path: "/payment/list",
+                name: "View events",
+                path: "/events/view",
                 subdropdownMenu: false
             },
             {
