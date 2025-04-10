@@ -100,7 +100,7 @@ const EventPage = () => {
                   <h5 className="card-title text-truncate">{title}</h5>
                   <p className="card-text text-muted mb-2">Level: {level}</p>
                   <button className="btn btn-warning btn-sm text-white rounded-pill">
-                    REGISTERED
+                    Enrolled
                   </button>
                 </div>
               </div>

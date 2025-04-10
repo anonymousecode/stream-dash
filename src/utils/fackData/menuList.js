@@ -131,26 +131,20 @@ export const menuList = [
     },
     {
         id: 4,
-        name: "payment",
+        name: "Events",
         path: "#",
         icon: 'feather-dollar-sign',
         dropdownMenu: [
             {
                 id: 1,
-                name: "Payment",
-                path: "/payment/list",
+                name: "View events",
+                path: "/events/view",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Invoice View",
-                path: "/payment/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Invoice Create",
-                path: "/payment/create",
+                name: "Create events",
+                path: "/events/create",
                 subdropdownMenu: false
             }
         ]
