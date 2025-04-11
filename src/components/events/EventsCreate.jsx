@@ -4,7 +4,7 @@ import useDatePicker from '@/hooks/useDatePicker'
 import useLocationData from '@/hooks/useLocationData'
 import Loading from '@/components/shared/Loading'
 import SelectDropdown from '@/components/shared/SelectDropdown'
-import { districtOptions, labTypeOptions } from '@/utils/options'
+// import { districtOptions, labTypeOptions } from '@/utils/options'
 
 const districtOptions = [
   { label: "Thiruvananthapuram", value: "thiruvananthapuram" },
