@@ -489,6 +489,29 @@ export const menuList = [
                     // },
                 ]
             },
+            
+            
+        ]
+    },
+    {
+        id: 0,
+        name: "blogs",
+        path: "#",
+        icon: 'feather-bar-chart-2',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "View blogs",
+                path: "/blogs/view",
+                subdropdownMenu: false
+            },
+            {
+                id: 2,
+                name: "create Blogs",
+                path: "/blogs/create",
+                subdropdownMenu: false
+            },
+           
         ]
     },
     
