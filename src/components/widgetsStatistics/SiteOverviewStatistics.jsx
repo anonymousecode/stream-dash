@@ -67,7 +67,7 @@ const SiteOverviewStatistics = ({ generalDetails }) => {
                 //         normalizedTitle.includes(keyword)
                 //     )
 
-                generalDetails.map((items, id) => (
+               generalDetails && generalDetails.map((items, id) => (
                     // const normalizedTitle = titles[items.title]?.trim().toLowerCase()
                     // const isClickable = ['student', 'school', 'district', 'project'].some(keyword =>
                     //     normalizedTitle.includes(keyword)
