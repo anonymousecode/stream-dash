@@ -45,7 +45,7 @@ const AddProposal = ({previtems}) => {
 
     return (
         <div className="col-12">
-            <div className="card stretch stretch-full proposal-table">
+            {/* <div className="card stretch stretch-full proposal-table">
                 <div className="card-body">
                     <div className="row">
                         <div className="col-lg-8">
@@ -121,7 +121,7 @@ const AddProposal = ({previtems}) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
