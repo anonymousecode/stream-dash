@@ -13,8 +13,22 @@ import LeadsOverviewChart from '@/components/widgetsCharts/LeadsOverviewChart'
 // import { projectsDataTwo } from '@/utils/fackData/projectsDataTwo'
 // import DuplicateLayout from './duplicateLayout'
 // import DuplicateLayout from '@/app/duplicateLayout'
+import { getDashBoard } from '@/api/methods'
 
-const Home = () => {
+export default async function Home() {
+
+
+    const res = await getDashBoard()
+    console.log("res", res)
+    const generalDetails = Object.entries(res.cards).map(([key, value]) => ({
+        title: key,
+        value: value
+    }));
+    // console.log("converted", converted)
+
+
+
+
     return (
         <div>
             {/* // <DuplicateLayout> */}
@@ -23,7 +37,7 @@ const Home = () => {
             </PageHeader> */}
             <div className='main-content'>
                 <div className='row'>
-                    <SiteOverviewStatistics />
+                    <SiteOverviewStatistics generalDetails={generalDetails} />
                     <PaymentRecordChart />
                     {/* <SalesMiscellaneous isFooterShow={true} dataList={projectsDataTwo} /> */}
                     {/* <TasksOverviewChart /> */}
@@ -40,4 +54,3 @@ const Home = () => {
     )
 }
 
-export default Home
