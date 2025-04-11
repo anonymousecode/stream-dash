@@ -82,3 +82,25 @@ export async function getDashBoard() {
         return err;
     }
 }
+
+export async function getNotifications() {
+    try {
+        const response = await fetch(apiBaseUrl + "/api/method/stream.api.message", {
+            method: "GET",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `token ${apiKey}:${apiSecret}`,
+            },
+        });
+
+        const data = await response.json();
+
+        console.log(data.message);
+        return data.message;
+    } catch (error) {
+        console.log("Error:", error);
+        return error;
+    }
+}
+
