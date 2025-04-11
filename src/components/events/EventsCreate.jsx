@@ -6,6 +6,31 @@ import Loading from '@/components/shared/Loading'
 import SelectDropdown from '@/components/shared/SelectDropdown'
 import { districtOptions, labTypeOptions } from '@/utils/options'
 
+const districtOptions = [
+  { label: "Thiruvananthapuram", value: "thiruvananthapuram" },
+  { label: "Kollam", value: "kollam" },
+  { label: "Pathanamthitta", value: "pathanamthitta" },
+  { label: "Alappuzha", value: "alappuzha" },
+  { label: "Kottayam", value: "kottayam" },
+  { label: "Idukki", value: "idukki" },
+  { label: "Ernakulam", value: "ernakulam" },
+  { label: "Thrissur", value: "thrissur" },
+  { label: "Palakkad", value: "palakkad" },
+  { label: "Malappuram", value: "malappuram" },
+  { label: "Kozhikode", value: "kozhikode" },
+  { label: "Wayanad", value: "wayanad" },
+  { label: "Kannur", value: "kannur" },
+  { label: "Kasaragod", value: "kasaragod" },
+];
+
+const labTypeOptions = [
+  { label: "Physics Lab", value: "physics" },
+  { label: "Chemistry Lab", value: "chemistry" },
+  { label: "Biology Lab", value: "biology" },
+  { label: "Computer Lab", value: "computer" },
+  { label: "Language Lab", value: "language" },
+];
+
 const EventCreate = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [selectedLabType, setSelectedLabType] = useState(null)
