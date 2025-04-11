@@ -26,7 +26,7 @@ const ProposalViewTab = () => {
         <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0 position-relative">
             <div className='w-100 overflow-auto'>
                 <div className="d-flex align-items-center justify-content-between">
-                    <div className="nav-tabs-wrapper page-content-left-sidebar-wrapper">
+                    {/* <div className="nav-tabs-wrapper page-content-left-sidebar-wrapper">
                         <ul className="nav nav-tabs nav-tabs-custom-style flex-nowrap" id="myTab" role="tablist">
                             <li className="nav-item" role="presentation">
                                 <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#proposalTab">Proposal</button>
@@ -35,31 +35,31 @@ const ProposalViewTab = () => {
                                 <button className="nav-link" data-bs-toggle="tab" data-bs-target="#tasksTab">Tasks</button>
                             </li>
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link" data-bs-toggle="tab" data-bs-target="#notesTab">Notes</button>
+                                <button className="nav-link" data-bs-toggle="tab" data-bs-target="#notesTab">View</button>
                             </li>
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link" data-bs-toggle="tab" data-bs-target="#commentTab">Comments</button>
+                                <button className="nav-link" data-bs-toggle="tab" data-bs-target="#commentTab">Edit</button>
                             </li>
                         </ul>
-                    </div>
+                    </div> */}
                     <div className="page-content-right-sidebar-wrapper">
                         <div className="proposal-action-btn">
-                            <div className="d-md-none d-lg-flex">
+                            {/* <div className="d-md-none d-lg-flex">
                                 <a href="#" className="action-btn" data-toggle="tooltip" data-title="Views Trackign">
                                     <FiEye size={16} />
                                 </a>
-                            </div>
-                            <div className="d-md-none d-lg-flex">
+                            </div> */}
+                            {/* <div className="d-md-none d-lg-flex">
                                 <a href="#" className="action-btn" data-toggle="tooltip" data-title="Send to Email">
                                     <FiMail size={16} />
                                 </a>
-                            </div>
-                            <div className="d-md-none d-lg-flex">
+                            </div> */}
+                            {/* <div className="d-md-none d-lg-flex">
                                 <a href="/proposal/edit" className="action-btn" data-toggle="tooltip" data-title="Edit Proposal">
                                     <FiEdit size={16} />
                                 </a>
-                            </div>
-                            <Dropdown
+                            </div> */}
+                            {/* <Dropdown
                                 dropdownItems={fileType}
                                 triggerPosition="0, 2"
                                 triggerClass='action-btn dropdown-toggle c-pointer'
@@ -72,7 +72,7 @@ const ProposalViewTab = () => {
                                 triggerClass='action-btn dropdown-toggle c-pointer'
                                 triggerIcon={"More"}
                                 isAvatar={false}
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>
