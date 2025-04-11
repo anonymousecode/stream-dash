@@ -9,7 +9,7 @@ import ProfileModal from './ProfileModal';
 // import HeaderDropDownModal from './HeaderDropDownModal';
 // import MegaMenu from './megaManu/MegaMenu';
 import { NavigationContext } from '@/contentApi/navigationProvider';
-import { getUser } from '@/api/methods';
+import { getUser, getNotifications } from '@/api/methods';
 
 
 const Header = () => {
@@ -19,6 +19,7 @@ const Header = () => {
     const miniButtonRef = useRef(null);
     const expendButtonRef = useRef(null);
     const [userDetails, setUserDetails] = useState({})
+    const [notifications, setNotifications] = useState([])
 
 
     useEffect(() => {
@@ -46,7 +47,16 @@ const Header = () => {
             .then((data) => {
                 console.log("User data:", data);
                 setUserDetails(data);
-                console.log("User details:", userDetails);
+
+
+            });
+    }, [])
+    useEffect(() => {
+
+        getNotifications()
+            .then((data) => {
+                console.log("Notifications:", data);
+                setNotifications(data);
 
             });
     }, [])
@@ -192,7 +202,7 @@ const Header = () => {
                             </a>
                         </div>
                         {/* <!--! [Start] nxl-lavel-mega-menu-wrapper !--> */}
-                        
+
                     </div>
                 </div>
                 {/* <!--! [End] Header Left !-->
@@ -215,7 +225,7 @@ const Header = () => {
                                 <FiSun size={20} />
                             </div>
                         </div> */}
-                        <NotificationsModal />
+                        <NotificationsModal Notifications={notifications} />
                         <ProfileModal userDetails={userDetails} />
                     </div>
                 </div>

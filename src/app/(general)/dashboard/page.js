@@ -19,7 +19,7 @@ export default async function Home() {
 
 
     const res = await getDashBoard()
-    console.log("res", res)
+    // console.log("res", res)
     const generalDetails = Object.entries(res.cards).map(([key, value]) => ({
         title: key,
         value: value

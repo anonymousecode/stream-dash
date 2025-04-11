@@ -26,7 +26,7 @@ const notificationsList = [
     },
 
 ]
-const NotificationsModal = () => {
+const NotificationsModal = ({ Notifications }) => {
     return (
         <div className="dropdown nxl-h-item">
             <div className="nxl-head-link me-3" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
@@ -42,11 +42,11 @@ const NotificationsModal = () => {
                     </Link>
                 </div>
                 {
-                    notificationsList.map(({ id, src, time, titleFirst, titleSecond }) => <Card key={id} src={src} time={time} titleFirst={titleFirst} titleSecond={titleSecond} />)
+                    Notifications && Notifications.map(({ id, creation, message, level, level_id }) => <Card key={id} creation={creation} message={message} level={level} />)
                 }
 
                 <div className="text-center notifications-footer">
-                    <Link href="#" className="fs-13 fw-semibold text-dark">Alls Notifications</Link>
+                    <Link href="#" className="fs-13 fw-semibold text-dark">All Notifications</Link>
                 </div>
             </div>
         </div>
@@ -55,15 +55,38 @@ const NotificationsModal = () => {
 
 export default NotificationsModal
 
+function timeAgo(datetimeStr) {
+    const createdAt = new Date(datetimeStr);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - createdAt) / 1000);
 
-const Card = ({ src, time, titleFirst, titleSecond }) => {
+    if (diffInSeconds < 60) {
+        return `${diffInSeconds} second${diffInSeconds !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    } else if (diffInSeconds < 604800) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days} day${days !== 1 ? 's' : ''} ago`;
+    } else {
+        const weeks = Math.floor(diffInSeconds / 604800);
+        return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
+    }
+}
+
+
+const Card = ({ key, creation, message, level }) => {
     return (
         <div className="notifications-item">
-            <img src={src} alt="" className="rounded me-3 border" />
+            {/* <img src={src} alt="" className="rounded me-3 border" /> */}
             <div className="notifications-desc">
-                <Link href="#" className="font-body text-truncate-2-line"> <span className="fw-semibold text-dark">{titleFirst}</span> {titleSecond}</Link>
+                {/* <Link href="#" className="font-body text-truncate-2-line"> <span className="fw-semibold text-dark">{titleFirst}</span> {titleSecond}</Link> */}
+                <Link href="#" className="font-body text-truncate-2-line"> {message}</Link>
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="notifications-date text-muted border-bottom border-bottom-dashed">{time} minutes ago</div>
+                    <div className="notifications-date text-muted border-bottom border-bottom-dashed">{timeAgo(creation)}</div>
                     <div className="d-flex align-items-center float-end gap-2">
                         <span className="d-block wd-8 ht-8 rounded-circle bg-gray-300" data-toggle="tooltip" data-title="Make as Read"></span>
                         <span className="text-danger" data-toggle="tooltip" data-title="Remove"> <FiX className="fs-12" /></span>
