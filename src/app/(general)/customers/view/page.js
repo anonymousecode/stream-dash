@@ -1,17 +1,17 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import CustomersViewHeader from '@/components/customersView/CustomersViewHeader'
-import CustomerContent from '@/components/customersView/CustomerContent'
+// import CustomersViewHeader from '@/components/customersView/CustomersViewHeader'
+// import CustomerContent from '@/components/customersView/CustomerContent'
+import BlogsView from '@/components/blogs/BlogsView'
 
 const page = () => {
   return (
     <>
       <PageHeader>
-        <CustomersViewHeader />
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
-          <CustomerContent />
+          <BlogsView/>
         </div>
       </div>
     </>
