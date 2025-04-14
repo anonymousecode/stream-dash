@@ -15,7 +15,7 @@ const CardHeader = ({ title, refresh, remove, expanded }) => {
   return (
     <div className="card-header">
       <h5 className="card-title">{title}</h5>
-      <div className="card-header-action">
+      {/* <div className="card-header-action">
         <div className="card-header-btn">
           <div data-toggle="tooltip" data-title="Delete" onClick={remove}>
             <span
@@ -92,7 +92,7 @@ const CardHeader = ({ title, refresh, remove, expanded }) => {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
