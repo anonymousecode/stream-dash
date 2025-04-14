@@ -4,7 +4,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datetime/css/react-datetime.css";
 import NavigationProvider from "@/contentApi/navigationProvider";
-import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
+// import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
 // import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
 
 export const metadata = {
@@ -16,11 +16,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <SettingSideBarProvider>
+        {/* <SettingSideBarProvider> */}
           <NavigationProvider>
             {children}
           </NavigationProvider>
-        </SettingSideBarProvider>
+        {/* </SettingSideBarProvider> */}
         {/* <ThemeCustomizer /> */}
       </body>
     </html>
