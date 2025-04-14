@@ -1,6 +1,6 @@
 export const menuList = [
     {
-        id: 0,
+        id: 1,
         name: "dashboards",
         path: "/dashboard",
         icon: 'feather-bar-chart-2',
@@ -86,7 +86,7 @@ export const menuList = [
     //     ]
     // },
     {
-        id: 3,
+        id: 2,
         name: "Projects",
         path: "#",
         icon: 'feather-box',
@@ -107,27 +107,28 @@ export const menuList = [
         ],
     },
     {
-        id: 4,
-        name: "Events",
+        id: 3,
+        name: "Faciliies",
         path: "#",
-        icon: 'feather-calendar',
+        icon: 'feather-archive',
         dropdownMenu: [
             {
                 id: 1,
-                name: "View events",
-                path: "/events/view",
+                name: "View Facilities",
+                path: "/facilities/view",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Create events",
-                path: "/events/create",
+                name: " Create Facilities",
+                path: "/facilities/create",
                 subdropdownMenu: false
-            }
-        ]
+            },
+
+        ],
     },
     {
-        id: 5,
+        id: 4,
         name: "Blogs",
         path: "#",
         icon: 'feather-edit',
@@ -147,8 +148,41 @@ export const menuList = [
         ]
     },
     {
-        id: 6,
-        name: "actions",
+        id: 5,
+        name: "LMS",
+        path: "#",
+        icon: 'feather-book',
+        dropdownMenu: [
+            {
+                id: 1,
+                name: "Overview",
+                path: "/facilities/view",
+                subdropdownMenu: false
+            },
+            {
+                id: 2,
+                name: "View Certificates",
+                path: "/facilities/create",
+                subdropdownMenu: false
+            },
+            {
+                id: 3,
+                name: "View Courses",
+                path: "/facilities/create",
+                subdropdownMenu: false
+            },
+            {
+                id: 4,
+                name: "Manage Courses",
+                path: "/facilities/create",
+                subdropdownMenu: false
+            },
+
+        ],
+    },
+    {
+        id: 7,
+        name: "Actions",
         path: "#",
         icon: 'feather-zap',
         dropdownMenu: [
@@ -173,7 +207,7 @@ export const menuList = [
         ]
     },
     {
-        id: 7,
+        id: 8,
         name: "PBL",
         path: "#",
         icon: 'feather-clipboard',
