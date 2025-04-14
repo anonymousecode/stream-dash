@@ -109,42 +109,42 @@ const taskTypeOptions = [
 
 const taskAssigneeOptions = [
     {
-        img: "/images/avatar/2.png",
-        label: "arcie.tones@gmail.com",
-        value: "arcie.tones@gmail.com",
-    },
-
-    {
-        img: "/images/avatar/3.png",
-        label: "jon.tones@gmail.com",
-        value: "jon.tones@gmail.com",
+      img: "/images/avatar/2.png",
+      label: "Arjun P. (UID: 1001)",
+      value: "1001",
     },
     {
-        img: "/images/avatar/4.png",
-        label: "lanie.nveyn@gmail.com",
-        value: "lanie.nveyn@gmail.com",
+      img: "/images/avatar/3.png",
+      label: "Devika S. (UID: 1002)",
+      value: "1002",
     },
     {
-        img: "/images/avatar/5.png",
-        label: "nneth.une@gmail.com",
-        value: "nneth.une@gmail.com",
+      img: "/images/avatar/4.png",
+      label: "Rahul K. (UID: 1003)",
+      value: "1003",
     },
     {
-        img: "/images/avatar/6.png",
-        label: "erna.serpa@outlook.com",
-        value: "erna.serpa@outlook.com",
+      img: "/images/avatar/5.png",
+      label: "Anjali M. (UID: 1004)",
+      value: "1004",
     },
     {
-        img: "/images/avatar/7.png",
-        label: "mar.audrey@gmail.com",
-        value: "mar.audrey@gmail.com",
+      img: "/images/avatar/6.png",
+      label: "Nikhil T. (UID: 1005)",
+      value: "1005",
     },
     {
-        img: "/images/avatar/8.png",
-        label: "nancy.elliot@outlook.com",
-        value: "nancy.elliot@outlook.com",
+      img: "/images/avatar/7.png",
+      label: "Sneha R. (UID: 1006)",
+      value: "1006",
     },
-]
+    {
+      img: "/images/avatar/8.png",
+      label: "Hari V. (UID: 1007)",
+      value: "1007",
+    },
+  ]
+  
 
 const leadsStatusOptions = [
     { value: "new", label: "New", color: "#3454d1" },

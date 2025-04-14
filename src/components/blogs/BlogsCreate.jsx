@@ -44,8 +44,7 @@ const BlogsCreate = () => {
   }
 
   return (
-    <div className="container mt-5">
-      <h3>Create Blog</h3>
+    <div className="container mt-3">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Title</label>
@@ -84,7 +83,7 @@ const BlogsCreate = () => {
           ></textarea>
         </div>
 
-        <button type="submit" className="btn btn-primary">Submit Blog</button>
+        <button type="submit" className="btn btn-primary">save</button>
       </form>
     </div>
   )

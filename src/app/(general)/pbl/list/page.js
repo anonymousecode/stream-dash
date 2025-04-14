@@ -1,14 +1,17 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import CreateProject from '@/components/project/CreateProject'
+import ProjectsListHeader from '@/components/projectsList/ProjectsListHeader'
+import ProjectTable from '@/components/projectsList/ProjectTable'
+
 const page = () => {
     return (
         <>
             <PageHeader>
+                <ProjectsListHeader />
             </PageHeader>
             <div className='main-content'>
                 <div className='row'>
-                    <CreateProject/>
+                    <ProjectTable />
                 </div>
             </div>
         </>

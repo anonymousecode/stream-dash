@@ -60,7 +60,7 @@ const EventPage = () => {
   )
 
   return (
-    <div className="container py-5 bg-white">
+    <div className="container py-3 bg-white">
       {/* Tabs */}
       <div className="d-flex gap-3 mb-4">
         {tabs.map((tab) => (
@@ -84,12 +84,6 @@ const EventPage = () => {
           filteredEvents.map(({ id, title, level, host, image }) => (
             <div className="col-sm-6 col-md-4 col-lg-3" key={id}>
               <div className="card h-100 shadow-sm border-0">
-                <div className="card-header d-flex justify-content-between align-items-center bg-white border-0">
-                  <img src="/logo.svg" alt="logo" style={{ width: '20px', height: '20px' }} />
-                  <small className="text-muted">
-                    Hosted by <strong>{host}</strong>
-                  </small>
-                </div>
                 <img
                   src={image}
                   alt={title}
@@ -99,7 +93,7 @@ const EventPage = () => {
                 <div className="card-body">
                   <h5 className="card-title text-truncate">{title}</h5>
                   <p className="card-text text-muted mb-2">Level: {level}</p>
-                  <button className="btn btn-warning btn-sm text-white rounded-pill">
+                  <button className="btn btn-warning btn-sm text-white rounded-2">
                     Enrolled
                   </button>
                 </div>
