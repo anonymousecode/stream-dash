@@ -15,15 +15,17 @@ const BlogsCreate = () => {
   })
 
   useEffect(() => {
-    const editor = document.querySelector("trix-editor")
-    editor?.addEventListener("trix-change", (e) => {
-      setForm((prev) => ({
-        ...prev,
-        content: e.target.innerHTML,
-      }))
-    })
-
-    
+    if (typeof window !== "undefined") {  // Ensuring it's client-side
+      const editor = document.querySelector("trix-editor")
+      if (editor) {
+        editor.addEventListener("trix-change", (e) => {
+          setForm((prev) => ({
+            ...prev,
+            content: e.target.innerHTML,
+          }))
+        })
+      }
+    }
   }, [])
 
   const handleChange = (e) => {
@@ -66,23 +68,22 @@ const BlogsCreate = () => {
           <input type="file" name="attach_image" className="form-control" onChange={handleChange} />
         </div>
 
-        
         <div className="mb-3">
           <label className="form-label">Content</label>
           <input type="hidden" id="content" />
           <trix-editor input="content"></trix-editor>
         </div>
-        
+
         <div className="mb-3">
-        <label className="form-label">Short Description</label>
-            <textarea
-                    name="short_description"
-                    className="form-control"
-                    rows="4"
-                    onChange={handleChange}
-                    placeholder="Write a short description..."
-            ></textarea>
-    </div>
+          <label className="form-label">Short Description</label>
+          <textarea
+            name="short_description"
+            className="form-control"
+            rows="4"
+            onChange={handleChange}
+            placeholder="Write a short description..."
+          ></textarea>
+        </div>
 
         <button type="submit" className="btn btn-primary">Submit Blog</button>
       </form>
