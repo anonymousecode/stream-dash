@@ -1,17 +1,19 @@
+"use client"
+
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import CustomersCreateHeader from '@/components/customersCreate/CustomersCreateHeader'
-import CustomerCreateContent from '@/components/customersCreate/CustomerCreateContent'
+// import CustomersCreateHeader from '@/components/customersCreate/CustomersCreateHeader'
+// import CustomerCreateContent from '@/components/customersCreate/CustomerCreateContent'
+import BlogsCreate from '@/components/blogs/BlogsCreate'
 
 const page = () => {
   return (
     <>
       <PageHeader>
-        <CustomersCreateHeader />
       </PageHeader>
       <div className='main-content'>
         <div className='row'>
-          <CustomerCreateContent />
+          <BlogsCreate/>
         </div>
       </div>
     </>
