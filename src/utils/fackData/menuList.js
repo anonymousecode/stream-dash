@@ -93,26 +93,14 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Proposal",
-                path: "/proposal/list",
+                name: "View Projects",
+                path: "/projects/view",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Proposal View",
-                path: "/proposal/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Proposal Edit",
-                path: "/proposal/edit",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Proposal Create",
-                path: "/proposal/create",
+                name: " Create Projects",
+                path: "/projects/create",
                 subdropdownMenu: false
             },
 
@@ -146,20 +134,14 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Customers",
-                path: "/customers/list",
+                name: "View blogs",
+                path: "/blogs/view",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Customers View",
-                path: "/customers/view",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Customers Create",
-                path: "/customers/create",
+                name: " Create blogs",
+                path: "/blogs/create",
                 subdropdownMenu: false
             }
         ]
@@ -199,19 +181,19 @@ export const menuList = [
             {
                 id: 1,
                 name: "Projects",
-                path: "/projects/list",
+                path: "/pbl/list",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Projects View",
-                path: "/projects/view",
+                path: "/pbl/view",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "Projects Create",
-                path: "/projects/create",
+                path: "/pbl/create",
                 subdropdownMenu: false
             }
         ]

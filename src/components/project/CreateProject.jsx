@@ -12,7 +12,6 @@ import {
 } from '@/utils/options'
 import useLocationData from '@/hooks/useLocationData'
 import Loading from '@/components/shared/Loading'
-import AddProposal from './AddProposal'
 
 const previtems = [
   {
@@ -157,7 +156,6 @@ const ProposalCreateContent = () => {
         </div>
       </div>
 
-      <AddProposal previtems={previtems} />
     </>
   )
 }
