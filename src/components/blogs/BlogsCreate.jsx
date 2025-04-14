@@ -1,4 +1,5 @@
-"use client" 
+"use client"
+
 import { useEffect, useState } from "react"
 import "trix"
 import "trix/dist/trix.css"
@@ -15,7 +16,7 @@ const BlogsCreate = () => {
   })
 
   useEffect(() => {
-    if (typeof window !== "undefined") {  // Ensuring it's client-side
+    if (typeof window !== "undefined") {
       const editor = document.querySelector("trix-editor")
       if (editor) {
         editor.addEventListener("trix-change", (e) => {
@@ -40,14 +41,12 @@ const BlogsCreate = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log("Form Data", form)
-    // Submit via fetch or axios here
   }
 
   return (
     <div className="container mt-5">
       <h3>Create Blog</h3>
       <form onSubmit={handleSubmit}>
-
         <div className="mb-3">
           <label className="form-label">Title</label>
           <input name="title" className="form-control" onChange={handleChange} />

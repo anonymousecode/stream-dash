@@ -1,19 +1,21 @@
 "use client"
 
-import React from 'react'
-import PageHeader from '@/components/shared/pageHeader/PageHeader'
-// import CustomersCreateHeader from '@/components/customersCreate/CustomersCreateHeader'
-// import CustomerCreateContent from '@/components/customersCreate/CustomerCreateContent'
-import BlogsCreate from '@/components/blogs/BlogsCreate'
+import React from "react"
+import PageHeader from "@/components/shared/pageHeader/PageHeader"
+import dynamic from "next/dynamic"
+
+// Dynamically import BlogsCreate to avoid SSR issues
+const BlogsCreate = dynamic(() => import("@/components/blogs/BlogsCreate"), {
+  ssr: false,
+})
 
 const page = () => {
   return (
     <>
-      <PageHeader>
-      </PageHeader>
-      <div className='main-content'>
-        <div className='row'>
-          <BlogsCreate/>
+      <PageHeader />
+      <div className="main-content">
+        <div className="row">
+          <BlogsCreate />
         </div>
       </div>
     </>
