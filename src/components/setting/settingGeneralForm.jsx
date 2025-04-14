@@ -2,7 +2,7 @@
 import React from 'react'
 import PageHeaderSetting from '@/components/shared/pageHeader/PageHeaderSetting'
 import Footer from '@/components/shared/Footer'
-import TextAreaTopLabel from '@/components/shared/TextAreaTopLabel'
+// import TextAreaTopLabel from '@/components/shared/TextAreaTopLabel'
 import { FiCamera } from 'react-icons/fi'
 import useImageUpload from '@/hooks/useImageUpload'
 import PerfectScrollbar from 'react-perfect-scrollbar'
@@ -28,70 +28,39 @@ const SettingGeneralForm = () => {
                             </div>
                             <InputTopLabel
                                 label={"Name"}
-                                placeholder={"Company Name"}
-                                info={"Your company name [Ex: Theme Ocean]"}
+                                placeholder={"Name"}
+                            />
+                            
+                            <InputTopLabel
+                                label={"Email"}
+                                placeholder={""}
+                            />
+                            
+                            <InputTopLabel
+                                label={"Phone"}
+                                placeholder={""}
                             />
                             <InputTopLabel
                                 label={"Address"}
-                                placeholder={"Company Address"}
-                                info={"Your company address [Ex: 708 Heavner Court]"}
+                                placeholder={" Address"}
                             />
                             <InputTopLabel
                                 label={"City"}
-                                placeholder={"Company City"}
-                                info={"Your company city [Ex: Levittown]"}
+                                placeholder={"City"}
+                            />
+                            <InputTopLabel
+                                label={"BRC"}
+                                placeholder={""}
+                            />
+                            <InputTopLabel
+                                label={"District"}
+                                placeholder={""}
                             />
                             <InputTopLabel
                                 label={"State"}
-                                placeholder={"Company State"}
-                                info={"Your company state [Ex: NY 11756]"}
+                                placeholder={"State"}
                             />
-                            <InputTopLabel
-                                label={"Zip"}
-                                placeholder={"Zip COde"}
-                                info={"Zip Code [Ex: 11756]"}
-                            />
-                            <InputTopLabel
-                                label={"Phone"}
-                                placeholder={"Company Phone"}
-                                info={"TIN Number [Ex: 987-6985-9658-654]"}
-                            />
-                            <InputTopLabel
-                                label={"TIN Number"}
-                                placeholder={"TIN Number"}
-                                info={"TIN Number [Ex: 987-6985-9658-654]"}
-                            />
-                            <InputTopLabel
-                                label={"Domain"}
-                                placeholder={"Domain"}
-                                info={"Company main domain [Ex: https://wrapbootstrap.com/user/theme_ocean]"}
-                            />
-                            <InputTopLabel
-                                label={"Allowed"}
-                                placeholder={"Allowed file types"}
-                                info={"Allowed file types [Ex: .png,.jpg,.pdf,.doc,.docx,.xls,.xlsx,.zip,.rar,.txt]"}
-                            />
-
-                            <div className="mb-5">
-                                <label className="form-label">Direction</label>
-                                <div className="form-check">
-                                    <label className="form-check-label" htmlFor="LRTdirection">LRT Direction (Left to Right)</label>
-                                    <input className="form-check-input" type="radio" name="site-direction" id="LRTdirection" defaultChecked />
-                                </div>
-                                <div className="form-check">
-                                    <label className="form-check-label" htmlFor="RTLdirection">RTL Direction (Right to Left)</label>
-                                    <input className="form-check-input" type="radio" name="site-direction" id="RTLdirection" />
-                                </div>
-                            </div>
-                            <TextAreaTopLabel
-                                label={"Information (PDF and HTML)"}
-                                placeholder="{company_name} 
-{address}
-{city} {state}
-{country_code} {zip_code}
-{vat_number_with_label}"
-                                info="Company Information Format [Ex: {company_name} {address}, {city}, {state}, {zip_code}, {country_code}, {phone}, {vat_number}, {vat_number_with_label}]"
-                            />
+                            
                         </div>
                     </div>
                 </div>

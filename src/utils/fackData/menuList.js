@@ -5,102 +5,91 @@ export const menuList = [
         path: "/dashboard",
         icon: 'feather-bar-chart-2',
         dropdownMenu: [
-            // {
-            //     id: 1,
-            //     name: "CRM",
-            //     path: "/",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 2,
-            //     name: "Analytics",
-            //     path: "/dashboards/analytics",
-            //     subdropdownMenu: false
-            // }
+           
         ]
     },
-    {
-        id: 1,
-        name: "reports",
-        path: "#",
-        icon: 'feather-cast',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Sales Report",
-                path: "/reports/sales",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Leads Report",
-                path: "/reports/leads",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Project Report",
-                path: "/reports/project",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Timesheets Report",
-                path: "/reports/timesheets",
-                subdropdownMenu: false
-            },
+    // {
+    //     id: 1,
+    //     name: "reports",
+    //     path: "#",
+    //     icon: 'feather-cast',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Sales Report",
+    //             path: "/reports/sales",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Leads Report",
+    //             path: "/reports/leads",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Project Report",
+    //             path: "/reports/project",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Timesheets Report",
+    //             path: "/reports/timesheets",
+    //             subdropdownMenu: false
+    //         },
 
-        ]
-    },
-    {
-        id: 2,
-        name: "applications",
-        path: '#',
-        icon: 'feather-send',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Chat",
-                path: "/applications/chat",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Email",
-                path: "/applications/email",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Tasks",
-                path: "/applications/tasks",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Notes",
-                path: "/applications/notes",
-                subdropdownMenu: false
-            },
-            {
-                id: 5,
-                name: "Storage",
-                path: "/applications/storage",
-                subdropdownMenu: false
-            },
-            {
-                id: 6,
-                name: "Calendar",
-                path: "/applications/calendar",
-                subdropdownMenu: false
-            },
-        ]
-    },
+    //     ]
+    // },
+    // {
+    //     id: 2,
+    //     name: "applications",
+    //     path: '#',
+    //     icon: 'feather-send',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Chat",
+    //             path: "/applications/chat",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Email",
+    //             path: "/applications/email",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Tasks",
+    //             path: "/applications/tasks",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Notes",
+    //             path: "/applications/notes",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 5,
+    //             name: "Storage",
+    //             path: "/applications/storage",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 6,
+    //             name: "Calendar",
+    //             path: "/applications/calendar",
+    //             subdropdownMenu: false
+    //         },
+    //     ]
+    // },
     {
         id: 3,
-        name: "proposal",
+        name: "Projects",
         path: "#",
-        icon: 'feather-at-sign',
+        icon: 'feather-box',
         dropdownMenu: [
             {
                 id: 1,
@@ -133,7 +122,7 @@ export const menuList = [
         id: 4,
         name: "Events",
         path: "#",
-        icon: 'feather-dollar-sign',
+        icon: 'feather-calendar',
         dropdownMenu: [
             {
                 id: 1,
@@ -151,9 +140,9 @@ export const menuList = [
     },
     {
         id: 5,
-        name: "customers",
+        name: "Blogs",
         path: "#",
-        icon: 'feather-users',
+        icon: 'feather-edit',
         dropdownMenu: [
             {
                 id: 1,
@@ -203,7 +192,7 @@ export const menuList = [
     },
     {
         id: 7,
-        name: "projects",
+        name: "PBL",
         path: "#",
         icon: 'feather-clipboard',
         dropdownMenu: [
@@ -227,128 +216,50 @@ export const menuList = [
             }
         ]
     },
-    {
-        id: 8,
-        name: "widgets",
-        path: "#",
-        icon: 'feather-layout',
-        dropdownMenu: [
-            {
-                id: 1,
-                name: "Lists",
-                path: "/widgets/lists",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "Tables",
-                path: "/widgets/tables",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
-                name: "Charts",
-                path: "/widgets/charts",
-                subdropdownMenu: false
-            },
-            {
-                id: 4,
-                name: "Statistics",
-                path: "/widgets/statistics",
-                subdropdownMenu: false
-            },
-            {
-                id: 5,
-                name: "Miscellaneous",
-                path: "/widgets/miscellaneous",
-                subdropdownMenu: false
-            },
-        ]
-    },
+    // {
+    //     id: 8,
+    //     name: "widgets",
+    //     path: "#",
+    //     icon: 'feather-layout',
+    //     dropdownMenu: [
+    //         {
+    //             id: 1,
+    //             name: "Lists",
+    //             path: "/widgets/lists",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 2,
+    //             name: "Tables",
+    //             path: "/widgets/tables",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 3,
+    //             name: "Charts",
+    //             path: "/widgets/charts",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 4,
+    //             name: "Statistics",
+    //             path: "/widgets/statistics",
+    //             subdropdownMenu: false
+    //         },
+    //         {
+    //             id: 5,
+    //             name: "Miscellaneous",
+    //             path: "/widgets/miscellaneous",
+    //             subdropdownMenu: false
+    //         },
+    //     ]
+    // },
     {
         id: 9,
         name: "Profile",
         path: "/settings/ganeral",
         icon: 'feather-user',
         dropdownMenu: [
-            // {
-            //     id: 1,
-            //     name: "Ganeral",
-            //     path: "/settings/ganeral",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 2,
-            //     name: "SEO",
-            //     path: "/settings/seo",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 3,
-            //     name: "Tags",
-            //     path: "/settings/tags",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 4,
-            //     name: "Email",
-            //     path: "/settings/email",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 5,
-            //     name: "Tasks",
-            //     path: "/settings/tasks",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 6,
-            //     name: "Leads",
-            //     path: "/settings/leads",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 7,
-            //     name: "Support",
-            //     path: "/settings/Support",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 8,
-            //     name: "Finance",
-            //     path: "/settings/finance",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 9,
-            //     name: "Gateways",
-            //     path: "/settings/gateways",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 10,
-            //     name: "Customers",
-            //     path: "/settings/customers",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 11,
-            //     name: "Localization",
-            //     path: "/settings/localization",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 12,
-            //     name: "reCAPTCHA",
-            //     path: "/settings/recaptcha",
-            //     subdropdownMenu: false
-            // },
-            // {
-            //     id: 13,
-            //     name: "Miscellaneous",
-            //     path: "/settings/miscellaneous",
-            //     subdropdownMenu: false
-            // },
         ]
     },
     {
