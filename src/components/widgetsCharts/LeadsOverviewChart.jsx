@@ -18,7 +18,7 @@ const LeadsOverviewChart = ({ chartHeight, isFooterShow }) => {
     return (
         <div className="col-xxl-4">
             <div className={`card stretch stretch-full leads-overview ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
-                <CardHeader title={"Leads Overview"} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
+                <CardHeader title={"Facilities"} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
 
                 <div className="card-body custom-card-action">
                     <ReactApexChart
