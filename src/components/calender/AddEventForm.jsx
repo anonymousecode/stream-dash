@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import { CiLock } from 'react-icons/ci';
 import SelectDropdown from '@/components/shared/SelectDropdown';
