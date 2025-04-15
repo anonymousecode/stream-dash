@@ -178,7 +178,7 @@ export const menuList = [
     {
         id: 8,
         name: "Profile",
-        path: "/settings/ganeral",
+        path: "/profile",
         icon: 'feather-user',
         dropdownMenu: [
         ]
