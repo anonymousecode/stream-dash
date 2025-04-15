@@ -151,28 +151,22 @@ export const menuList = [
     },
     {
         id: 7,
-        name: "actions",
+        name: "Actions",
         path: "#",
         icon: 'feather-zap',
         dropdownMenu: [
             {
                 id: 1,
-                name: "Leads",
-                path: "/leads/list",
+                name: "Manage SPO",
+                path: "/actions/spo",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Leads View",
-                path: "/leads/view",
+                name: "Manage State",
+                path: "#",
                 subdropdownMenu: false
             },
-            {
-                id: 3,
-                name: "Leads Create",
-                path: "/leads/create",
-                subdropdownMenu: false
-            }
         ]
     },
     {
