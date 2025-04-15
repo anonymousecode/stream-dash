@@ -3,64 +3,64 @@
 import React, { useState } from 'react'
 
 // Sample blog data with dates
-const blogData = [
-  {
-    id: 1,
-    title: 'Top 10 AI Trends in 2025',
-    author: 'Navya',
-    date: '2025-01-10',
-  },
-  {
-    id: 2,
-    title: 'The Rise of Ethical Hacking',
-    author: 'Rahul',
-    date: '2025-01-14',
-  },
-  {
-    id: 3,
-    title: 'How Blockchain is Changing Finance',
-    author: 'Ananya',
-    date: '2025-02-01',
-  },
-  {
-    id: 4,
-    title: 'Introduction to Deep Learning',
-    author: 'George',
-    date: '2025-02-20',
-  },
-  {
-    id: 5,
-    title: 'Exploring Quantum Computing',
-    author: 'Meera',
-    date: '2025-03-01',
-  },
-  {
-    id: 6,
-    title: 'Cybersecurity Essentials',
-    author: 'Arjun',
-    date: '2025-03-18',
-  },
-  {
-    id: 7,
-    title: 'Cloud Computing Demystified',
-    author: 'Kiran',
-    date: '2025-04-01',
-  },
-  {
-    id: 8,
-    title: 'The Future of Remote Work',
-    author: 'Sara',
-    date: '2025-04-10',
-  },
-]
+// const blogData = [
+//   {
+//     id: 1,
+//     title: 'Top 10 AI Trends in 2025',
+//     author: 'Navya',
+//     date: '2025-01-10',
+//   },
+//   {
+//     id: 2,
+//     title: 'The Rise of Ethical Hacking',
+//     author: 'Rahul',
+//     date: '2025-01-14',
+//   },
+//   {
+//     id: 3,
+//     title: 'How Blockchain is Changing Finance',
+//     author: 'Ananya',
+//     date: '2025-02-01',
+//   },
+//   {
+//     id: 4,
+//     title: 'Introduction to Deep Learning',
+//     author: 'George',
+//     date: '2025-02-20',
+//   },
+//   {
+//     id: 5,
+//     title: 'Exploring Quantum Computing',
+//     author: 'Meera',
+//     date: '2025-03-01',
+//   },
+//   {
+//     id: 6,
+//     title: 'Cybersecurity Essentials',
+//     author: 'Arjun',
+//     date: '2025-03-18',
+//   },
+//   {
+//     id: 7,
+//     title: 'Cloud Computing Demystified',
+//     author: 'Kiran',
+//     date: '2025-04-01',
+//   },
+//   {
+//     id: 8,
+//     title: 'The Future of Remote Work',
+//     author: 'Sara',
+//     date: '2025-04-10',
+//   },
+// ]
 
-const BlogsView = () => {
+const BlogsView = (blogData) => {
   const [currentPage, setCurrentPage] = useState(1)
-  const blogsPerPage = 6
+  // const blogsPerPage = 6
 
-  const totalPages = Math.ceil(blogData.length / blogsPerPage)
-  const startIndex = (currentPage - 1) * blogsPerPage
-  const currentBlogs = blogData.slice(startIndex, startIndex + blogsPerPage)
+  // const totalPages = Math.ceil(blogData.length / blogsPerPage)
+  // const startIndex = (currentPage - 1) * blogsPerPage
+  // const currentBlogs = blogData.slice(startIndex, startIndex + blogsPerPage)
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
@@ -79,7 +79,7 @@ const BlogsView = () => {
   return (
     <div className="container py-4 bg-white">
 
-      {currentBlogs.length > 0 ? (
+      {blogData.length > 0 ? (
         <div className="table-responsive">
           <table className="table table-bordered align-middle text-center">
             <thead className="table-light">
@@ -92,28 +92,30 @@ const BlogsView = () => {
               </tr>
             </thead>
             <tbody>
-              {currentBlogs.map(({ id, title, author, date }, index) => (
-                <tr key={id}>
-                  <td>{startIndex + index + 1}</td>
-                  <td className="text-start">{title}</td>
-                  <td>{author}</td>
-                  <td>{date}</td>
-                  <td className="d-flex justify-content-center">
-                        <button
-                            className="btn btn-sm btn-outline-primary me-2"
-                            onClick={() => handleEdit(id)}
-                        >
-                            Edit
-                        </button>
-                        <button
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleDelete(id)}
-                        >
-                            Delete
-                        </button>
-                        </td>
+              {blogData.map((item) => (
+                <div>
+                  <tr key={item.name}>
+                    <td>{startIndex + index + 1}</td>
+                    <td className="text-start">{item.title}</td>
+                    <td>{item.author}</td>
+                    <td>{item.date}</td>
+                    <td className="d-flex justify-content-center">
+                      <button
+                        className="btn btn-sm btn-outline-primary me-2"
+                        onClick={() => handleEdit(id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDelete(id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
 
-                </tr>
+                  </tr>
+                </div>
               ))}
             </tbody>
           </table>

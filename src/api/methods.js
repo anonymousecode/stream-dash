@@ -104,3 +104,38 @@ export async function getNotifications() {
     }
 }
 
+
+
+export async function get_data(doctype, fields, filters) {
+    return fetch(apiBaseUrl + "/api/method/stream.api.take_doc", {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            // Doctype: "Events",
+            // Fields: ["Title", "Description", "Event_Image"]
+            Doctype: doctype,
+            Fields: fields,
+            Filters: filters
+
+        }),
+
+    })
+
+        .then(async (response) => {
+            console.log(filters);
+            console.log(fields);
+            console.log(doctype);
+            console.log("Response Status:", response.status);
+            const json = await response.json();
+            console.log("API Response:", json);
+            return json.message || [];
+        })
+        .catch((error) => {
+            console.error("Fetch Error:", error);
+        });
+}
+
+
