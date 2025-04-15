@@ -79,25 +79,25 @@ export const menuList = [
             {
                 id: 1,
                 name: "Overview",
-                path: "/facilities/view",
+                path: "/lms/statistics",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "View Certificates",
-                path: "/facilities/create",
+                path: "/lms/view-certificate",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "View Courses",
-                path: "/facilities/create",
+                path: "/lms/view-courses",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Manage Courses",
-                path: "/facilities/create",
+                path: "/lms/manage",
                 subdropdownMenu: false
             },
 
