@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import useImageUpload from '@/hooks/useImageUpload'
 
-const SettingGeneralForm = () => {
+const ProfileView = () => {
   const { handleImageUpload, uploadedImage } = useImageUpload()
   const [showModal, setShowModal] = useState(false)
   const [profileData, setProfileData] = useState({
@@ -195,4 +195,4 @@ const SettingGeneralForm = () => {
   )
 }
 
-export default SettingGeneralForm
+export default ProfileView

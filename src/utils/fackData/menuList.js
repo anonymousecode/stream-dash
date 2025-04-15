@@ -79,25 +79,25 @@ export const menuList = [
             {
                 id: 1,
                 name: "Overview",
-                path: "/facilities/view",
+                path: "/lms/statistics",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "View Certificates",
-                path: "/facilities/create",
+                path: "/lms/view-certificate",
                 subdropdownMenu: false
             },
             {
                 id: 3,
                 name: "View Courses",
-                path: "/facilities/create",
+                path: "/lms/view-courses",
                 subdropdownMenu: false
             },
             {
                 id: 4,
                 name: "Manage Courses",
-                path: "/facilities/create",
+                path: "/lms/manage",
                 subdropdownMenu: false
             },
 
@@ -151,28 +151,22 @@ export const menuList = [
     },
     {
         id: 7,
-        name: "actions",
+        name: "Actions",
         path: "#",
         icon: 'feather-zap',
         dropdownMenu: [
             {
                 id: 1,
-                name: "Leads",
-                path: "/leads/list",
+                name: "Manage SPO",
+                path: "/actions/spo",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "Leads View",
-                path: "/leads/view",
+                name: "Manage State",
+                path: "#",
                 subdropdownMenu: false
             },
-            {
-                id: 3,
-                name: "Leads Create",
-                path: "/leads/create",
-                subdropdownMenu: false
-            }
         ]
     },
     {
