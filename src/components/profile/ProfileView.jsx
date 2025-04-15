@@ -1,7 +1,5 @@
 'use client'
 import React, { useState } from 'react'
-// import PageHeaderSetting from '@/components/shared/pageHeader/PageHeaderSetting'
-// import Footer from '@/components/shared/Footer'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import useImageUpload from '@/hooks/useImageUpload'
 
