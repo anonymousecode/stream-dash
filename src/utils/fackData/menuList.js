@@ -124,7 +124,7 @@ export const menuList = [
             {
                 id: 3,
                 name: "Manage Events",
-                path: "/events/create",
+                path: "/events/manage",
                 subdropdownMenu: false
             }
         ]
