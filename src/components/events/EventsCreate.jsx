@@ -7,6 +7,18 @@ import SelectDropdown from '@/components/shared/SelectDropdown'
 import { districtOptions, labTypeOptions } from '@/utils/options'
 
 const EventCreate = () => {
+  const [title, setTitle] = useState('')
+  const [shortDescription, setShortDescription] = useState('')
+  const [description, setDescription] = useState('')
+  const [venue, setVenue] = useState('')
+  const [place, setPlace] = useState('')
+  const [level, setLevel] = useState('')
+  const [host, setHost] = useState('')
+  const [time, setTime] = useState('')
+  const [date, setDate] = useState('')
+  const [partnerName, setPartnerName] = useState('')
+  const [credit, setCredit] = useState('')
+  const [brc, setBrc] = useState('')
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [selectedLabType, setSelectedLabType] = useState(null)
   const [stateValue, setStateValue] = useState('')
@@ -28,19 +40,19 @@ const EventCreate = () => {
             {/* Title */}
             <div className="mb-4">
               <label className="form-label">Title <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="Event Title" />
+              <input type="text" className="form-control" placeholder="Event Title" onChange={(e) => { setTitle(e.target.value) }} />
             </div>
 
             {/* Short Description */}
             <div className="mb-4">
               <label className="form-label">Short Description <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="Short description" />
+              <input type="text" className="form-control" placeholder="Short description" onChange={(e) => { setShortDescription(e.target.value) }} />
             </div>
 
             {/* Description */}
             <div className="mb-4">
               <label className="form-label">Description <span className="text-danger">*</span></label>
-              <textarea className="form-control" rows={4} placeholder="Full description"></textarea>
+              <textarea className="form-control" rows={4} placeholder="Full description" onChange={(e) => { setDescription(e.target.value) }}></textarea>
             </div>
 
             {/* Event Images */}
@@ -69,43 +81,43 @@ const EventCreate = () => {
             {/* Venue */}
             <div className="mb-4">
               <label className="form-label">Venue <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="Venue name" />
+              <input type="text" className="form-control" placeholder="Venue name" onChange={(e) => { setVenue(e.target.value) }} />
             </div>
 
             {/* Place */}
             <div className="mb-4">
               <label className="form-label">Place <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="City/Town/Village" />
+              <input type="text" className="form-control" placeholder="City/Town/Village" onChange={(e) => { setPlace(e.target.value) }} />
             </div>
 
             {/* Level */}
             <div className="mb-4">
               <label className="form-label">Level</label>
-              <input type="text" className="form-control" placeholder="Enter level (e.g., District, State)" />
+              <input type="text" className="form-control" placeholder="Enter level (e.g., District, State)" onChange={(e) => { setLevel(e.target.value) }} />
             </div>
 
             {/* Host */}
             <div className="mb-4">
               <label className="form-label">Host</label>
-              <input type="text" className="form-control" placeholder="Organizer / Host" />
+              <input type="text" className="form-control" placeholder="Organizer / Host" onChange={(e) => { setHost(e.target.value) }} />
             </div>
 
             {/* Time and Date */}
             <div className="row">
               <div className="col-lg-6 mb-4">
                 <label className="form-label">Time</label>
-                <input type="time" className="form-control" />
+                <input type="time" className="form-control" onChange={(e) => { setTime(e.target.value) }} />
               </div>
               <div className="col-lg-6 mb-4">
                 <label className="form-label">Date</label>
-                <input type="date" className="form-control" />
+                <input type="date" className="form-control" onChange={(e) => { setDate(e.target.value) }} />
               </div>
             </div>
 
             {/* Partner Name */}
             <div className="mb-4">
               <label className="form-label">Partner Name</label>
-              <input type="text" className="form-control" placeholder="Partner Organization" />
+              <input type="text" className="form-control" placeholder="Partner Organization" onChange={(e) => { setPartnerName(e.target.value) }} />
             </div>
 
             {/* Partner Logos */}
@@ -134,7 +146,7 @@ const EventCreate = () => {
             {/* Credit */}
             <div className="mb-4">
               <label className="form-label">Credit</label>
-              <input type="text" className="form-control" placeholder="Credit details (if any)" />
+              <input type="text" className="form-control" placeholder="Credit details (if any)" onChange={(e) => { setCredit(e.target.value) }} />
             </div>
 
             {/* State */}
@@ -165,11 +177,11 @@ const EventCreate = () => {
             {/* BRC */}
             <div className="mb-4">
               <label className="form-label">BRC</label>
-              <input type="text" className="form-control" placeholder="BRC Name" />
+              <input type="text" className="form-control" placeholder="BRC Name" onChange={(e) => { setBrc(e.target.value) }} />
             </div>
 
             {/* Lab Type Dropdown */}
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="form-label">Lab Type</label>
               <SelectDropdown
                 options={labTypeOptions}
@@ -177,7 +189,7 @@ const EventCreate = () => {
                 onSelectOption={setSelectedLabType}
                 defaultSelect="Ideation Lab"
               />
-            </div>
+            </div> */}
 
             {/* Event Gallery */}
             <div className="mb-4">

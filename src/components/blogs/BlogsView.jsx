@@ -54,13 +54,13 @@ import React, { useState } from 'react'
 //   },
 // ]
 
-const BlogsView = (blogData) => {
+const BlogsView = ({ blogData }) => {
   const [currentPage, setCurrentPage] = useState(1)
-  // const blogsPerPage = 6
+  const blogsPerPage = 6
 
-  // const totalPages = Math.ceil(blogData.length / blogsPerPage)
-  // const startIndex = (currentPage - 1) * blogsPerPage
-  // const currentBlogs = blogData.slice(startIndex, startIndex + blogsPerPage)
+  const totalPages = Math.ceil(blogData.length / blogsPerPage)
+  const startIndex = (currentPage - 1) * blogsPerPage
+  const currentBlogs = blogData.slice(startIndex, startIndex + blogsPerPage)
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber)
@@ -79,7 +79,7 @@ const BlogsView = (blogData) => {
   return (
     <div className="container py-4 bg-white">
 
-      {blogData.length > 0 ? (
+      {currentBlogs.length > 0 ? (
         <div className="table-responsive">
           <table className="table table-bordered align-middle text-center">
             <thead className="table-light">
@@ -92,30 +92,32 @@ const BlogsView = (blogData) => {
               </tr>
             </thead>
             <tbody>
-              {blogData.map((item) => (
-                <div>
-                  <tr key={item.name}>
-                    <td>{startIndex + index + 1}</td>
-                    <td className="text-start">{item.title}</td>
-                    <td>{item.author}</td>
-                    <td>{item.date}</td>
-                    <td className="d-flex justify-content-center">
-                      <button
-                        className="btn btn-sm btn-outline-primary me-2"
-                        onClick={() => handleEdit(id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => handleDelete(id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
 
-                  </tr>
-                </div>
+              {currentBlogs && currentBlogs.map(({ id, name, title, date, author }, index) => (
+
+                <tr key={name}>
+                  {/* <td>{startIndex + 1}</td> */}
+                  <td>{startIndex + index + 1}</td>
+                  <td className="text-start">{title}</td>
+                  <td>{author}</td>
+                  <td>{date}</td>
+                  <td className="d-flex justify-content-center">
+                    <button
+                      className="btn btn-sm btn-outline-primary me-2"
+                      onClick={() => handleEdit(id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+
+                </tr>
+
               ))}
             </tbody>
           </table>

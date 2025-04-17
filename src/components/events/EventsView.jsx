@@ -126,9 +126,8 @@ const EventPage = ({ eventsData }) => {
         {tabs.map((tab) => (
           <button
             key={tab}
-            className={`btn fw-bold text-uppercase ${
-              tab === activeTab ? 'btn-warning text-white' : 'btn-outline-secondary'
-            }`}
+            className={`btn fw-bold text-uppercase ${tab === activeTab ? 'btn-warning text-white' : 'btn-outline-secondary'
+              }`}
             onClick={() => handleTabChange(tab)}
           >
             {tab}

@@ -2,67 +2,67 @@
 
 import React, { useState } from 'react'
 
-// Sample facility data
-const facilityData = [
-  {
-    id: 1,
-    name: 'Govt HSS Aluva Lab',
-    labType: 'ICT Lab',
-    brc: 'Aluva BRC',
-    district: 'Ernakulam',
-  },
-  {
-    id: 2,
-    name: 'Model School Palakkad',
-    labType: 'Science Lab',
-    brc: 'Palakkad North BRC',
-    district: 'Palakkad',
-  },
-  {
-    id: 3,
-    name: 'St. Joseph’s HS',
-    labType: 'Computer Lab',
-    brc: 'Thrissur Central BRC',
-    district: 'Thrissur',
-  },
-  {
-    id: 4,
-    name: 'GHSS Varkala',
-    labType: 'Math Lab',
-    brc: 'Varkala BRC',
-    district: 'Thiruvananthapuram',
-  },
-  {
-    id: 5,
-    name: 'GHSS Manjeri',
-    labType: 'ICT Lab',
-    brc: 'Manjeri BRC',
-    district: 'Malappuram',
-  },
-  {
-    id: 6,
-    name: 'Govt Model Boys School',
-    labType: 'Language Lab',
-    brc: 'Kollam City BRC',
-    district: 'Kollam',
-  },
-  {
-    id: 7,
-    name: 'SRV GHSS Ernakulam',
-    labType: 'Science Lab',
-    brc: 'Ernakulam BRC',
-    district: 'Ernakulam',
-  },
-  {
-    id: 8,
-    name: 'GHSS Neyyattinkara',
-    labType: 'ICT Lab',
-    brc: 'Neyyattinkara BRC',
-    district: 'Thiruvananthapuram',
-  },
-]
+// // Sample facility data
+// const facilityData = [
+//   {
+//     id: 1,
+//     name: 'Govt HSS Aluva Lab',
+//     labType: 'ICT Lab',
+//     brc: 'Aluva BRC',
+//     district: 'Ernakulam',
+//   },
+//   {
+//     id: 2,
+//     name: 'Model School Palakkad',
+//     labType: 'Science Lab',
+//     brc: 'Palakkad North BRC',
+//     district: 'Palakkad',
+//   },
+//   {
+//     id: 3,
+//     name: 'St. Joseph’s HS',
+//     labType: 'Computer Lab',
+//     brc: 'Thrissur Central BRC',
+//     district: 'Thrissur',
+//   },
+//   {
+//     id: 4,
+//     name: 'GHSS Varkala',
+//     labType: 'Math Lab',
+//     brc: 'Varkala BRC',
+//     district: 'Thiruvananthapuram',
+//   },
+//   {
+//     id: 5,
+//     name: 'GHSS Manjeri',
+//     labType: 'ICT Lab',
+//     brc: 'Manjeri BRC',
+//     district: 'Malappuram',
+//   },
+//   {
+//     id: 6,
+//     name: 'Govt Model Boys School',
+//     labType: 'Language Lab',
+//     brc: 'Kollam City BRC',
+//     district: 'Kollam',
+//   },
+//   {
+//     id: 7,
+//     name: 'SRV GHSS Ernakulam',
+//     labType: 'Science Lab',
+//     brc: 'Ernakulam BRC',
+//     district: 'Ernakulam',
+//   },
+//   {
+//     id: 8,
+//     name: 'GHSS Neyyattinkara',
+//     labType: 'ICT Lab',
+//     brc: 'Neyyattinkara BRC',
+//     district: 'Thiruvananthapuram',
+//   },
+// ]
 
-const FacilitiesView = () => {
+const FacilitiesView = ({ facilityData }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const facilitiesPerPage = 6
 
@@ -100,13 +100,13 @@ const FacilitiesView = () => {
               </tr>
             </thead>
             <tbody>
-              {currentFacilities.map(({ id, name, labType, brc, district }, index) => (
+              {currentFacilities && currentFacilities.map(({ id, name, title, lab_name, brc_name, district_name }, index) => (
                 <tr key={id}>
                   <td>{startIndex + index + 1}</td>
-                  <td className="text-start">{name}</td>
-                  <td>{labType}</td>
-                  <td>{brc}</td>
-                  <td>{district}</td>
+                  <td className="text-start">{title}</td>
+                  <td>{lab_name}</td>
+                  <td>{brc_name}</td>
+                  <td>{district_name}</td>
                   <td className="d-flex justify-content-center">
                     <button
                       className="btn btn-sm btn-outline-primary me-2"
