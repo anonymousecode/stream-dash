@@ -1,5 +1,6 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
+import ManageDpc from '@/components/actions/ManageDpc'
 
 const page = () => {
   return (
@@ -8,7 +9,7 @@ const page = () => {
       </PageHeader>
       <div className='main-content container-lg'>
         <div className='row'>
-            <h1>Manage DPC</h1>
+            <ManageDpc />
         </div>
       </div>
     </>

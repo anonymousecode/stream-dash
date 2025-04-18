@@ -52,26 +52,11 @@ const EventManage = () => {
     console.log('Delete event with id:', id)
   }
 
-  const handleAddEvent = () => {
-    console.log('Add Event button clicked')
-  }
-
   return (
     <div className="container py-4 bg-white">
-      {/* Header & Add Event Button */}
+      {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h5 className="mb-0">Events</h5>
-        <button
-          className="btn"
-          style={{
-            backgroundColor: '#f3c613',
-            color: '#fff',
-            fontWeight: 'bold',
-          }}
-          onClick={handleAddEvent}
-        >
-           Add Event
-        </button>
       </div>
 
       {/* Event Table */}
