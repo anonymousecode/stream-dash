@@ -161,12 +161,12 @@ export const menuList = [
                 path: "/actions/spo",
                 subdropdownMenu: false
             },
-            {
-                id: 2,
-                name: "Manage State",
-                path: "#",
-                subdropdownMenu: false
-            },
+            // {
+            //     id: 2,
+            //     name: "Manage State",
+            //     path: "#",
+            //     subdropdownMenu: false
+            // },
             {
                 id: 3,
                 name: "Manage DPC",

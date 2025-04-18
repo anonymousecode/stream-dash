@@ -1,5 +1,6 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
+import ManageSchools from '@/components/actions/ManageSchool'
 
 const page = () => {
   return (
@@ -8,7 +9,7 @@ const page = () => {
       </PageHeader>
       <div className='main-content container-lg'>
         <div className='row'>
-            <h1>Manage School</h1>
+            <ManageSchools />
         </div>
       </div>
     </>

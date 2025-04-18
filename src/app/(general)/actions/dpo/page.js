@@ -1,5 +1,6 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
+import ManageDpo from '@/components/actions/ManageDpo'
 
 const page = () => {
   return (
@@ -8,7 +9,7 @@ const page = () => {
       </PageHeader>
       <div className='main-content container-lg'>
         <div className='row'>
-            <h1>Manage DPO</h1>
+            <ManageDpo />
         </div>
       </div>
     </>
