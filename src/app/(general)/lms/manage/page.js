@@ -1,6 +1,5 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import ViewCertificate from '@/components/lms/ViewCertificate'
 import LmsHeader from '@/components/lms/LmsHeader'
 
 const page = () => {
@@ -11,7 +10,7 @@ const page = () => {
       </PageHeader>
       <div className='main-content container-lg'>
         <div className='row'>
-          <ViewCertificate />
+            <h1>Manage LMS</h1>
         </div>
       </div>
     </>

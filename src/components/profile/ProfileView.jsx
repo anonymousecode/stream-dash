@@ -41,7 +41,7 @@ const ProfileView = () => {
         <div className="container m-4 bg-white p-4 rounded shadow-sm" style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h3>Profile</h3>
-            <button className="btn btn-primary me-4" onClick={() => setShowModal(true)}>
+            <button className="btn btn-primary me-4 rounded-2" onClick={() => setShowModal(true)}>
               Edit Profile
             </button>
           </div>
