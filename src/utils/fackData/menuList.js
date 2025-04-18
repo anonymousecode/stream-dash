@@ -167,6 +167,36 @@ export const menuList = [
                 path: "#",
                 subdropdownMenu: false
             },
+            {
+                id: 3,
+                name: "Manage DPC",
+                path: "/actions/dpc",
+                subdropdownMenu: false
+            },
+            {
+                id: 4,
+                name: "Manage DPO",
+                path: "/actions/dpo",
+                subdropdownMenu: false
+            },
+            {
+                id: 5,
+                name: "Manage BPC",
+                path: "/actions/bpc",
+                subdropdownMenu: false
+            },
+            {
+                id: 6,
+                name: "Manage HOI",
+                path: "/actions/hoi",
+                subdropdownMenu: false
+            },
+            {
+                id: 7,
+                name: "Manage School",
+                path: "/actions/school",
+                subdropdownMenu: false
+            },
         ]
     },
     {
