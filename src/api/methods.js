@@ -139,3 +139,63 @@ export async function get_data(doctype, fields, filters) {
 }
 
 
+
+export async function insertDoc(doctype, body) {
+    try {
+        const res = await fetch(
+            `${apiBaseUrl}/api/resource/${doctype}`,
+            {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": `token ${apiKey}:${apiSecret}`,
+                },
+                body: JSON.stringify(body),
+            }
+        );
+
+        const resJson = await res.json();
+        console.log(resJson.data);
+
+        if (!res.ok) {
+            throw new Error(resJson.message || "Failed to insert document");
+        }
+
+        return resJson.data;
+
+    } catch (err) {
+        return { error: err.message || err };
+    }
+}
+
+
+export async function uploadFile(file, isPrivate = false) {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);                         // Actual file object
+        formData.append("is_private", isPrivate ? "1" : "0");  // "1" for private, "0" for public
+
+        const res = await fetch(`${apiBaseUrl}/api/method/upload_file`, {
+            method: "POST",
+            headers: {
+                "Authorization": `token ${apiKey}:${apiSecret}`
+                // Note: DO NOT set Content-Type for FormData. Browser will auto-set with boundary.
+            },
+            body: formData
+        });
+
+        const resJson = await res.json();
+
+        if (!res.ok) {
+            throw new Error(resJson.message || "File upload failed");
+        }
+
+        // Returns the file_url like "/files/image.jpg"
+        return resJson.message.file_url;
+
+    } catch (err) {
+        return { error: err.message || err };
+    }
+}
+
