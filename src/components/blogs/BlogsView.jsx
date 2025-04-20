@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { get_data } from '@/api/methods'
 
 // Sample blog data with dates
 // const blogData = [
@@ -54,7 +55,22 @@ import React, { useState } from 'react'
 //   },
 // ]
 
-const BlogsView = ({ blogData }) => {
+const BlogsView = () => {
+
+  const [blogData, setBlogData] = useState([])
+  useEffect(() => {
+
+    get_data("Blog", ["name", "title", "date", "author", "content", "short_description", "attach_image"], "{}")
+      .then((res) => {
+        console.log("Blog data:", res);
+        setBlogData(res);
+      }
+      ).catch((err) => {
+        console.log("Error fetching blog data:", err);
+      })
+
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1)
   const blogsPerPage = 6
 

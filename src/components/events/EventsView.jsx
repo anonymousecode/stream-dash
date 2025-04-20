@@ -1,12 +1,46 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { get_data } from '@/api/methods';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 const tabs = ['Up-Coming Events', 'Past Events'];
 
-const EventPage = ({ eventsData }) => {
+const EventPage = () => {
+
+  const [eventsData, setEventsData] = useState([])
+  useEffect(() => {
+
+    get_data(
+      "Events",
+      [
+        "name",
+        "place",
+        "date",
+        "title",
+        "short_description",
+        "event_image",
+        "state",
+        "district",
+        "brc",
+        "lab_type",
+        "location",
+        "level"
+      ],
+      ""
+    )
+      .then((res) => {
+        console.log("Blog data:", res);
+        setEventsData(res);
+      }
+      ).catch((err) => {
+        console.log("Error fetching blog data:", err);
+      })
+
+  }, []);
+
+
   const [activeTab, setActiveTab] = useState('Up-Coming Events');
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 8;

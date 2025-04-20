@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react"
 import "trix"
 import "trix/dist/trix.css"
+import { insertDoc, uploadFile, get_data } from '@/api/methods'
 
 const BlogsCreate = () => {
+
+  const [blogImage, setBlogImage] = useState(null)
   const [form, setForm] = useState({
     title: "",
     date: "",
     author: "",
     attach_image: null,
-    blog_image: null,
     content: "",
     short_description: "",
   })
@@ -30,17 +32,28 @@ const BlogsCreate = () => {
   }, [])
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target
-    if (files) {
-      setForm((prev) => ({ ...prev, [name]: files[0] }))
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }))
-    }
+    const { name, value } = e.target
+
+    setForm((prev) => ({ ...prev, [name]: value }))
+
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log("Form data:", form);
+    console.log("Image:", blogImage);
+
     e.preventDefault()
-    console.log("Form Data", form)
+
+    const imageUrl = await uploadFile(blogImage, 0)
+    console.log("Image URL:", imageUrl);
+    setForm(prev => ({ ...prev, attach_image: imageUrl }));
+
+    console.log("Form data:", form);
+
+    const result = await insertDoc("Blog", {
+      ...form,
+
+    });
   }
 
   return (
@@ -63,7 +76,18 @@ const BlogsCreate = () => {
 
         <div className="mb-3">
           <label className="form-label">Attach Image</label>
-          <input type="file" name="attach_image" className="form-control" onChange={handleChange} />
+          <input type="file" name="attach_image" className="form-control" onChange={(e) => { setBlogImage(e.target.files[0]) }} />
+          <div className="mt-3 d-flex gap-2 flex-wrap">
+            {blogImage &&
+              <img
+
+                src={URL.createObjectURL(blogImage)}
+                alt="event"
+                className="rounded"
+                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+              />
+            }
+          </div>
         </div>
 
         <div className="mb-3">
