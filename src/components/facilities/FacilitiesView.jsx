@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { get_data } from '@/api/methods'
 
 // // Sample facility data
 // const facilityData = [
@@ -62,7 +63,23 @@ import React, { useState } from 'react'
 //   },
 // ]
 
-const FacilitiesView = ({ facilityData }) => {
+const FacilitiesView = () => {
+
+  const [facilityData, setFacilityData] = useState([])
+  useEffect(() => {
+
+    get_data("Facility", ["name", "title", "description", "attach_image", "state", "district", "brc", "lab_type", "address", "lab_name", "brc_name", "district_name"], "")
+      .then((res) => {
+        console.log("Blog data:", res);
+        setFacilityData(res);
+      }
+      ).catch((err) => {
+        console.log("Error fetching blog data:", err);
+      })
+
+  }, []);
+
+
   const [currentPage, setCurrentPage] = useState(1)
   const facilitiesPerPage = 6
 
