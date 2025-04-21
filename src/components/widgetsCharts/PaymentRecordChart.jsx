@@ -31,14 +31,14 @@ const PaymentRecordChart = () => {
                         height={377}
                     />
                 </div>
-                <div className="card-footer">
+                {/* <div className="card-footer">
                     <div className="row g-4">
                         <Card bg_color={"bg-primary"} price={"5,486"} progress={"81%"} title={"Awaiting"} />
                         <Card bg_color={"bg-success"} price={"9,275"} progress={"81%"} title={"Completed"} />
                         <Card bg_color={"bg-danger"} price={"3,868"} progress={"81%"} title={"Rejected"} />
                         <Card bg_color={"bg-dark"} price={"50,668"} progress={"81%"} title={"Revenue"} />
                     </div>
-                </div>
+                </div> */}
                 {/* <CardLoader refreshKey={refreshKey} /> */}
             </div>
         </div>

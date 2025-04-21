@@ -2,65 +2,6 @@
 
 import React, { useState } from 'react'
 
-// Sample project data
-// const projectData = [
-//   {
-//     id: 1,
-//     title: 'Flood Risk Prediction',
-//     start_date: '2025-01-05',
-//     end_date: '2025-03-20',
-//     lead: 'Akhil Raj',
-//   },
-//   {
-//     id: 2,
-//     title: 'AI Notes Summarizer',
-//     start_date: '2025-02-01',
-//     end_date: '2025-04-10',
-//     lead: 'Diya Nair',
-//   },
-//   {
-//     id: 3,
-//     title: 'Yoga Wellness App',
-//     start_date: '2025-01-15',
-//     end_date: '2025-04-01',
-//     lead: 'Jeevan K',
-//   },
-//   {
-//     id: 4,
-//     title: 'Image Caption Generator',
-//     start_date: '2025-03-01',
-//     end_date: '2025-05-10',
-//     lead: 'Meera V',
-//   },
-//   {
-//     id: 5,
-//     title: 'Remote Volunteer Portal',
-//     start_date: '2025-02-10',
-//     end_date: '2025-05-30',
-//     lead: 'Ravi S',
-//   },
-//   {
-//     id: 6,
-//     title: 'Frappe LMS Extension',
-//     start_date: '2025-01-25',
-//     end_date: '2025-03-15',
-//     lead: 'Anjali C',
-//   },
-//   {
-//     id: 7,
-//     title: 'Community Laundry Service',
-//     start_date: '2025-03-05',
-//     end_date: '2025-06-01',
-//     lead: 'Manu K',
-//   },
-//   {
-//     id: 8,
-//     title: 'Course & Event Management',
-//     start_date: '2025-03-15',
-//     end_date: '2025-06-20',
-//     lead: 'Sona A',
-//   },
-// ]
 
 const ViewProject = ({ projectData }) => {
   const [currentPage, setCurrentPage] = useState(1)

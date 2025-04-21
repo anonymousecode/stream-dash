@@ -29,13 +29,13 @@ const ProfileModal = ({ userDetails }) => {
                         </div>
                     </div>
             
-                    <a href="#" className="dropdown-item">
+                    <a href="/profile" className="dropdown-item">
                         <i ><FiUser /></i>
                         <span>My Profile</span>
                     </a>
                     <a href="#" className="dropdown-item">
                         <i ><FiClipboard /></i>
-                        <span>Projects</span>
+                        <span>PBL</span>
                     </a>
                     <a href="#" className="dropdown-item">
                         <i ><FiZap /></i>

@@ -29,7 +29,7 @@ const NavigationManu = () => {
                     <PerfectScrollbar>
                         <ul className="nxl-navbar">
                             <li className="nxl-item nxl-caption">
-                                <label>Navigation</label>
+                                {/* <label>Navigation</label> */}
                             </li>
                             <Menus />
                         </ul>
