@@ -22,11 +22,7 @@
     "emoji-picker-react": "^4.12.0",
     "feather-icons": "^4.29.2",
     "feather-icons-react": "^0.7.0",
-<<<<<<< HEAD
     "jodit-react": "^4.1.2",
-=======
-    "jodit-react": "^4.1.2",    
->>>>>>> 3ff12408174434166762fd65fc6463d50d4bfe39
     "lodash": "^4.17.21",
     "next": "^14.2.26",
     "perfect-scrollbar": "^1.5.5",
