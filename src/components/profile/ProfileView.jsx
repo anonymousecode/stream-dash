@@ -1,25 +1,36 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import useImageUpload from '@/hooks/useImageUpload'
+import { getUser } from '@/api/methods'
 
-const ProfileView = () => {
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+
+const ProfileView = (profileData) => {
   const { handleImageUpload, uploadedImage } = useImageUpload()
   const [showModal, setShowModal] = useState(false)
-  const [profileData, setProfileData] = useState({
-    name: 'Navya K R',
-    role: 'SPD',
-    email: 'navya@example.com',
-    phone: '9876543210',
-    address: '123, ABC Road',
-    city: 'Kannur',
-    brc: 'BRC North Zone',
-    district: 'Kannur',
-    state: 'Kerala',
+  const [userDetails, setUserDetails] = useState({})
+
+  const [profileData1, setProfileData] = useState({
     badges: ['Top Performer', 'Course Star'],
-    courses: ['Java Development', 'Spring Boot Essentials'],
-    projects: ['Autism Detection ML Model', 'Twitter API Integration']
+      courses: ['Java Development', 'Spring Boot Essentials'],
+      projects: ['Autism Detection ML Model', 'Twitter API Integration']
   })
+
+  useEffect(() => {
+  
+          getUser()
+              .then((data) => {
+                  console.log("User data:", data);
+                  setUserDetails(data);
+  
+  
+              });
+      }, [])
+
+  useEffect(() => {
+          console.log("Updated user details:", userDetails); // ✅ Logs after state is actually updated
+      }, [userDetails]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -28,6 +39,8 @@ const ProfileView = () => {
       [name]: value
     }))
   }
+
+
 
   const handleSave = () => {
     // Here, you'd usually send the updated profileData to the backend
@@ -50,7 +63,7 @@ const ProfileView = () => {
           <div className="row">
             <div className="col-md-3 d-flex flex-column align-items-center">
               <img
-                src={uploadedImage || '/images/logo-abbr.png'}
+                src={`${apiBaseUrl}${userDetails?.user_image}`}
                 className="img-fluid rounded-circle border"
                 style={{ width: '120px', height: '120px', objectFit: 'cover' }}
                 alt="Profile"
@@ -79,15 +92,18 @@ const ProfileView = () => {
 
             <div className="col-md-9">
               {Object.entries({
-                Name: profileData.name,
-                Role: profileData.role,
-                Email: profileData.email,
-                Phone: profileData.phone,
-                Address: profileData.address,
-                City: profileData.city,
-                BRC: profileData.brc,
-                District: profileData.district,
-                State: profileData.state
+                Id : userDetails.name,
+                Name: userDetails.fname,
+                DOB : userDetails.dob,
+                Gender: userDetails.gender,
+                Role: userDetails.status,
+                Email: userDetails.email,
+                Phone: userDetails.phone,
+                Address: userDetails.address,
+                // City: profileData.city,
+                // BRC: profileData.brc,
+                // District: profileData.district,
+                // State: profileData.state
               }).map(([label, value]) => (
                 <div className="mb-2 row" key={label}>
                   <label className="col-sm-3 col-form-label fw-bold">{label}</label>
@@ -108,7 +124,7 @@ const ProfileView = () => {
               <a href="#" className="text-decoration-none fw-semibold me-3">view all</a>
             </div>
             <div className="d-flex overflow-auto">
-              {profileData.badges.map((badge, index) => (
+              {profileData1.badges.map((badge, index) => (
                 <div className="card me-3 text-center" style={{ minWidth: '150px' }} key={index}>
                   <img src="https://via.placeholder.com/150x100.png?text=Badge" className="card-img-top" alt={badge} />
                   <div className="card-body p-2">
@@ -126,7 +142,7 @@ const ProfileView = () => {
               <a href="#" className="text-decoration-none fw-semibold me-3">view all</a>
             </div>
             <div className="d-flex overflow-auto">
-              {profileData.courses.map((course, index) => (
+              {profileData1.courses.map((course, index) => (
                 <div className="card me-3 text-center" style={{ minWidth: '150px' }} key={index}>
                   <img src="https://via.placeholder.com/150x100.png?text=Course" className="card-img-top" alt={course} />
                   <div className="card-body p-2">
@@ -144,7 +160,7 @@ const ProfileView = () => {
               <a href="#" className="text-decoration-none fw-semibold me-3">view all</a>
             </div>
             <div className="d-flex overflow-auto">
-              {profileData.projects.map((project, index) => (
+              {profileData1.projects.map((project, index) => (
                 <div className="card me-3 text-center" style={{ minWidth: '150px' }} key={index}>
                   <img src="https://via.placeholder.com/150x100.png?text=Project" className="card-img-top" alt={project} />
                   <div className="card-body p-2">
