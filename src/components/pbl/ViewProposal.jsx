@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { get_data } from '@/api/methods'
 
 const LeadsEmptyCard = ({ title, description }) => (
   <div className="text-center py-4 text-muted">
@@ -43,14 +44,30 @@ const dummyProposals = [
 ]
 
 const ViewProposal = () => {
+
+
   const [proposals, setProposals] = useState([])
   const [selectedProposal, setSelectedProposal] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const proposalsPerPage = 6
 
+
   useEffect(() => {
-    setProposals(dummyProposals)
-  }, [])
+
+    get_data("Project Proposal", ["name", "title", "description", "project_type", "brc_name", "status"], "")
+      .then((res) => {
+        console.log("proposal data:", res);
+        setProposals(res);
+      }
+      ).catch((err) => {
+        console.log("Error fetching blog data:", err);
+      })
+
+  }, []);
+
+  // useEffect(() => {
+  //   setProposals(dummyProposals)
+  // }, [])
 
   const totalPages = Math.ceil(proposals.length / proposalsPerPage)
   const startIndex = (currentPage - 1) * proposalsPerPage
@@ -84,8 +101,8 @@ const ViewProposal = () => {
               <th>#</th>
               <th>Title</th>
               <th>Type</th>
-              <th>Document</th>
-              <th>Members</th>
+              {/* <th>Document</th> */}
+              {/* <th>Members</th> */}
               <th>BRC</th>
               <th>Status</th>
               <th>Actions</th>
@@ -96,8 +113,8 @@ const ViewProposal = () => {
               <tr key={proposal.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedProposal(proposal)}>
                 <td>{startIndex + index + 1}</td>
                 <td className="text-start">{proposal.title}</td>
-                <td>{proposal.projectType}</td>
-                <td>
+                <td>{proposal.project_type}</td>
+                {/* <td>
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
@@ -107,9 +124,9 @@ const ViewProposal = () => {
                   >
                     View/Download
                   </button>
-                </td>
-                <td>{proposal.members.join(', ')}</td>
-                <td>{proposal.brc}</td>
+                </td> */}
+                {/* <td>{proposal.members.join(', ')}</td> */}
+                <td>{proposal.brc_name}</td>
                 <td>
                   <span className={`badge bg-${proposal.status === 'Approved' ? 'success' : proposal.status === 'Pending' ? 'warning' : 'danger'}`}>
                     {proposal.status}
@@ -158,58 +175,58 @@ const ViewProposal = () => {
 
       {/* Detailed View */}
       {/* Detailed View */}
-{selectedProposal && (
-  <div className="bg-white p-4 mt-5 rounded shadow-sm">
-    <div className="d-flex justify-content-between align-items-center mb-3">
-      <h5 className="text-black">{selectedProposal.title} — Detailed View</h5>
-      <button className="btn btn-sm btn-outline-secondary" onClick={() => setSelectedProposal(null)}>Close</button>
-    </div>
-    <p><strong className="text-warning">Description:</strong> {selectedProposal.description}</p>
-    <ul className="nav nav-tabs" id="proposalTab" role="tablist">
-      <li className="nav-item" role="presentation">
-        <button className="nav-link active text-warning" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activityTab" type="button" role="tab">
-          Activity
-        </button>
-      </li>
-      <li className="nav-item" role="presentation">
-        <button className="nav-link text-warning" id="timesheets-tab" data-bs-toggle="tab" data-bs-target="#timesheetsTab" type="button" role="tab">
-          Timesheets
-        </button>
-      </li>
-      <li className="nav-item" role="presentation">
-        <button className="nav-link text-warning" id="milestones-tab" data-bs-toggle="tab" data-bs-target="#milestonesTab" type="button" role="tab">
-          Milestones
-        </button>
-      </li>
-      <li className="nav-item" role="presentation">
-        <button className="nav-link text-warning" id="discussions-tab" data-bs-toggle="tab" data-bs-target="#discussionsTab" type="button" role="tab">
-          Discussions
-        </button>
-      </li>
-    </ul>
-    <div className="tab-content pt-4" id="proposalTabContent">
-      <div className="tab-pane fade show active" id="activityTab" role="tabpanel">
-        <ul>
-          <li>Proposal submitted on Jan 10, 2025</li>
-          <li>Reviewed by Dr. Suresh on Jan 15, 2025</li>
-        </ul>
-      </div>
-      <div className="tab-pane fade" id="timesheetsTab" role="tabpanel">
-        <p>Total Hours Logged: 0</p>
-        <LeadsEmptyCard title="No timesheets yet!" description="There are no timesheets logged for this project." />
-      </div>
-      <div className="tab-pane fade" id="milestonesTab" role="tabpanel">
-        <ul>
-          <li>Phase 1: Concept Approval (Pending)</li>
-          <li>Phase 2: Prototype Submission (Upcoming)</li>
-        </ul>
-      </div>
-      <div className="tab-pane fade" id="discussionsTab" role="tabpanel">
-        <LeadsEmptyCard title="No discussions yet!" description="No team discussions have been started." />
-      </div>
-    </div>
-  </div>
-)}
+      {selectedProposal && (
+        <div className="bg-white p-4 mt-5 rounded shadow-sm">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h5 className="text-black">{selectedProposal.title} — Detailed View</h5>
+            <button className="btn btn-sm btn-outline-secondary" onClick={() => setSelectedProposal(null)}>Close</button>
+          </div>
+          <p><strong className="text-warning">Description:</strong> {selectedProposal.description}</p>
+          <ul className="nav nav-tabs" id="proposalTab" role="tablist">
+            <li className="nav-item" role="presentation">
+              <button className="nav-link active text-warning" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activityTab" type="button" role="tab">
+                Activity
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button className="nav-link text-warning" id="timesheets-tab" data-bs-toggle="tab" data-bs-target="#timesheetsTab" type="button" role="tab">
+                Timesheets
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button className="nav-link text-warning" id="milestones-tab" data-bs-toggle="tab" data-bs-target="#milestonesTab" type="button" role="tab">
+                Milestones
+              </button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button className="nav-link text-warning" id="discussions-tab" data-bs-toggle="tab" data-bs-target="#discussionsTab" type="button" role="tab">
+                Discussions
+              </button>
+            </li>
+          </ul>
+          <div className="tab-content pt-4" id="proposalTabContent">
+            <div className="tab-pane fade show active" id="activityTab" role="tabpanel">
+              <ul>
+                <li>Proposal submitted on Jan 10, 2025</li>
+                <li>Reviewed by Dr. Suresh on Jan 15, 2025</li>
+              </ul>
+            </div>
+            <div className="tab-pane fade" id="timesheetsTab" role="tabpanel">
+              <p>Total Hours Logged: 0</p>
+              <LeadsEmptyCard title="No timesheets yet!" description="There are no timesheets logged for this project." />
+            </div>
+            <div className="tab-pane fade" id="milestonesTab" role="tabpanel">
+              <ul>
+                <li>Phase 1: Concept Approval (Pending)</li>
+                <li>Phase 2: Prototype Submission (Upcoming)</li>
+              </ul>
+            </div>
+            <div className="tab-pane fade" id="discussionsTab" role="tabpanel">
+              <LeadsEmptyCard title="No discussions yet!" description="No team discussions have been started." />
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )
