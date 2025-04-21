@@ -1,6 +1,6 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import InvoiceCreate from '@/components/payment/InvoiceCreate'
+// import InvoiceCreate from '@/components/payment/InvoiceCreate'
 
 const page = () => {
   return (
@@ -11,7 +11,7 @@ const page = () => {
       <div className='main-content'>
         <div className='row'>
           {/* <PaymentTable /> */}
-          <InvoiceCreate />
+          // <InvoiceCreate />
         </div>
       </div>
     </>
