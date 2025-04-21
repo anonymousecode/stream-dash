@@ -1,14 +1,19 @@
 'use client'
-import React from 'react'
 import dynamic from 'next/dynamic';
 import { paymentRecordChartOption } from '@/utils/chartsLogic/paymentRecordChartOption';
 import CardHeader from '@/components/shared/CardHeader';
 import CardLoader from '@/components/shared/CardLoader';
 import useCardTitleActions from '@/hooks/useCardTitleActions';
+
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const PaymentRecordChart = () => {
-    const chartOptions = paymentRecordChartOption()
+
+
+
+    const chartOptions = paymentRecordChartOption();
+
+
     const { refreshKey, isRemoved, isExpanded, handleRefresh, handleExpand, handleDelete } = useCardTitleActions();
 
 
@@ -34,7 +39,7 @@ const PaymentRecordChart = () => {
                         <Card bg_color={"bg-dark"} price={"50,668"} progress={"81%"} title={"Revenue"} />
                     </div>
                 </div>
-                <CardLoader refreshKey={refreshKey} />
+                {/* <CardLoader refreshKey={refreshKey} /> */}
             </div>
         </div>
     )
