@@ -36,7 +36,7 @@
     "react-dom": "^18",
     "react-icons": "^5.4.0",
     "react-perfect-scrollbar": "^1.5.8",
-    "react-select": "^5.9.0",
+    "react-select": "^5.10.1",
     "react-tooltip": "^5.28.0",
     "sass": "^1.83.1",
     "sweetalert2": "^11.6.13",
