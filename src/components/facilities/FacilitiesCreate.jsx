@@ -132,14 +132,18 @@ const FacilitiesCreate = () => {
 
     const imageUrl = await uploadFile(facilityImage, 0)
     console.log("Image URL:", imageUrl);
-    setForm(prev => ({ ...prev, attach_image: imageUrl }));
-
-    console.log("Form data:", form);
-
-    const result = await insertDoc("Facility", {
+    // setForm(prev => ({ ...prev, attach_image: imageUrl }));
+    const updatedForm = {
       ...form,
+      attach_image: imageUrl,
+    };
 
-    });
+    console.log("Form data:", updatedForm);
+
+    const result = await insertDoc("Facility",
+      updatedForm,
+
+    );
   }
 
   return (

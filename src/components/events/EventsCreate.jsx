@@ -45,16 +45,15 @@ const EventCreate = () => {
 
     const imageUrl = await uploadFile(eventImages, 0)
     console.log("Image URL:", imageUrl);
-    setForm(prev => ({ ...prev, event_image: imageUrl }));
-
-    console.log("Form data:", form);
-
-    const result = await insertDoc("Events", {
+    const updatedForm = {
       ...form,
+      event_image: imageUrl,
+    };
+
+    console.log("Form data:", updatedForm);
 
 
-
-    });
+    const result = await insertDoc("Events", updatedForm);
   }
 
   useEffect(() => {
