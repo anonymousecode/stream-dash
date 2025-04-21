@@ -1,18 +1,18 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import PaymentTable from '@/components/payment/PaymentTable'
-import PaymentHeader from '@/components/payment/PaymentHeader'
+// import PaymentTable from '@/components/payment/PaymentTable'
+// import PaymentHeader from '@/components/payment/PaymentHeader'
 import Footer from '@/components/shared/Footer'
 
 const page = () => {
     return (
         <>
             <PageHeader>
-                <PaymentHeader />
+                {/* <PaymentHeader /> */}
             </PageHeader>
             <div className='main-content'>
                 <div className='row'>
-                    <PaymentTable />
+                    {/* <PaymentTable /> */}
                 </div>
             </div>
             <Footer />
