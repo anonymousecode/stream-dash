@@ -1,186 +1,158 @@
-"use client";
-
+"use client"
 import React, { useState } from "react";
 
-const Page = () => {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [state, setState] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    if (formSubmitted) validatePasswords(e.target.value, confirmPassword);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    if (formSubmitted) validatePasswords(password, e.target.value);
-  };
-
-  const validatePasswords = (pass, confirmPass) => {
-    if (!pass || !confirmPass) {
-      setError("Both password fields are required.");
-    } else if (pass !== confirmPass) {
-      setError("Passwords do not match.");
-    } else {
-      setError("");
-    }
-  };
+const Registration = () => {
+  const [warningMessage, setWarningMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    validatePasswords(password, confirmPassword);
+    const inputs = e.target.querySelectorAll("input, select");
+    let isValid = true;
 
-    if (!error && password && confirmPassword && password === confirmPassword) {
-      // Perform submit logic here
-      alert("Form submitted successfully!");
+    inputs.forEach((input) => {
+      if (input.hasAttribute("required") && !input.value.trim()) {
+        isValid = false;
+      }
+    });
+
+    if (!isValid) {
+      setWarningMessage("Please fill out all required fields correctly.");
+    } else {
+      setWarningMessage("");
+      alert("Registration successful!");
+      // Add submission logic
     }
   };
 
-  const keralaDistricts = [
-    "Thiruvananthapuram", "Kollam", "Pathanamthitta", "Alappuzha",
-    "Kottayam", "Idukki", "Ernakulam", "Thrissur",
-    "Palakkad", "Malappuram", "Kozhikode", "Wayanad",
-    "Kannur", "Kasaragod"
-  ];
+  const inputClass = "form-control border-0 shadow-sm rounded-2 bg-white";
 
   return (
-    <main className="d-flex justify-content-center align-items-center min-vh-100 bg-light p-3">
-      <div className="w-100" style={{ maxWidth: "900px" }}>
-        <div className="text-center mb-4">
-          <img
-            src="/images/stream_logo.svg"
-            alt="Logo"
-            className="img-fluid"
-            style={{ maxWidth: "200px" }}
-          />
-        </div>
+    <div className="container-fluid" style={{ height: "100vh" }}>
+      <div className="row" style={{ height: "100%" }}>
+        <div className="col-10 p-5" style={{ backgroundColor: "#f6f7fc" }}>
+        <div className="mb-4">
+            <img
+              src="/images/stream_logo.svg"
+              alt="Logo"
+              className="mb-4"
+              style={{ height: "50px" }}
+            />
+          </div>
 
-        <form className="card p-2 shadow" onSubmit={handleSubmit}>
-          <h3 className="m-3 text-center">Register</h3>
+          {/* <h2 className="mb-4">Registration Form</h2> */}
 
-          {/* Personal Details */}
-          <fieldset className="mb-4 border p-3 rounded">
-            <legend className="w-auto px-2">Personal Details</legend>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label">Full Name<span className="text-danger">*</span></label>
-                <input type="text" className="form-control" required />
+          {warningMessage && (
+            <div className="alert alert-warning" role="alert">
+              {warningMessage}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <h5>Personal Details</h5>
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label>Full Name*</label>
+                <input type="text" className={inputClass} placeholder="Enter full name" required />
               </div>
-              <div className="col-md-6">
-                <label className="form-label">Date of Birth<span className="text-danger">*</span></label>
-                <input type="date" className="form-control" required />
+              <div className="col-md-3 mb-3">
+                <label>Date of Birth*</label>
+                <input type="text" className={inputClass} placeholder="dd-mm-yyyy" required />
               </div>
-              <div className="col-md-6">
-                <label className="form-label">Gender<span className="text-danger">*</span></label>
-                <select className="form-control" required>
+              <div className="col-md-3 mb-3">
+                <label>Gender*</label>
+                <select className={inputClass} required>
                   <option value="">Select</option>
                   <option>Male</option>
                   <option>Female</option>
                   <option>Other</option>
                 </select>
               </div>
-              <div className="col-md-6">
-                <label className="form-label">Phone</label>
-                <input type="tel" className="form-control" />
+              <div className="col-md-6 mb-3">
+                <label>Phone</label>
+                <input type="text" className={inputClass} placeholder="Phone number" />
               </div>
-              <div className="col-12">
-                <label className="form-label">Address<span className="text-danger">*</span></label>
-                <textarea className="form-control" required></textarea>
+              <div className="col-md-6 mb-3">
+                <label>Address*</label>
+                <input type="text" className={inputClass} placeholder="Enter address" required />
               </div>
-              <div className="col-12">
-                <label className="form-label">Email<span className="text-danger">*</span></label>
-                <input type="email" className="form-control" required />
+              <div className="col-md-6 mb-3">
+                <label>Email*</label>
+                <input type="email" className={inputClass} placeholder="Enter email" required />
               </div>
             </div>
-          </fieldset>
 
-          {/* Educational Details */}
-          <fieldset className="mb-4 border p-3 rounded">
-            <legend className="w-auto px-2">Educational Details</legend>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label">Class</label>
-                <select className="form-control">
-                  <option value="">Select Class</option>
-                  {[...Array(12)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>{i + 1}</option>
-                  ))}
+            <h5 className="mt-4">Educational Details</h5>
+            <div className="row">
+              
+              <div className="col-md-2 mb-3">
+                <label>State</label>
+                <select className={inputClass} required>
+                  <option value="">Select State</option>
+                  <option>state 1</option>
+                  <option>State 2</option>
                 </select>
               </div>
-              <div className="col-md-6">
-                <label className="form-label">School</label>
-                <input type="text" className="form-control" />
+              <div className="col-md-2 mb-3">
+                <label>District</label>
+                <select className={inputClass} required>
+                  <option value="">Select District</option>
+                  <option>DIST 1</option>
+                  <option>DIST 2</option>
+                  <option>DIST 3</option>
+                </select>
               </div>
-              <div className="col-md-6">
-                <label className="form-label">State</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                />
+              <div className="col-md-2 mb-3">
+                <label>BRC</label>
+                <select className={inputClass} required>
+                  <option value="">Select BRC</option>
+                  <option>BRC 1</option>
+                  <option>BRC 2</option>
+                  <option>BRC 3</option>
+                </select>
               </div>
-              <div className="col-md-6">
-                <label className="form-label">District</label>
-                {state.trim().toLowerCase() === "kerala" ? (
-                  <select className="form-control">
-                    <option value="">Select District</option>
-                    {keralaDistricts.map((district, index) => (
-                      <option key={index} value={district}>{district}</option>
-                    ))}
-                  </select>
-                ) : (
-                  <input type="text" className="form-control" />
-                )}
+              
+              <div className="col-md-3 mb-3">
+                <label>School</label>
+                <select className={inputClass} required>
+                  <option value="">Select School</option>
+                  <option>school 1</option>
+                  <option>school 2</option>
+                  <option>school 3</option>
+                </select>
               </div>
-              <div className="col-md-6">
-                <label className="form-label">BRC</label>
-                <input type="text" className="form-control" />
-              </div>
-            </div>
-          </fieldset>
-
-          {/* Login Details */}
-          <fieldset className="mb-4 border p-3 rounded">
-            <legend className="w-auto px-2">Login Details</legend>
-            <div className="row g-3">
-              <div className="col-md-6">
-                <label className="form-label">
-                  Password<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-              </div>
-              <div className="col-md-6">
-                <label className="form-label">
-                  Confirm Password<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                />
-                {error && <p className="text-danger mt-1">{error}</p>}
+              <div className="col-md-3 mb-3">
+                <label>Class</label>
+                <select className={inputClass} required>
+                  <option value="">Select Class</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+                </select>
               </div>
             </div>
-          </fieldset>
 
-          <div className="m-3">
-            <button className="btn btn-primary w-50 d-block mx-auto" disabled={error !== ""}>Create Account</button>
-          </div>
-        </form>
+            <h5 className="mt-4">Login Details</h5>
+            <div className="row">
+              <div className="col-md-6 mb-3">
+                <label>Password*</label>
+                <input type="password" className={inputClass} placeholder="Enter password" required />
+              </div>
+              <div className="col-md-6 mb-3">
+                <label>Confirm Password*</label>
+                <input type="password" className={inputClass} placeholder="Re-type password" required />
+              </div>
+            </div>
+
+            <button type="submit" className="btn btn-warning px-4 mt-3">
+              Register
+            </button>
+          </form>
+        </div>
+
+        <div className="col-2" style={{ backgroundColor: "#f1c40f" }}></div>
       </div>
-    </main>
+    </div>
   );
 };
 
-export default Page;
+export default Registration;
