@@ -39,8 +39,8 @@ const LoginForm = ({ registerPath, resetPath }) => {
             <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p> */}
             <form action="index.html" className="w-100 mt-3 pt-2" onSubmit={handleLogin}>
                 <div className="mb-3">
-                    <label htmlFor=""  className='pb-1'>Email</label>
-                    <input type="email" className="form-control" placeholder="Email or Username" defaultValue="" required onChange={(e) => setEmail(e.target.value)} />
+                    <label htmlFor="" className='pb-1'>Email</label>
+                    <input type="text   " className="form-control" placeholder="Email or Username" defaultValue="" required onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="mb-3">
                     <label htmlFor="" className='pb-1'>Password</label>
@@ -79,7 +79,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                 </div>
             </div>
 
-            
+
         </>
     )
 }

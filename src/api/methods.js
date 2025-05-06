@@ -50,7 +50,7 @@ export async function getUser() {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "Authorization": `token ${apiKey}:${apiSecret}`,
+                    "Authorization": `token ${apiKey}:${apiSecret}`,    
                 },
             }
         );
