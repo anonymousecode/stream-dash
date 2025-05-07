@@ -1,28 +1,60 @@
 "use client"
 import React, { useState } from "react";
+import { insertDoc } from "@/api/methods";
 
 const Registration = () => {
+
+  const [form, setForm] = useState({
+    fname: "",
+    dob: "",
+    email: "",
+    phone: "",
+    address: "",
+    gender: "",
+    password: "",
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+
+    setForm((prev) => ({ ...prev, [name]: value }))
+
+  }
+
+  const handleSubmit = async (e) => {
+    console.log("Form data:", form);
+
+    e.preventDefault()
+
+
+    const result = await insertDoc("STREAM User",
+      form,
+
+    );
+  }
+
+
   const [warningMessage, setWarningMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const inputs = e.target.querySelectorAll("input, select");
-    let isValid = true;
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const inputs = e.target.querySelectorAll("input, select");
+  //   let isValid = true;
 
-    inputs.forEach((input) => {
-      if (input.hasAttribute("required") && !input.value.trim()) {
-        isValid = false;
-      }
-    });
+  //   inputs.forEach((input) => {
+  //     if (input.hasAttribute("required") && !input.value.trim()) {
+  //       isValid = false;
+  //     }
+  //   });
 
-    if (!isValid) {
-      setWarningMessage("Please fill out all required fields correctly.");
-    } else {
-      setWarningMessage("");
-      alert("Registration successful!");
-      // Add submission logic
-    }
-  };
+  //   if (!isValid) {
+  //     setWarningMessage("Please fill out all required fields correctly.");
+  //   } else {
+  //     setWarningMessage("");
+  //     alert("Registration successful!");
+  //     // Add submission logic
+  //   }
+  // };
 
   const inputClass = "form-control border-0 shadow-sm rounded-2 bg-white";
 
@@ -30,7 +62,7 @@ const Registration = () => {
     <div className="container-fluid" style={{ height: "100vh" }}>
       <div className="row" style={{ height: "100%" }}>
         <div className="col-10 p-5" style={{ backgroundColor: "#f6f7fc" }}>
-        <div className="mb-4">
+          <div className="mb-4">
             <img
               src="/images/stream_logo.svg"
               alt="Logo"
@@ -52,38 +84,40 @@ const Registration = () => {
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label>Full Name*</label>
-                <input type="text" className={inputClass} placeholder="Enter full name" required />
+                <input type="text" className={inputClass} name="fname" placeholder="Enter full name" required onChange={handleChange} />
               </div>
               <div className="col-md-3 mb-3">
                 <label>Date of Birth*</label>
-                <input type="text" className={inputClass} placeholder="dd-mm-yyyy" required />
+                <input type="date" className={inputClass} placeholder="dd-mm-yyyy" required name="dob" onChange={handleChange} />
               </div>
               <div className="col-md-3 mb-3">
                 <label>Gender*</label>
-                <select className={inputClass} required>
+                <select className={inputClass} required name="gender" onChange={handleChange}>
                   <option value="">Select</option>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Other</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
               <div className="col-md-6 mb-3">
                 <label>Phone</label>
-                <input type="text" className={inputClass} placeholder="Phone number" />
+                <input type="text" className={inputClass} placeholder="Phone number" name="phone" onChange={(e) => {
+                  setForm((prev) => ({ ...prev, phone: "+91" + e.target.value }))
+                }} />
               </div>
               <div className="col-md-6 mb-3">
                 <label>Address*</label>
-                <input type="text" className={inputClass} placeholder="Enter address" required />
+                <input type="text" className={inputClass} placeholder="Enter address" required name="address" onChange={handleChange} />
               </div>
               <div className="col-md-6 mb-3">
                 <label>Email*</label>
-                <input type="email" className={inputClass} placeholder="Enter email" required />
+                <input type="email" className={inputClass} placeholder="Enter email" required name="email" onChange={handleChange} />
               </div>
             </div>
 
             <h5 className="mt-4">Work Details</h5>
             <div className="row">
-            <div className="col-md-3 mb-3">
+              <div className="col-md-3 mb-3">
                 <label>Designation</label>
                 <select className={inputClass} required>
                   <option value="">Select Designation</option>
@@ -125,14 +159,14 @@ const Registration = () => {
                   <option>BRC 3</option>
                 </select>
               </div>
-              
+
             </div>
 
             <h5 className="mt-4">Login Details</h5>
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label>Password*</label>
-                <input type="password" className={inputClass} placeholder="Enter password" required />
+                <input type="password" className={inputClass} placeholder="Enter password" required name="password" onChange={handleChange} />
               </div>
               <div className="col-md-6 mb-3">
                 <label>Confirm Password*</label>
