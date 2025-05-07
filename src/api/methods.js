@@ -5,6 +5,7 @@ const apiSecret = process.env.NEXT_PUBLIC_FRAPPE_API_SECRET;
 export async function login(usr, pwd) {
     return fetch(apiBaseUrl + "/api/method/login", {
         method: "POST",
+        credentials: "include", //new addition
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
