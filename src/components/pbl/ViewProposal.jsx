@@ -3,92 +3,46 @@
 import React, { useState, useEffect } from 'react'
 import { get_data } from '@/api/methods'
 
-const LeadsEmptyCard = ({ title, description }) => (
-  <div className="text-center py-4 text-muted">
-    <h5>{title}</h5>
-    <p>{description}</p>
-  </div>
-)
-
-const dummyProposals = [
-  {
-    id: 1,
-    title: 'Smart Irrigation System',
-    description: 'IoT-based system to optimize agricultural water usage.',
-    projectType: 'Engineering',
-    documentUrl: 'https://example.com/docs/irrigation.pdf',
-    members: ['Alice', 'Bob'],
-    brc: 'Aluva BRC',
-    status: 'Pending',
-  },
-  {
-    id: 2,
-    title: 'Waste Management Awareness',
-    description: 'Campaign for better waste segregation practices.',
-    projectType: 'Non-Engineering',
-    documentUrl: 'https://example.com/docs/waste.pdf',
-    members: ['Charlie', 'David'],
-    brc: 'Palakkad BRC',
-    status: 'Approved',
-  },
-  {
-    id: 3,
-    title: 'Language Learning App',
-    description: 'Mobile app for teaching Malayalam to children.',
-    projectType: 'Others',
-    documentUrl: 'https://example.com/docs/language.pdf',
-    members: ['Eva', 'Frank'],
-    brc: 'Thrissur BRC',
-    status: 'Rework',
-  },
-]
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 const ViewProposal = () => {
-
 
   const [proposals, setProposals] = useState([])
   const [selectedProposal, setSelectedProposal] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const proposalsPerPage = 6
-
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-
-    get_data("Project Proposal", ["name", "title", "description", "project_type", "brc_name", "status"], "")
+    get_data("Project Proposal", ["name", "title", "description", "idea_sheet", "project_type", "brc_name", "status"], "")
       .then((res) => {
         console.log("proposal data:", res);
         setProposals(res);
-      }
-      ).catch((err) => {
-        console.log("Error fetching blog data:", err);
       })
-
+      .catch((err) => {
+        console.log("Error fetching proposal data:", err);
+      })
   }, []);
-
-  // useEffect(() => {
-  //   setProposals(dummyProposals)
-  // }, [])
 
   const totalPages = Math.ceil(proposals.length / proposalsPerPage)
   const startIndex = (currentPage - 1) * proposalsPerPage
   const currentProposals = proposals.slice(startIndex, startIndex + proposalsPerPage)
 
-  const handleDownload = (url) => {
-    const link = document.createElement('a')
-    link.href = url
-    link.download = ''
-    link.target = '_blank'
-    link.click()
+  const handleView = (proposal) => {
+    setSelectedProposal(proposal);
+    setShowModal(true);
   }
 
-  const handleEdit = (id) => {
-    console.log('Edit clicked for proposal ID:', id)
-    // Add edit logic here
+  const handleApprove = (id) => {
+    console.log('Proposal Approved:', id);
+    // Add approve logic here
+    setShowModal(false);
   }
 
-  const handleDelete = (id) => {
-    console.log('Delete clicked for proposal ID:', id)
-    // Add delete logic here
+  const handleResubmit = (id) => {
+    console.log('Proposal Resubmitted:', id);
+    // Add resubmit logic here
+    setShowModal(false);
   }
 
   return (
@@ -101,8 +55,6 @@ const ViewProposal = () => {
               <th>#</th>
               <th>Title</th>
               <th>Type</th>
-              {/* <th>Document</th> */}
-              {/* <th>Members</th> */}
               <th>BRC</th>
               <th>Status</th>
               <th>Actions</th>
@@ -110,22 +62,10 @@ const ViewProposal = () => {
           </thead>
           <tbody>
             {currentProposals.map((proposal, index) => (
-              <tr key={proposal.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedProposal(proposal)}>
+              <tr key={proposal.id} style={{ cursor: 'pointer' }}>
                 <td>{startIndex + index + 1}</td>
                 <td className="text-start">{proposal.title}</td>
                 <td>{proposal.project_type}</td>
-                {/* <td>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDownload(proposal.documentUrl)
-                    }}
-                    className="btn btn-sm btn-outline-primary"
-                  >
-                    View/Download
-                  </button>
-                </td> */}
-                {/* <td>{proposal.members.join(', ')}</td> */}
                 <td>{proposal.brc_name}</td>
                 <td>
                   <span className={`badge bg-${proposal.status === 'Approved' ? 'success' : proposal.status === 'Pending' ? 'warning' : 'danger'}`}>
@@ -135,22 +75,13 @@ const ViewProposal = () => {
                 <td>
                   <div className="d-flex justify-content-center">
                     <button
-                      className="btn btn-sm btn-outline-primary me-2"
+                      className="btn btn-sm btn-outline-info me-2"
                       onClick={(e) => {
-                        e.stopPropagation()
-                        handleEdit(proposal.id)
+                        e.stopPropagation();
+                        handleView(proposal);
                       }}
                     >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDelete(proposal.id)
-                      }}
-                    >
-                      Delete
+                      View
                     </button>
                   </div>
                 </td>
@@ -173,61 +104,46 @@ const ViewProposal = () => {
         </nav>
       </div>
 
-      {/* Detailed View */}
-      {/* Detailed View */}
-      {selectedProposal && (
-        <div className="bg-white p-4 mt-5 rounded shadow-sm">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5 className="text-black">{selectedProposal.title} — Detailed View</h5>
-            <button className="btn btn-sm btn-outline-secondary" onClick={() => setSelectedProposal(null)}>Close</button>
-          </div>
-          <p><strong className="text-warning">Description:</strong> {selectedProposal.description}</p>
-          <ul className="nav nav-tabs" id="proposalTab" role="tablist">
-            <li className="nav-item" role="presentation">
-              <button className="nav-link active text-warning" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activityTab" type="button" role="tab">
-                Activity
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button className="nav-link text-warning" id="timesheets-tab" data-bs-toggle="tab" data-bs-target="#timesheetsTab" type="button" role="tab">
-                Timesheets
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button className="nav-link text-warning" id="milestones-tab" data-bs-toggle="tab" data-bs-target="#milestonesTab" type="button" role="tab">
-                Milestones
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button className="nav-link text-warning" id="discussions-tab" data-bs-toggle="tab" data-bs-target="#discussionsTab" type="button" role="tab">
-                Discussions
-              </button>
-            </li>
-          </ul>
-          <div className="tab-content pt-4" id="proposalTabContent">
-            <div className="tab-pane fade show active" id="activityTab" role="tabpanel">
-              <ul>
-                <li>Proposal submitted on Jan 10, 2025</li>
-                <li>Reviewed by Dr. Suresh on Jan 15, 2025</li>
-              </ul>
-            </div>
-            <div className="tab-pane fade" id="timesheetsTab" role="tabpanel">
-              <p>Total Hours Logged: 0</p>
-              <LeadsEmptyCard title="No timesheets yet!" description="There are no timesheets logged for this project." />
-            </div>
-            <div className="tab-pane fade" id="milestonesTab" role="tabpanel">
-              <ul>
-                <li>Phase 1: Concept Approval (Pending)</li>
-                <li>Phase 2: Prototype Submission (Upcoming)</li>
-              </ul>
-            </div>
-            <div className="tab-pane fade" id="discussionsTab" role="tabpanel">
-              <LeadsEmptyCard title="No discussions yet!" description="No team discussions have been started." />
+      {/* View Proposal Modal */}
+      {showModal && selectedProposal && (
+        <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">{selectedProposal.title}</h5>
+                <button type="button" className="btn-close" onClick={() => setShowModal(false)} aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <p><strong>Title:</strong> {selectedProposal.title}</p>
+                <p><strong>Description:</strong> <span className="proposal-description" dangerouslySetInnerHTML={{ __html: selectedProposal.description.replace(/<br\s*\/?>/g, ' ') }} /></p>
+                <p><strong>Type:</strong> {selectedProposal.project_type}</p>
+                <p><strong>BRC:</strong> {selectedProposal.brc_name}</p>
+                <p><strong>Status:</strong> <span className={`badge bg-${selectedProposal.status === 'Approved' ? 'success' : selectedProposal.status === 'Pending' ? 'warning' : 'danger'}`}>{selectedProposal.status}</span></p>
+
+                {/* Idea Sheet Display */}
+                {selectedProposal.idea_sheet && (
+                  <div className="mt-3">
+                    <strong>Idea Sheet:</strong>
+                    {/* Check the type of the attachment and display accordingly */}
+                    {selectedProposal.idea_sheet.endsWith('.pdf') ? (
+                      <a href={`${apiBaseUrl}${selectedProposal.idea_sheet}`} target="_blank" rel="noopener noreferrer">
+                        <button className="btn btn-primary btn-sm">View PDF</button>
+                      </a>
+                    ) : (
+                      <p>File type not supported for preview.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-success" onClick={() => handleApprove(selectedProposal.id)}>Approve</button>
+                <button type="button" className="btn btn-warning" onClick={() => handleResubmit(selectedProposal.id)}>Rework</button>
+                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
+              </div>
             </div>
           </div>
         </div>
       )}
-
     </div>
   )
 }
