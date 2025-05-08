@@ -137,13 +137,13 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Manage proposal",
+                name: "My proposals",
                 path: "/pbl/manage",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: "View proposal",
+                name: "View proposals",
                 path: "/pbl/view",
                 subdropdownMenu: false
             },

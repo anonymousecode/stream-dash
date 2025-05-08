@@ -1,55 +1,41 @@
-'use client'
+"use client"
 
 import React, { useState, useEffect } from 'react'
 import { get_data, update } from '@/api/methods'
-
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+import ProposalDetails from './ProposalDetails'
 
 const ViewProposal = () => {
-
   const [proposals, setProposals] = useState([])
   const [selectedProposal, setSelectedProposal] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const proposalsPerPage = 6
-  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     get_data("Project Proposal", ["name", "title", "description", "idea_sheet", "project_type", "brc_name", "status"], "")
-      .then((res) => {
-        console.log("proposal data:", res);
-        setProposals(res);
-      })
-      .catch((err) => {
-        console.log("Error fetching proposal data:", err);
-      })
-  }, []);
+      .then((res) => setProposals(res))
+      .catch((err) => console.error("Error fetching proposal data:", err))
+  }, [])
 
   const totalPages = Math.ceil(proposals.length / proposalsPerPage)
   const startIndex = (currentPage - 1) * proposalsPerPage
   const currentProposals = proposals.slice(startIndex, startIndex + proposalsPerPage)
-  const [remark, setRemark] = useState("you have to modify the idea sheet")
-  const handleView = (proposal) => {
-    setSelectedProposal(proposal);
-    setShowModal(true);
+
+  const handleApprove = (id, coordinator, remark) => {
+    update("Project Proposal", id, { status: "Approved", project_coordinator: coordinator, remark })
   }
 
-  const handleApprove = (id) => {
-    console.log('Proposal Approved:', id);
-    update("Project Proposal", id, { status: "Approved" })
-
-    // Add approve logic here
-    setShowModal(false);
+  const handleRework = (id, remark) => {
+    update("Project Proposal", id, { status: "Rework", remark })
   }
 
-  const handleResubmit = (id) => {
-    console.log('Proposal Resubmitted:', id);
-    // Add resubmit logic here
-    update("Project Proposal", id, { status: "Rework", remark: remark })
-
-    setShowModal(false);
-  }
-
-  return (
+  return selectedProposal ? (
+    <ProposalDetails
+      proposal={selectedProposal}
+      onBack={() => setSelectedProposal(null)}
+      onApprove={handleApprove}
+      onRework={handleRework}
+    />
+  ) : (
     <div className="container py-4">
       <div className="table-responsive bg-white p-3 rounded shadow-sm">
         <h4 className="mb-3">Project Proposals</h4>
@@ -66,7 +52,7 @@ const ViewProposal = () => {
           </thead>
           <tbody>
             {currentProposals.map((proposal, index) => (
-              <tr key={proposal.id} style={{ cursor: 'pointer' }}>
+              <tr key={proposal.name}>
                 <td>{startIndex + index + 1}</td>
                 <td className="text-start">{proposal.title}</td>
                 <td>{proposal.project_type}</td>
@@ -77,17 +63,12 @@ const ViewProposal = () => {
                   </span>
                 </td>
                 <td>
-                  <div className="d-flex justify-content-center">
-                    <button
-                      className="btn btn-sm btn-outline-info me-2"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleView(proposal);
-                      }}
-                    >
-                      View
-                    </button>
-                  </div>
+                  <button
+                    className="btn btn-sm btn-outline-info"
+                    onClick={() => setSelectedProposal(proposal)}
+                  >
+                    View
+                  </button>
                 </td>
               </tr>
             ))}
@@ -107,47 +88,6 @@ const ViewProposal = () => {
           </ul>
         </nav>
       </div>
-
-      {/* View Proposal Modal */}
-      {showModal && selectedProposal && (
-        <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">{selectedProposal.title}</h5>
-                <button type="button" className="btn-close" onClick={() => setShowModal(false)} aria-label="Close"></button>
-              </div>
-              <div className="modal-body">
-                <p><strong>Title:</strong> {selectedProposal.title}</p>
-                <p><strong>Description:</strong> <span className="proposal-description" dangerouslySetInnerHTML={{ __html: selectedProposal.description.replace(/<br\s*\/?>/g, ' ') }} /></p>
-                <p><strong>Type:</strong> {selectedProposal.project_type}</p>
-                <p><strong>BRC:</strong> {selectedProposal.brc_name}</p>
-                <p><strong>Status:</strong> <span className={`badge bg-${selectedProposal.status === 'Approved' ? 'success' : selectedProposal.status === 'Pending' ? 'warning' : 'danger'}`}>{selectedProposal.status}</span></p>
-
-                {/* Idea Sheet Display */}
-                {selectedProposal.idea_sheet && (
-                  <div className="mt-3">
-                    <strong>Idea Sheet:</strong>
-                    {/* Check the type of the attachment and display accordingly */}
-                    {selectedProposal.idea_sheet.endsWith('.pdf') ? (
-                      <a href={`${apiBaseUrl}${selectedProposal.idea_sheet}`} target="_blank" rel="noopener noreferrer">
-                        <button className="btn btn-primary btn-sm">View PDF</button>
-                      </a>
-                    ) : (
-                      <p>File type not supported for preview.</p>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-success" onClick={() => handleApprove(selectedProposal.name)}>Approve</button>
-                <button type="button" className="btn btn-warning" onClick={() => handleResubmit(selectedProposal.name)}>Rework</button>
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
