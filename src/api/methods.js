@@ -51,7 +51,7 @@ export async function getUser() {
                 headers: {
                     "Accept": "application/json",
                     "Content-Type": "application/json",
-                    "Authorization": `token ${apiKey}:${apiSecret}`,    
+                    "Authorization": `token ${apiKey}:${apiSecret}`,
                 },
             }
         );
@@ -198,5 +198,31 @@ export async function uploadFile(file, isPrivate = false) {
     } catch (err) {
         return { error: err.message || err };
     }
+}
+
+
+export async function update(DocType, Document, Data) {
+    return fetch(apiBaseUrl + "/api/resource/" + DocType + "/" + Document, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `token ${apiKey}:${apiSecret}`,
+        },
+        body: JSON.stringify({
+            ...Data,
+        }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
+        })
+        .catch((error) => {
+            console.log("Error:", error);
+            return error;
+        });
 }
 
