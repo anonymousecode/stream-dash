@@ -1,14 +1,27 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { get_data } from '@/api/methods'
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 const ProposalDetails = ({ proposal, onBack, onApprove, onRework }) => {
+
+
+
   const [showApproveModal, setShowApproveModal] = useState(false)
   const [showReworkModal, setShowReworkModal] = useState(false)
   const [remarks, setRemarks] = useState('')
   const [coordinator, setCoordinator] = useState('')
+
+  const [coordinatorList, setCoordinatorList] = useState([])
+
+
+  useEffect(() => {
+    get_data("Coordinator", ["name1", "name"], "")
+      .then((res) => setCoordinatorList(res))
+      .catch((err) => console.error("Error fetching proposal data:", err))
+  }, [])
 
   const handleApproveConfirm = () => {
     onApprove(proposal.name, coordinator, remarks)
@@ -36,8 +49,8 @@ const ProposalDetails = ({ proposal, onBack, onApprove, onRework }) => {
         {proposal.idea_sheet?.endsWith('.pdf') && (
           <div className="mt-3">
             <strong>Idea Sheet:</strong>
-            <a href={`${apiBaseUrl}${proposal.idea_sheet}`}  target="_blank" rel="noopener noreferrer" className="text-primary text-decoration-underline ms-2">
-                View PDF
+            <a href={`${apiBaseUrl}${proposal.idea_sheet}`} target="_blank" rel="noopener noreferrer" className="text-primary text-decoration-underline ms-2">
+              View PDF
             </a>
 
           </div>
@@ -58,12 +71,27 @@ const ProposalDetails = ({ proposal, onBack, onApprove, onRework }) => {
               <div className="modal-header">
                 <h5 className="modal-title">Approve Proposal</h5>
                 <button className="btn-close" onClick={() => setShowApproveModal(false)}></button>
+                {/* <button className="btn-close" onClick={handleApproveConfirm}></button> */}
               </div>
               <div className="modal-body">
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label className="form-label">Project Coordinator</label>
                   <input type="text" className="form-control" value={coordinator} onChange={(e) => setCoordinator(e.target.value)} />
+                </div> */}
+                <div className="mb-3">
+                  <label className="form-label">Project Coordinator</label>
+
+                  <select className="form-select" value={coordinator} onChange={(e) => setCoordinator(e.target.value)}>
+                    <option value="">Select Coordinator</option>
+                    {coordinatorList.map((coordinator) => (
+                      <option key={coordinator.name} value={coordinator.name}>
+                        {coordinator.name1}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+
+
                 <div className="mb-3">
                   <label className="form-label">Remarks</label>
                   <textarea className="form-control" value={remarks} onChange={(e) => setRemarks(e.target.value)} />
