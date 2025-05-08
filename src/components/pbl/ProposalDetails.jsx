@@ -37,7 +37,7 @@ const ProposalDetails = ({ proposal, onBack, onApprove, onRework }) => {
   }
 
   return (
-    <div className="container py-4">
+    <div className="container p-2">
 
       <div className="card p-4 shadow-sm">
         <h4>{proposal.title}</h4>
