@@ -204,6 +204,38 @@ export const menuList = [
                 path: "/actions/school",
                 subdropdownMenu: false
             },
+            {
+                id: 9,
+                name: "Manage Teacher",
+                path: "/actions/teacher",
+                subdropdownMenu: false
+            },
+
+            {
+                id: 9,
+                name: "Manage STC",
+                path: "/actions/stc",
+                subdropdownMenu: false
+            },
+            
+             {
+                id: 10,
+                name: "Manage Mentor",
+                path: "/actions/mentor",
+                subdropdownMenu: false
+            },
+            {
+                id: 11,
+                name: "Manage Project Coordinator",
+                path: "/actions/coordinator",
+                subdropdownMenu: false
+            },
+            {
+                id: 12,
+                name: "Manage Student",
+                path: "/actions/student",
+                subdropdownMenu: false
+            },
         ]
     },
     {
