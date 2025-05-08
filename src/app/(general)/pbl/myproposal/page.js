@@ -1,6 +1,6 @@
 import React from 'react'
 import PageHeader from '@/components/shared/pageHeader/PageHeader'
-import ManageProposal from '@/components/pbl/ManageProposal'
+import ManageProposal from '@/components/pbl/MyProposal'
 
 
 

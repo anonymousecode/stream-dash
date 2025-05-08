@@ -8,17 +8,22 @@ const ViewProposal = () => {
   const [proposals, setProposals] = useState([])
   const [selectedProposal, setSelectedProposal] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
+  const [filterStatus, setFilterStatus] = useState('All') // <- NEW
   const proposalsPerPage = 6
 
   useEffect(() => {
-    get_data("Project Proposal", ["name", "title", "description", "idea_sheet", "project_type", "brc_name", "status"], "")
+    get_data("Project Proposal", ["name", "title", "description", "idea_sheet", "project_type", "brc_name", "status","coordinator","remark"], "")
       .then((res) => setProposals(res))
       .catch((err) => console.error("Error fetching proposal data:", err))
   }, [])
 
-  const totalPages = Math.ceil(proposals.length / proposalsPerPage)
+  const filteredProposals = filterStatus === 'All'
+    ? proposals
+    : proposals.filter(p => p.status === filterStatus)
+
+  const totalPages = Math.ceil(filteredProposals.length / proposalsPerPage)
   const startIndex = (currentPage - 1) * proposalsPerPage
-  const currentProposals = proposals.slice(startIndex, startIndex + proposalsPerPage)
+  const currentProposals = filteredProposals.slice(startIndex, startIndex + proposalsPerPage)
 
   const handleApprove = (id, coordinator, remark) => {
     update("Project Proposal", id, { status: "Approved", coordinator: coordinator, remark: remark })
@@ -36,9 +41,25 @@ const ViewProposal = () => {
       onRework={handleRework}
     />
   ) : (
-    <div className="container py-4">
+    <div className="container p-2 ">
+      {/* Filter Buttons */}
+      <div className="mb-3 d-flex flex-wrap gap-2">
+        {['All', 'Pending', 'Approved', 'Rework'].map(status => (
+          <button
+            key={status}
+            className={`btn btn-sm ${filterStatus === status ? 'btn-primary' : 'btn-outline-primary'}`}
+            onClick={() => {
+              setFilterStatus(status)
+              setCurrentPage(1)
+            }}
+          >
+            {status}
+          </button>
+        ))}
+      </div>
+
+      {/* Proposal Table */}
       <div className="table-responsive bg-white p-3 rounded shadow-sm">
-        <h4 className="mb-3">Project Proposals</h4>
         <table className="table table-bordered align-middle text-center">
           <thead className="table-light">
             <tr>
@@ -47,6 +68,8 @@ const ViewProposal = () => {
               <th>Type</th>
               <th>BRC</th>
               <th>Status</th>
+              <th>Coordinator</th>
+              <th>Remarks</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -62,6 +85,8 @@ const ViewProposal = () => {
                     {proposal.status}
                   </span>
                 </td>
+                <td>{proposal.coordinator}</td>
+                <td>{proposal.remark}</td>
                 <td>
                   <button
                     className="btn btn-sm btn-outline-info"
@@ -72,21 +97,27 @@ const ViewProposal = () => {
                 </td>
               </tr>
             ))}
+            {currentProposals.length === 0 && (
+              <tr><td colSpan="6">No proposals found.</td></tr>
+            )}
           </tbody>
         </table>
 
+       
         {/* Pagination */}
-        <nav className="d-flex justify-content-center mt-4">
-          <ul className="pagination">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => setCurrentPage(page)}>
-                  {page}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {totalPages > 1 && (
+          <nav className="d-flex justify-content-center mt-4">
+            <ul className="pagination">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
+                  <button className="page-link" onClick={() => handlePageChange(page)}>
+                    {page}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
       </div>
     </div>
   )
