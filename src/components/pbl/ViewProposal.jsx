@@ -21,11 +21,11 @@ const ViewProposal = () => {
   const currentProposals = proposals.slice(startIndex, startIndex + proposalsPerPage)
 
   const handleApprove = (id, coordinator, remark) => {
-    update("Project Proposal", id, { status: "Approved", project_coordinator: coordinator, remark })
+    update("Project Proposal", id, { status: "Approved", coordinator: coordinator, remark: remark })
   }
 
   const handleRework = (id, remark) => {
-    update("Project Proposal", id, { status: "Rework", remark })
+    update("Project Proposal", id, { status: "Rework", remark: remark })
   }
 
   return selectedProposal ? (
