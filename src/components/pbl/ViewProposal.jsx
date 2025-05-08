@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { get_data } from '@/api/methods'
+import { get_data, update } from '@/api/methods'
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -27,7 +27,7 @@ const ViewProposal = () => {
   const totalPages = Math.ceil(proposals.length / proposalsPerPage)
   const startIndex = (currentPage - 1) * proposalsPerPage
   const currentProposals = proposals.slice(startIndex, startIndex + proposalsPerPage)
-
+  const [remark, setRemark] = useState("you have to modify the idea sheet")
   const handleView = (proposal) => {
     setSelectedProposal(proposal);
     setShowModal(true);
@@ -35,6 +35,8 @@ const ViewProposal = () => {
 
   const handleApprove = (id) => {
     console.log('Proposal Approved:', id);
+    update("Project Proposal", id, { status: "Approved" })
+
     // Add approve logic here
     setShowModal(false);
   }
@@ -42,6 +44,8 @@ const ViewProposal = () => {
   const handleResubmit = (id) => {
     console.log('Proposal Resubmitted:', id);
     // Add resubmit logic here
+    update("Project Proposal", id, { status: "Rework", remark: remark })
+
     setShowModal(false);
   }
 
@@ -136,8 +140,8 @@ const ViewProposal = () => {
                 )}
               </div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-success" onClick={() => handleApprove(selectedProposal.id)}>Approve</button>
-                <button type="button" className="btn btn-warning" onClick={() => handleResubmit(selectedProposal.id)}>Rework</button>
+                <button type="button" className="btn btn-success" onClick={() => handleApprove(selectedProposal.name)}>Approve</button>
+                <button type="button" className="btn btn-warning" onClick={() => handleResubmit(selectedProposal.name)}>Rework</button>
                 <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>Close</button>
               </div>
             </div>
