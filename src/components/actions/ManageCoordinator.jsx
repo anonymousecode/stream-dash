@@ -2,85 +2,77 @@
 
 import React, { useState } from 'react'
 
-// Dummy Project Coordinator Data
+// Dummy Data
 const initialCoordinatorData = [
-  { id: 'COORD001', name: 'Emily Johnson', phone: '9996325871', email: 'emily@example.com' },
-  { id: 'COORD002', name: 'Jacob Miller', phone: '9888745213', email: 'jake@example.com' },
-  { id: 'COORD003', name: 'Madison Clark', phone: '9012345668', email: 'maddy@example.com' },
-  { id: 'COORD004', name: 'Olivia Anderson', phone: '9255678123', email: 'olive@example.com' },
-  { id: 'COORD005', name: 'Ethan Davis', phone: '9988766655', email: 'ethan@example.com' },
-  { id: 'COORD006', name: 'Ava Thompson', phone: '9155233445', email: 'ava@example.com' },
-  { id: 'COORD007', name: 'Sophia White', phone: '9293949090', email: 'sophy@example.com' },
+  { id: 'COORD001', name: 'John Doe', phone: '9996325871', email: 'john@example.com', status: 'approval' },
+  { id: 'COORD002', name: 'Jane Smith', phone: '9888745213', email: 'jane@example.com', status: 'verified' },
+  { id: 'COORD003', name: 'Michael Brown', phone: '9012345668', email: 'mike@example.com', status: 'approval' },
+  { id: 'COORD004', name: 'Sophia Wilson', phone: '9255678123', email: 'sophia@example.com', status: 'verified' },
+  { id: 'COORD005', name: 'David Lee', phone: '9988766655', email: 'david@example.com', status: 'verified' },
 ]
 
 const ManageCoordinator = () => {
   const [coordinatorData, setCoordinatorData] = useState(initialCoordinatorData)
+  const [filter, setFilter] = useState('approval')
   const [currentPage, setCurrentPage] = useState(1)
-  const [showModal, setShowModal] = useState(false)
-  const [newCoordinator, setNewCoordinator] = useState({
-    coordinatorId: '',
-    name: '',
-    phone: '',
-    email: '',
-  })
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [coordinatorToDelete, setCoordinatorToDelete] = useState(null)
 
   const coordinatorsPerPage = 6
-  const totalPages = Math.ceil(coordinatorData.length / coordinatorsPerPage)
+  const filteredCoordinators = coordinatorData.filter((coordinator) => coordinator.status === filter)
+  const totalPages = Math.ceil(filteredCoordinators.length / coordinatorsPerPage)
   const startIndex = (currentPage - 1) * coordinatorsPerPage
-  const currentCoordinators = coordinatorData.slice(startIndex, startIndex + coordinatorsPerPage)
+  const currentCoordinators = filteredCoordinators.slice(startIndex, startIndex + coordinatorsPerPage)
 
   const handlePageChange = (page) => {
     setCurrentPage(page)
   }
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setNewCoordinator({ ...newCoordinator, [name]: value })
+  const handleAccept = (id) => {
+    setCoordinatorData((prevData) =>
+      prevData.map((coordinator) =>
+        coordinator.id === id ? { ...coordinator, status: 'verified' } : coordinator
+      )
+    )
   }
 
-  const handleAddCoordinator = () => {
-    const { coordinatorId, name, phone, email } = newCoordinator
-    if (coordinatorId && name && phone && email) {
-      const duplicate = coordinatorData.find((coordinator) => coordinator.id === coordinatorId)
-      if (duplicate) {
-        alert('A Coordinator with this ID already exists.')
-        return
-      }
+  const handleReject = (id) => {
+    setCoordinatorData((prevData) => prevData.filter((coordinator) => coordinator.id !== id))
+  }
 
-      const newEntry = {
-        id: coordinatorId,
-        name,
-        phone,
-        email,
-      }
-
-      setCoordinatorData([newEntry, ...coordinatorData])
-      setNewCoordinator({ coordinatorId: '', name: '', phone: '', email: '' })
-      setShowModal(false)
-      setCurrentPage(1)
-    } else {
-      alert('Please fill in all fields.')
+  const handleDelete = () => {
+    if (coordinatorToDelete) {
+      setCoordinatorData((prevData) => prevData.filter((coordinator) => coordinator.id !== coordinatorToDelete))
+      setShowDeleteModal(false)
+      setCoordinatorToDelete(null)
     }
-  }
-
-  const handleDelete = (id) => {
-    const confirmDelete = window.confirm('Are you sure you want to remove this coordinator?')
-    if (confirmDelete) {
-      setCoordinatorData(coordinatorData.filter((coordinator) => coordinator.id !== id))
-    }
-  }
-
-  const handleEdit = (id) => {
-    console.log('Edit Coordinator with ID:', id)
-    // Add your edit logic here
   }
 
   return (
     <div className="container py-3 rounded bg-white">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h4 className="mb-0">Manage Project Coordinator</h4>
-        <button className="btn btn-sm btn-outline-primary" onClick={() => setShowModal(true)}>
-          Add Coordinator
+        <h4 className="mb-0">Manage Coordinators</h4>
+      </div>
+
+      {/* Filter Buttons */}
+      <div className="mb-3 d-flex gap-2">
+        <button
+          className={`btn btn-sm ${filter === 'approval' ? 'btn-primary' : 'btn-outline-primary'}`}
+          onClick={() => {
+            setFilter('approval')
+            setCurrentPage(1)
+          }}
+        >
+          Approval Requests
+        </button>
+        <button
+          className={`btn btn-sm ${filter === 'verified' ? 'btn-primary' : 'btn-outline-primary'}`}
+          onClick={() => {
+            setFilter('verified')
+            setCurrentPage(1)
+          }}
+        >
+          Verified
         </button>
       </div>
 
@@ -104,19 +96,33 @@ const ManageCoordinator = () => {
                   <td>{phone}</td>
                   <td>{email}</td>
                   <td>
-                    <div className="d-flex justify-content-center">
-                      <button
-                        className="btn btn-sm btn-outline-primary me-2"
-                        onClick={() => handleEdit(id)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger"
-                        onClick={() => handleDelete(id)}
-                      >
-                        Remove
-                      </button>
+                    <div className="d-flex justify-content-center gap-2 flex-wrap">
+                      {filter === 'approval' ? (
+                        <>
+                          <button
+                            className="btn btn-sm btn-outline-success"
+                            onClick={() => handleAccept(id)}
+                          >
+                            Accept
+                          </button>
+                          <button
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleReject(id)}
+                          >
+                            Reject
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          className="btn btn-sm btn-outline-danger"
+                          onClick={() => {
+                            setCoordinatorToDelete(id)
+                            setShowDeleteModal(true)
+                          }}
+                        >
+                          Remove
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -124,6 +130,7 @@ const ManageCoordinator = () => {
             </tbody>
           </table>
 
+          {/* Pagination */}
           <nav>
             <ul className="pagination justify-content-center mt-4">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
@@ -143,71 +150,28 @@ const ManageCoordinator = () => {
         <div className="text-center text-muted">No coordinators found.</div>
       )}
 
-      {/* Add Coordinator Modal */}
-      {showModal && (
+      {/* Confirm Delete Modal */}
+      {showDeleteModal && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog">
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Add New Coordinator</h5>
-                <button type="button" className="btn-close" onClick={() => setShowModal(false)} />
-              </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label className="form-label">Coordinator ID</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="coordinatorId"
-                    value={newCoordinator.coordinatorId}
-                    onChange={handleInputChange}
-                    placeholder="Enter unique Coordinator ID"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={newCoordinator.name}
-                    onChange={handleInputChange}
-                    placeholder="Enter full name"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Phone</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="phone"
-                    value={newCoordinator.phone}
-                    onChange={handleInputChange}
-                    placeholder="Enter contact number"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    value={newCoordinator.email}
-                    onChange={handleInputChange}
-                    placeholder="Enter email address"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
+                <h5 className="modal-title">Confirm Deletion</h5>
                 <button
                   type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowModal(false)}
-                >
+                  className="btn-close"
+                  onClick={() => setShowDeleteModal(false)}
+                />
+              </div>
+              <div className="modal-body">
+                Are you sure you want to remove this coordinator?
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>
                   Cancel
                 </button>
-                <button type="button" className="btn btn-primary" onClick={handleAddCoordinator}>
-                  Save
+                <button className="btn btn-danger" onClick={handleDelete}>
+                  Yes, Remove
                 </button>
               </div>
             </div>
