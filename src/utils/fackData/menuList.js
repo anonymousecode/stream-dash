@@ -171,6 +171,24 @@ export const menuList = [
                 name: "Phase 3: First Review",
                 path: "/pbl/first-review",
                 subdropdownMenu: false
+            },
+            {
+                id: 7,
+                name: "Phase 4: Planning",
+                path: "/pbl/planning",
+                subdropdownMenu: false
+            },
+            {
+                id: 8,
+                name: "Phase 5: Second Review",
+                path: "/pbl/second-review",
+                subdropdownMenu: false
+            },
+            {
+                id: 8,
+                name: "Phase 6: Execution",
+                path: "/pbl/execution",
+                subdropdownMenu: false
             }
         ]
     },
