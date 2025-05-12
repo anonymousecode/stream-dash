@@ -185,9 +185,21 @@ export const menuList = [
                 subdropdownMenu: false
             },
             {
-                id: 8,
+                id: 9,
                 name: "Phase 6: Execution",
                 path: "/pbl/execution",
+                subdropdownMenu: false
+            },
+            {
+                id: 10,
+                name: "Phase 7: Third Review",
+                path: "/pbl/third-review",
+                subdropdownMenu: false
+            },
+            {
+                id: 11,
+                name: "Phase 8: Final Presentation",
+                path: "/pbl/presentation",
                 subdropdownMenu: false
             }
         ]

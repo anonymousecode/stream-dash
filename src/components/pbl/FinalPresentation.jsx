@@ -1,13 +1,12 @@
 // 'use client';
 // import React, { useState } from 'react';
 
-// const SecondReview = () => {
+// const FinalPresentation = () => {
 //   const [uploadedFiles, setUploadedFiles] = useState({});
 //   const [fileNames, setFileNames] = useState({});
 //   const [errorMessage, setErrorMessage] = useState('');
 
-//   const requiredField = 'Project Plan';
-//   const optionalField = 'Revised Report';
+//   const requiredField = 'Experience Feedback';
 
 //   const handleFileChange = (e, field) => {
 //     const file = e.target.files[0];
@@ -33,18 +32,18 @@
 //     e.preventDefault();
 
 //     if (!uploadedFiles[requiredField]) {
-//       setErrorMessage('Please upload the Project Plan.');
+//       setErrorMessage('Please upload the Experience Feedback file.');
 //       return;
 //     }
 
 //     setErrorMessage('');
-//     alert(`Submitted files:\n${[requiredField, optionalField].map(f => `${f}: ${fileNames[f] || 'Not uploaded'}`).join('\n')}`);
+//     alert(`Submitted file:\n${requiredField}: ${fileNames[requiredField]}`);
 //   };
 
 //   const renderFileInput = (field, isRequired) => (
 //     <div className="mb-4" key={field}>
 //       <label htmlFor={`${field}-upload`} className="form-label fw-semibold" style={{ color: '#F39C12' }}>
-//         Upload {field} {isRequired ? <span className="text-danger">(Required)</span> : <span className="text-muted">(Optional)</span>}
+//         Upload {field} {isRequired ? <span className="text-danger">(Required)</span> : null}
 //       </label>
 //       <input
 //         id={`${field}-upload`}
@@ -72,9 +71,9 @@
 //     <div className="container-fluid py-5 px-3">
 //       <div className="bg-white p-5 rounded shadow-sm border w-100">
 //         <div className="text-center mb-4">
-//           <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 5: Second Review</h2>
+//           <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 8: Final Presentation</h2>
 //           <p className="text-dark mb-0">
-//             The documents submitted during the <strong>Planning stage</strong> will be reviewed in this phase. Your team must present the <strong>Project Plan</strong> and submit a <strong>Revised Report</strong> based on suggestions received from coordinators or mentors. Please ensure all documents are clear and reflect the recommended revisions.
+//             In this phase, your team is expected to submit the <strong>Experience Feedback</strong> document. Please ensure that the document accurately reflects your experiences and insights gained throughout the project.
 //           </p>
 //         </div>
 
@@ -86,14 +85,13 @@
 
 //         <form onSubmit={handleSubmit}>
 //           {renderFileInput(requiredField, true)}
-//           {renderFileInput(optionalField, false)}
 
 //           <button
 //             type="submit"
 //             className="btn btn-warning text-dark fw-bold w-100"
 //             style={{ backgroundColor: '#F39C12', borderColor: '#F39C12' }}
 //           >
-//             Submit Files
+//             Submit File
 //           </button>
 //         </form>
 //       </div>
@@ -101,20 +99,19 @@
 //   );
 // };
 
-// export default SecondReview;
+// export default FinalPresentation;
 
 
 
 'use client';
 import React, { useState } from 'react';
 
-const SecondReview = () => {
+const FinalPresentation = () => {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
 
-  const requiredField = 'Project Plan';
-  const optionalField = 'Revised Report';
+  const requiredField = 'Experience Feedback';
 
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
@@ -140,18 +137,18 @@ const SecondReview = () => {
     e.preventDefault();
 
     if (!uploadedFiles[requiredField]) {
-      setErrorMessage('Please upload the Project Plan.');
+      setErrorMessage('Please upload the Experience Feedback file.');
       return;
     }
 
     setErrorMessage('');
-    alert(`Submitted files:\n${[requiredField, optionalField].map(f => `${f}: ${fileNames[f] || 'Not uploaded'}`).join('\n')}`);
+    alert(`Submitted file:\n${requiredField}: ${fileNames[requiredField]}`);
   };
 
   const renderFileInput = (field, isRequired) => (
     <div className="mb-4" key={field}>
       <label htmlFor={`${field}-upload`} className="form-label fw-semibold" style={{ color: '#F39C12' }}>
-        Upload {field} {isRequired ? <span className="text-danger">(Required)</span> : <span className="text-muted">(Optional)</span>}
+        Upload {field} {isRequired ? <span className="text-danger">(Required)</span> : null}
       </label>
       <input
         id={`${field}-upload`}
@@ -179,9 +176,9 @@ const SecondReview = () => {
     <div className="container-fluid py-5 px-3">
       <div className="bg-white p-5 rounded shadow-sm border w-100">
         <div className="text-center mb-4">
-          <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 5: Second Review</h2>
+          <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 8: Final Presentation</h2>
           <p className="text-dark mb-0">
-            The documents submitted during the <strong>Planning stage</strong> will be reviewed in this phase. Your team must present the <strong>Project Plan</strong> and submit a <strong>Revised Report</strong> based on suggestions received from coordinators or mentors. Please ensure all documents are clear and reflect the recommended revisions.
+            In this phase, your team is expected to submit the <strong>Experience Feedback</strong> document. Please ensure that the document accurately reflects your experiences and insights gained throughout the project.
           </p>
         </div>
 
@@ -193,7 +190,6 @@ const SecondReview = () => {
 
         <form onSubmit={handleSubmit}>
           {renderFileInput(requiredField, true)}
-          {renderFileInput(optionalField, false)}
 
           <button
             type="submit"
@@ -204,7 +200,7 @@ const SecondReview = () => {
               color: 'white'
             }}
           >
-            Submit Files
+            Submit File
           </button>
         </form>
       </div>
@@ -212,4 +208,4 @@ const SecondReview = () => {
   );
 };
 
-export default SecondReview;
+export default FinalPresentation;

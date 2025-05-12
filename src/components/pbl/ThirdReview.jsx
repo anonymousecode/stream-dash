@@ -1,7 +1,7 @@
 // 'use client';
 // import React, { useState } from 'react';
 
-// const SecondReview = () => {
+// const ThirdReview = () => {
 //   const [uploadedFiles, setUploadedFiles] = useState({});
 //   const [fileNames, setFileNames] = useState({});
 //   const [errorMessage, setErrorMessage] = useState('');
@@ -72,9 +72,9 @@
 //     <div className="container-fluid py-5 px-3">
 //       <div className="bg-white p-5 rounded shadow-sm border w-100">
 //         <div className="text-center mb-4">
-//           <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 5: Second Review</h2>
+//           <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 5: Third Review</h2>
 //           <p className="text-dark mb-0">
-//             The documents submitted during the <strong>Planning stage</strong> will be reviewed in this phase. Your team must present the <strong>Project Plan</strong> and submit a <strong>Revised Report</strong> based on suggestions received from coordinators or mentors. Please ensure all documents are clear and reflect the recommended revisions.
+//             The documents submitted during the <strong>Execution stage</strong> will be reviewed in this phase. Your team must present the <strong>Project Plan</strong> and submit a <strong>Revised Report</strong> based on suggestions received from coordinators or mentors. Please ensure all documents are clear and reflect the recommended revisions.
 //           </p>
 //         </div>
 
@@ -101,14 +101,14 @@
 //   );
 // };
 
-// export default SecondReview;
+// export default ThirdReview;
 
 
 
 'use client';
 import React, { useState } from 'react';
 
-const SecondReview = () => {
+const ThirdReview = () => {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
@@ -179,9 +179,9 @@ const SecondReview = () => {
     <div className="container-fluid py-5 px-3">
       <div className="bg-white p-5 rounded shadow-sm border w-100">
         <div className="text-center mb-4">
-          <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 5: Second Review</h2>
+          <h2 className="fw-bold mb-3" style={{ color: '#F39C12' }}>Stage 5: Third Review</h2>
           <p className="text-dark mb-0">
-            The documents submitted during the <strong>Planning stage</strong> will be reviewed in this phase. Your team must present the <strong>Project Plan</strong> and submit a <strong>Revised Report</strong> based on suggestions received from coordinators or mentors. Please ensure all documents are clear and reflect the recommended revisions.
+            The documents submitted during the <strong>Execution stage</strong> will be reviewed in this phase. Your team must present the <strong>Project Plan</strong> and submit a <strong>Revised Report</strong> based on suggestions received from coordinators or mentors. Please ensure all documents are clear and reflect the recommended revisions.
           </p>
         </div>
 
@@ -212,4 +212,4 @@ const SecondReview = () => {
   );
 };
 
-export default SecondReview;
+export default ThirdReview;
