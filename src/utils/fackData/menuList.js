@@ -153,6 +153,54 @@ export const menuList = [
                 name: "Create Proposal",
                 path: "/pbl/create",
                 subdropdownMenu: false
+            },
+            {
+                id: 4,
+                name: "Phase 1: Problem Identification",
+                path: "/pbl/problem-identification",
+                subdropdownMenu: false
+            },
+            {
+                id: 5,
+                name: "Phase 2: Idea Development",
+                path: "/pbl/idea-development",
+                subdropdownMenu: false
+            },
+            {
+                id: 6,
+                name: "Phase 3: First Review",
+                path: "/pbl/first-review",
+                subdropdownMenu: false
+            },
+            {
+                id: 7,
+                name: "Phase 4: Planning",
+                path: "/pbl/planning",
+                subdropdownMenu: false
+            },
+            {
+                id: 8,
+                name: "Phase 5: Second Review",
+                path: "/pbl/second-review",
+                subdropdownMenu: false
+            },
+            {
+                id: 9,
+                name: "Phase 6: Execution",
+                path: "/pbl/execution",
+                subdropdownMenu: false
+            },
+            {
+                id: 10,
+                name: "Phase 7: Third Review",
+                path: "/pbl/third-review",
+                subdropdownMenu: false
+            },
+            {
+                id: 11,
+                name: "Phase 8: Final Presentation",
+                path: "/pbl/presentation",
+                subdropdownMenu: false
             }
         ]
     },
