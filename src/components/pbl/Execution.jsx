@@ -230,7 +230,7 @@ const Execution = () => {
     <div className="container-fluid py-5 px-3">
       <div className="bg-white p-5 rounded shadow-sm border">
         <div className="text-center mb-4">
-          <h2 className="fw-bold mb-3" style={{ color: mangoYellow }}>Stage 6: Execution</h2>
+          <h2 className="fw-bold mb-3" style={{ color: '#F4B400' }}>Stage 6: Execution</h2>
           <p className="text-dark mb-0">
             Based on your project category, upload the required documents for the execution phase. Please ensure all documents are clear and complete.
           </p>
@@ -261,7 +261,7 @@ const Execution = () => {
             type="submit"
             className="btn w-100 fw-bold text-white"
             style={{
-              backgroundColor: mangoYellow,
+              backgroundColor: '#F4B400',
               color: 'white'
             }}
           >
