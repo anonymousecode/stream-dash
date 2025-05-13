@@ -4,7 +4,9 @@ import PaymentRecordChart from '@/components/widgetsCharts/PaymentRecordChart'
 import LeadsOverviewChart from '@/components/widgetsCharts/LeadsOverviewChart'
 import { getDashBoard } from '@/api/methods'
 
+
 export default async function Home() {
+
 
 
     const res = await getDashBoard()

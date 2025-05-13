@@ -5,6 +5,7 @@ import NavigationManu from "@/components/shared/navigationMenu/NavigationMenu";
 import SupportDetails from "@/components/supportDetails";
 import dynamic from "next/dynamic";
 import useBootstrapUtils from "@/hooks/useBootstrapUtils";
+// import { UserProvider } from "@/contentApi/UserContext";
 
 // const useBootstrapUtils = dynamic(() => import('@/hooks/useBootstrapUtils'), { ssr: false })
 
@@ -16,6 +17,11 @@ const layout = ({ children }) => {
         <>
             <Header />
             <NavigationManu />
+            {/* <UserProvider>
+                <div className="nxl-content">
+                    {children}
+                </div>
+            </UserProvider> */}
             <main className="nxl-container">
                 <div className="nxl-content">
                     {children}

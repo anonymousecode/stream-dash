@@ -5,8 +5,12 @@ import { FiMoreVertical } from 'react-icons/fi'
 import { crmStatisticsData } from '@/utils/fackData/crmStatisticsData'
 import getIcon from '@/utils/getIcon'
 import Link from 'next/link'
+// import { useUser } from '@/contentApi/UserContext'
 
 const SiteOverviewStatistics = ({ generalDetails }) => {
+    // const { user } = useUser();
+
+    // console.log('User from context:', user);
 
 
     const titles = {
@@ -67,7 +71,7 @@ const SiteOverviewStatistics = ({ generalDetails }) => {
                 //         normalizedTitle.includes(keyword)
                 //     )
 
-               generalDetails && generalDetails.map((items, id) => (
+                generalDetails && generalDetails.map((items, id) => (
                     // const normalizedTitle = titles[items.title]?.trim().toLowerCase()
                     // const isClickable = ['student', 'school', 'district', 'project'].some(keyword =>
                     //     normalizedTitle.includes(keyword)
