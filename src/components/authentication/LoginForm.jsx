@@ -5,13 +5,18 @@ import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { useState } from 'react'
 import { login } from '@/api/methods'
 import { useRouter } from 'next/navigation'
+// import { useUser } from '@/contentApi/UserContext'
+import { getUser } from '@/api/methods'
 
 const LoginForm = ({ registerPath, resetPath }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const router = useRouter();
+    // const { setUser } = useUser();
 
     const handleLogin = async (e) => {
+        // const userData = await getUser();
+        // console.log("User data from getUser", userData);
 
 
         console.log("Login function is called");
@@ -22,6 +27,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
                 if (response) {
                     console.log("There is a response");
                     console.log(response);
+                    // setUser(userData);
                     router.push("/dashboard");
                 } else {
                     console.log("There is no response");
@@ -30,6 +36,22 @@ const LoginForm = ({ registerPath, resetPath }) => {
             .catch((err) => {
                 console.log(err, "There is an error");
             });
+        // try {
+        //     const loginResponse = await login(email, password); // ✅ Step 1: login
+        //     if (loginResponse) {
+        //         console.log("Login successful:", loginResponse);
+
+        //         const userData = await getUser(); // ✅ Step 2: fetch user *after* login
+        //         console.log("Fetched user data:", userData);
+
+        //         setUser(userData); // ✅ Step 3: set user in context
+        //         router.push("/dashboard");
+        //     } else {
+        //         console.log("Login failed: no response");
+        //     }
+        // } catch (error) {
+        //     console.error("Login error:", error);
+        // }
     };
 
     return (
@@ -38,6 +60,7 @@ const LoginForm = ({ registerPath, resetPath }) => {
             {/* <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
             <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p> */}
             <form action="index.html" className="w-100 mt-3 pt-2" onSubmit={handleLogin}>
+                {/* <form className="w-100 mt-3 pt-2" onSubmit={handleLogin}> */}
                 <div className="mb-3">
                     <label htmlFor="" className='pb-1'>Email</label>
                     <input type="text   " className="form-control" placeholder="Email or Username" defaultValue="" required onChange={(e) => setEmail(e.target.value)} />

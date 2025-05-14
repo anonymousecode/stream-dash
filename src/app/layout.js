@@ -5,8 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datetime/css/react-datetime.css";
 import NavigationProvider from "@/contentApi/navigationProvider";
 import './globals.css'
-// import SettingSideBarProvider from "@/contentApi/settingSideBarProvider";
-// import ThemeCustomizer from "@/components/shared/ThemeCustomizer";
+import { UserProvider } from '@/contentApi/UserContext'; // ✅ correct path
 
 export const metadata = {
   title: "STREAM | Dashboard",
@@ -18,9 +17,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         {/* <SettingSideBarProvider> */}
-          <NavigationProvider>
-            {children}
-          </NavigationProvider>
+
+
+        <NavigationProvider>
+          {/* <UserProvider> */}
+          {children}
+          {/* </UserProvider> */}
+        </NavigationProvider>
+
         {/* </SettingSideBarProvider> */}
         {/* <ThemeCustomizer /> */}
       </body>

@@ -2,6 +2,7 @@
 import useBootstrapUtils from '@/hooks/useBootstrapUtils'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import { UserProvider } from '@/contentApi/UserContext'
 
 const layout = ({ children }) => {
     const pathName = usePathname()
@@ -9,7 +10,9 @@ const layout = ({ children }) => {
 
     return (
         <>
+            {/* <UserProvider> */}
             {children}
+            {/* </UserProvider> */}
         </>
     )
 }
