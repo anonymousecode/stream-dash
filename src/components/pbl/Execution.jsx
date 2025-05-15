@@ -153,7 +153,6 @@ const Execution = () => {
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
 
-  const mangoYellow = '#FFC324';  // Mango-yellow
 
   const handleTypeChange = (e) => {
     const value = e.target.value;
