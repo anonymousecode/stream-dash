@@ -2,16 +2,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { get_data } from '@/api/methods';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 const tabs = ['Up-Coming Events', 'Past Events'];
 
 const EventPage = () => {
-
-  const [eventsData, setEventsData] = useState([])
+  const router = useRouter();
+  const [eventsData, setEventsData] = useState([]);
+  
   useEffect(() => {
-
     get_data(
       "Events",
       [
@@ -31,15 +32,13 @@ const EventPage = () => {
       ""
     )
       .then((res) => {
-        console.log("Blog data:", res);
+        console.log("Event data:", res);
         setEventsData(res);
-      }
-      ).catch((err) => {
-        console.log("Error fetching blog data:", err);
       })
-
+      .catch((err) => {
+        console.log("Error fetching event data:", err);
+      });
   }, []);
-
 
   const [activeTab, setActiveTab] = useState('Up-Coming Events');
   const [currentPage, setCurrentPage] = useState(1);
@@ -80,15 +79,20 @@ const EventPage = () => {
     setCurrentPage(1); // reset page on tab change
   };
 
+  const handleViewEventDetail = (eventId) => {
+    router.push(`/events/detail/${eventId}`);
+  };
+
   return (
-    <div className="container py-3  rounded bg-white">
+    <div className="container py-3 rounded bg-white">
       {/* Tabs */}
       <div className="d-flex gap-3 mb-4">
         {tabs.map((tab) => (
           <button
             key={tab}
-            className={`btn fw-bold text-uppercase ${tab === activeTab ? 'btn-warning text-white' : 'btn-outline-secondary'
-              }`}
+            className={`btn fw-bold text-uppercase ${
+              tab === activeTab ? 'btn-warning text-white' : 'btn-outline-secondary'
+            }`}
             onClick={() => handleTabChange(tab)}
           >
             {tab}
@@ -115,7 +119,10 @@ const EventPage = () => {
                     {new Date(item.date).toLocaleDateString('en-GB')}
                   </p>
 
-                  <button className="btn btn-warning btn-sm text-white rounded-2">
+                  <button 
+                    className="btn btn-warning btn-sm text-white rounded-2"
+                    onClick={() => handleViewEventDetail(item.name)}
+                  >
                     Enrolled
                   </button>
                 </div>

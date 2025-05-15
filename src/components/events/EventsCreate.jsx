@@ -1,13 +1,13 @@
+// 
+
 'use client'
-import React, { use, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import useDatePicker from '@/hooks/useDatePicker'
 import useLocationData from '@/hooks/useLocationData'
 import Loading from '@/components/shared/Loading'
 import { insertDoc, uploadFile, get_data } from '@/api/methods'
 
 const EventCreate = () => {
-
-
   const [districts, setDistricts] = useState([])
   const [states, setStates] = useState([])
   const [brcs, setBrcs] = useState([])
@@ -24,76 +24,130 @@ const EventCreate = () => {
 
   const [selectedState, setSelectedState] = useState(null)
   const [selectedDistrict, setSelectedDistrict] = useState(null)
-
-
-  // "/files/AI.jpeg"
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+  const [errors, setErrors] = useState({})
 
   const [form, setForm] = useState({
-    title: '', short_description: '', description: '', event_image: '',
-    venue: '', place: '', level: '', host: '', time: '', date: '', partner_name: '', credit: '', brc: '', district: '', lab_type: '', state: ''
+    title: '', 
+    short_description: '', 
+    description: '', 
+    event_image: '',
+    venue: '', 
+    place: '', 
+    level: '', 
+    host: '', 
+    time: '', 
+    date: '', 
+    partner_name: '', 
+    credit: '', 
+    brc: '', 
+    district: '', 
+    lab_type: '', 
+    state: ''
   });
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    // Clear the error for this field when the user makes a change
+    if (errors[e.target.name]) {
+      setErrors(prev => ({ ...prev, [e.target.name]: null }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const requiredFields = [
+      'title', 'short_description', 'description', 'venue', 
+      'place', 'level', 'date', 'state', 'district', 'brc', 'lab_type'
+    ];
+    
+    requiredFields.forEach(field => {
+      if (!form[field]) {
+        newErrors[field] = 'This field is required';
+      }
+    });
+    
+    if (!eventImages) {
+      newErrors.event_image = 'Event image is required';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
-    console.log("Form data:", form);
-    console.log("Image:", eventImages);
-
-    e.preventDefault()
-
-    const imageUrl = await uploadFile(eventImages, 0)
-    console.log("Image URL:", imageUrl);
-    const updatedForm = {
-      ...form,
-      event_image: imageUrl,
-    };
-
-    console.log("Form data:", updatedForm);
-
-
-    const result = await insertDoc("Events", updatedForm);
-  }
+    e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    try {
+      const imageUrl = eventImages ? await uploadFile(eventImages, 0) : '';
+      
+      const updatedForm = {
+        ...form,
+        event_image: imageUrl,
+      };
+      
+      const result = await insertDoc("Events", updatedForm);
+      
+      if (result) {
+        setShowSuccessPopup(true);
+        // Reset form after successful submission
+        setForm({
+          title: '', short_description: '', description: '', event_image: '',
+          venue: '', place: '', level: '', host: '', time: '', date: '', 
+          partner_name: '', credit: '', brc: '', district: '', lab_type: '', state: ''
+        });
+        setEventImages(null);
+        setPartnerLogos([]);
+        setGalleryImages([]);
+        
+        // Hide success popup after 5 seconds
+        setTimeout(() => {
+          setShowSuccessPopup(false);
+        }, 5000);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchStates = async () => {
       const res = await get_data("State", ["state", "name"], "{}");
-
+      
       if (!res.error) {
         setStates(res);
       } else {
         console.error("Error fetching states:", res.error);
       }
-
-
     };
 
     fetchStates();
   }, []);
 
   useEffect(() => {
-
     const fetchDistricts = async () => {
+      if (!selectedState) return;
+      
       const res = await get_data("District", ["district_name", "name"], [["state_id", "=", selectedState]]);
 
       if (!res.error) {
-        setDistricts(res); // Assuming res is an array
+        setDistricts(res);
       } else {
         console.error("Error fetching districts:", res.error);
       }
-
-
     };
 
     fetchDistricts();
-
-
   }, [selectedState]);
-
 
   useEffect(() => {
     const fetchBRCs = async () => {
+      if (!selectedDistrict) return;
+      
       const res = await get_data("BRC", ["brc_name", "name"], [["district_id", "=", selectedDistrict]]);
 
       if (!res.error) {
@@ -101,8 +155,6 @@ const EventCreate = () => {
       } else {
         console.error("Error fetching BRCs:", res.error);
       }
-
-
     };
 
     fetchBRCs();
@@ -117,8 +169,6 @@ const EventCreate = () => {
       } else {
         console.error("Error fetching labs:", res.error);
       }
-
-
     };
 
     fetchLabs();
@@ -127,6 +177,19 @@ const EventCreate = () => {
   return (
     <>
       {loading && <Loading />}
+      
+      {/* Success Popup */}
+      {showSuccessPopup && (
+        <div className="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded shadow-lg" style={{ zIndex: 1050, width: '400px' }}>
+          <div className="text-center">
+            <div className="text-success mb-3">
+              <i className="fas fa-check-circle fa-3x"></i>
+            </div>
+            <h4 className="mb-2">Success!</h4>
+            <p className="mb-0">Event has been submitted successfully!</p>
+          </div>
+        </div>
+      )}
 
       <div className="col-xl-12">
         <div className="card stretch stretch-full">
@@ -135,51 +198,64 @@ const EventCreate = () => {
             {/* Title */}
             <div className="mb-4">
               <label className="form-label">Title <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="Event Title" name="title" onChange={handleChange} />
+              <input 
+                type="text" 
+                className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
+                placeholder="Event Title" 
+                name="title" 
+                value={form.title}
+                onChange={handleChange} 
+              />
+              {errors.title && <div className="invalid-feedback">{errors.title}</div>}
             </div>
 
             {/* Short Description */}
             <div className="mb-4">
               <label className="form-label">Short Description <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="Short description" name="short_description" onChange={handleChange} />
+              <input 
+                type="text" 
+                className={`form-control ${errors.short_description ? 'is-invalid' : ''}`} 
+                placeholder="Short description" 
+                name="short_description" 
+                value={form.short_description}
+                onChange={handleChange} 
+              />
+              {errors.short_description && <div className="invalid-feedback">{errors.short_description}</div>}
             </div>
 
             {/* Description */}
             <div className="mb-4">
               <label className="form-label">Description <span className="text-danger">*</span></label>
-              <textarea className="form-control" rows={4} placeholder="Full description" name="description" onChange={handleChange}></textarea>
+              <textarea 
+                className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
+                rows={4} 
+                placeholder="Full description" 
+                name="description" 
+                value={form.description}
+                onChange={handleChange}
+              ></textarea>
+              {errors.description && <div className="invalid-feedback">{errors.description}</div>}
             </div>
 
             {/* Event Images */}
             <div className="mb-4">
-              <label className="form-label">Event Image</label>
+              <label className="form-label">Event Image <span className="text-danger">*</span></label>
               <input
                 type="file"
-                className="form-control"
+                className={`form-control ${errors.event_image ? 'is-invalid' : ''}`}
                 accept="image/*"
                 name='event_image'
-                multiple
-                onChange={(e) => setEventImages(e.target.files[0])}
-              // onChange={(e) => {
-              //   setForm(prev => ({ ...prev, event_image: e.target.files[0].name }));
-
-              // }}
+                onChange={(e) => {
+                  setEventImages(e.target.files[0]);
+                  if (errors.event_image) {
+                    setErrors(prev => ({ ...prev, event_image: null }));
+                  }
+                }}
               />
-              {/* <div className="mt-3 d-flex gap-2 flex-wrap">
-                    {eventImages.map((file, index) => (
-                      <img
-                        key={index}
-                        src={URL.createObjectURL(file)}
-                        alt={`event-${index}`}
-                        className="rounded"
-                        style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                      />
-                    ))}
-                  </div> */}
+              {errors.event_image && <div className="invalid-feedback">{errors.event_image}</div>}
               <div className="mt-3 d-flex gap-2 flex-wrap">
                 {eventImages &&
                   <img
-
                     src={URL.createObjectURL(eventImages)}
                     alt="event"
                     className="rounded"
@@ -192,46 +268,97 @@ const EventCreate = () => {
             {/* Venue */}
             <div className="mb-4">
               <label className="form-label">Venue <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="Venue name" name="venue" onChange={handleChange} />
+              <input 
+                type="text" 
+                className={`form-control ${errors.venue ? 'is-invalid' : ''}`} 
+                placeholder="Venue name" 
+                name="venue" 
+                value={form.venue}
+                onChange={handleChange} 
+              />
+              {errors.venue && <div className="invalid-feedback">{errors.venue}</div>}
             </div>
 
             {/* Place */}
             <div className="mb-4">
               <label className="form-label">Place <span className="text-danger">*</span></label>
-              <input type="text" className="form-control" placeholder="City/Town/Village" name="place" onChange={handleChange} />
+              <input 
+                type="text" 
+                className={`form-control ${errors.place ? 'is-invalid' : ''}`} 
+                placeholder="City/Town/Village" 
+                name="place" 
+                value={form.place}
+                onChange={handleChange} 
+              />
+              {errors.place && <div className="invalid-feedback">{errors.place}</div>}
             </div>
 
             {/* Level */}
             <div className="mb-4">
-              <label className="form-label">Level</label>
-              <input type="text" className="form-control" placeholder="Enter level (e.g., District, State)" name="level" onChange={handleChange} />
+              <label className="form-label">Level <span className="text-danger">*</span></label>
+              <input 
+                type="text" 
+                className={`form-control ${errors.level ? 'is-invalid' : ''}`} 
+                placeholder="Enter level (e.g., District, State)" 
+                name="level" 
+                value={form.level}
+                onChange={handleChange} 
+              />
+              {errors.level && <div className="invalid-feedback">{errors.level}</div>}
             </div>
 
             {/* Host */}
             <div className="mb-4">
               <label className="form-label">Host</label>
-              <input type="text" className="form-control" placeholder="Organizer / Host" name="host" onChange={handleChange} />
+              <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Organizer / Host" 
+                name="host" 
+                value={form.host}
+                onChange={handleChange} 
+              />
             </div>
 
             {/* Time and Date */}
             <div className="row">
               <div className="col-lg-6 mb-4">
                 <label className="form-label">Time</label>
-                <input type="time" className="form-control" name="time" onChange={(e) => {
-                  const fullTime = e.target.value + ":00"; // always adds seconds
-                  setForm(prev => ({ ...prev, time: fullTime }));
-                }} />
+                <input 
+                  type="time" 
+                  className="form-control" 
+                  name="time" 
+                  value={form.time ? form.time.substring(0, 5) : ''}
+                  onChange={(e) => {
+                    const fullTime = e.target.value + ":00"; // always adds seconds
+                    setForm(prev => ({ ...prev, time: fullTime }));
+                  }} 
+                />
               </div>
               <div className="col-lg-6 mb-4">
-                <label className="form-label">Date</label>
-                <input type="date" className="form-control" name="date" onChange={handleChange} />
+                <label className="form-label">Date <span className="text-danger">*</span></label>
+                <input 
+                  type="date" 
+                  className={`form-control ${errors.date ? 'is-invalid' : ''}`} 
+                  name="date" 
+                  value={form.date}
+                  onChange={handleChange} 
+                />
+                {errors.date && <div className="invalid-feedback">{errors.date}</div>}
               </div>
             </div>
 
             {/* Partner Name */}
             <div className="mb-4">
               <label className="form-label">Partner Name</label>
-              <input type="text" className="form-control" placeholder="Partner Organization" name="partner_name" onChange={handleChange} />
+              <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Partner Organization" 
+                name="partner_name" 
+                value={form.partner_name}
+                onChange={handleChange} 
+              />
             </div>
 
             {/* Partner Logos */}
@@ -260,18 +387,31 @@ const EventCreate = () => {
             {/* Credit */}
             <div className="mb-4">
               <label className="form-label">Credit</label>
-              <input type="text" className="form-control" placeholder="Credit details (if any)" name="credit" onChange={handleChange} />
+              <input 
+                type="text" 
+                className="form-control" 
+                placeholder="Credit details (if any)" 
+                name="credit" 
+                value={form.credit}
+                onChange={handleChange} 
+              />
             </div>
 
-
             {/* State */}
-
             <div className="mb-4">
-              <label className="form-label">State  </label><br />
-              <select className="form-control" name="state" onChange={(e) => {
-                setForm(prev => ({ ...prev, state: e.target.value }));
-                setSelectedState(e.target.value);
-              }}>
+              <label className="form-label">State <span className="text-danger">*</span></label><br />
+              <select 
+                className={`form-control ${errors.state ? 'is-invalid' : ''}`} 
+                name="state" 
+                value={form.state}
+                onChange={(e) => {
+                  setForm(prev => ({ ...prev, state: e.target.value }));
+                  setSelectedState(e.target.value);
+                  if (errors.state) {
+                    setErrors(prev => ({ ...prev, state: null }));
+                  }
+                }}
+              >
                 <option value="">Select</option>
                 {states.map((state, id) => (
                   <option key={id} value={state.name}>
@@ -279,16 +419,24 @@ const EventCreate = () => {
                   </option>
                 ))}
               </select>
+              {errors.state && <div className="invalid-feedback">{errors.state}</div>}
             </div>
 
             {/* District */}
-
             <div className="mb-4">
-              <label className="form-label">District</label><br />
-              <select className="form-control" name="district" onChange={(e) => {
-                setForm(prev => ({ ...prev, district: e.target.value }));
-                setSelectedDistrict(e.target.value);
-              }}>
+              <label className="form-label">District <span className="text-danger">*</span></label><br />
+              <select 
+                className={`form-control ${errors.district ? 'is-invalid' : ''}`} 
+                name="district" 
+                value={form.district}
+                onChange={(e) => {
+                  setForm(prev => ({ ...prev, district: e.target.value }));
+                  setSelectedDistrict(e.target.value);
+                  if (errors.district) {
+                    setErrors(prev => ({ ...prev, district: null }));
+                  }
+                }}
+              >
                 <option value="">Select</option>
                 {districts.map((dist) => (
                   <option key={dist.name} value={dist.name}>
@@ -296,14 +444,18 @@ const EventCreate = () => {
                   </option>
                 ))}
               </select>
+              {errors.district && <div className="invalid-feedback">{errors.district}</div>}
             </div>
 
             {/* BRC */}
             <div className="mb-4">
-              <label className="form-label">BRC</label><br />
-              {/* <input type="text" className="form-control" placeholder="BRC Name" name="brc" onChange={handleChange} /> */}
-
-              <select className="form-control" name="brc" onChange={handleChange}>
+              <label className="form-label">BRC <span className="text-danger">*</span></label><br />
+              <select 
+                className={`form-control ${errors.brc ? 'is-invalid' : ''}`} 
+                name="brc" 
+                value={form.brc}
+                onChange={handleChange}
+              >
                 <option value="">Select</option>
                 {brcs.map((brc) => (
                   <option key={brc.name} value={brc.name}>
@@ -311,12 +463,18 @@ const EventCreate = () => {
                   </option>
                 ))}
               </select>
+              {errors.brc && <div className="invalid-feedback">{errors.brc}</div>}
             </div>
 
             {/* LAB TYPE */}
             <div className="mb-4">
-              <label className="form-label">Lab Type</label><br />
-              <select className="form-control" name="lab_type" onChange={handleChange}>
+              <label className="form-label">Lab Type <span className="text-danger">*</span></label><br />
+              <select 
+                className={`form-control ${errors.lab_type ? 'is-invalid' : ''}`} 
+                name="lab_type" 
+                value={form.lab_type}
+                onChange={handleChange}
+              >
                 <option value="">Select</option>
                 {labs.map((lab) => (
                   <option key={lab.name} value={lab.name}>
@@ -324,6 +482,7 @@ const EventCreate = () => {
                   </option>
                 ))}
               </select>
+              {errors.lab_type && <div className="invalid-feedback">{errors.lab_type}</div>}
             </div>
 
             {/* Event Gallery */}
@@ -349,7 +508,6 @@ const EventCreate = () => {
               </div>
 
               <div className="mb-4">
-
                 <button
                   type="button"
                   className="btn btn-primary mt-3"
