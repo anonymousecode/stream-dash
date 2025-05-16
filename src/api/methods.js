@@ -226,3 +226,20 @@ export async function update(DocType, Document, Data) {
         });
 }
 
+export async function trash(DocType, Document) {
+  return fetch(apiBaseUrl +"/api/resource/" + DocType + "/" + Document, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Authorization": `token ${apiKey}:${apiSecret}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}

@@ -32,9 +32,9 @@ const EventDetail = () => {
             "short_description",
             "description",
             "event_image",
-            "state",
-            "district",
-            "brc",
+            "state_name",
+            "district_name",
+            "brc_name",
             "lab_type",
             "venue",
             "host",
@@ -156,11 +156,11 @@ const EventDetail = () => {
             </div>
             <div className="col-md-6 mb-3">
               <h6 className="text-secondary">State</h6>
-              <p className="mb-0">{event.state}</p>
+              <p className="mb-0">{event.state_name}</p>
             </div>
             <div className="col-md-6 mb-3">
               <h6 className="text-secondary">District</h6>
-              <p className="mb-0">{event.district}</p>
+              <p className="mb-0">{event.district_name}</p>
             </div>
           </div>
 

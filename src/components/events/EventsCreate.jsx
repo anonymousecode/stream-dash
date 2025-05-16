@@ -294,18 +294,26 @@ const EventCreate = () => {
             </div>
 
             {/* Level */}
-            <div className="mb-4">
-              <label className="form-label">Level <span className="text-danger">*</span></label>
-              <input 
-                type="text" 
-                className={`form-control ${errors.level ? 'is-invalid' : ''}`} 
-                placeholder="Enter level (e.g., District, State)" 
-                name="level" 
-                value={form.level}
-                onChange={handleChange} 
-              />
-              {errors.level && <div className="invalid-feedback">{errors.level}</div>}
-            </div>
+<div className="mb-4">
+  <label className="form-label">Level <span className="text-danger">*</span></label><br />
+  <select
+    className={`form-control ${errors.level ? 'is-invalid' : ''}`}
+    name="level"
+    value={form.level}
+    onChange={(e) => {
+      setForm(prev => ({ ...prev, level: e.target.value }));
+      if (errors.level) {
+        setErrors(prev => ({ ...prev, level: null }));
+      }
+    }}
+  >
+    <option value="">Select</option>
+    <option value="BRC">BRC</option>
+    <option value="District">District</option>
+    <option value="State">State</option>
+  </select>
+  {errors.level && <div className="invalid-feedback">{errors.level}</div>}
+</div>
 
             {/* Host */}
             <div className="mb-4">
