@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyProjectDetails from "./MyProjectDetails";
-
+import { get_data } from '@/api/methods';
 const dummyProjects = [
   {
     name: "project-1",
@@ -32,7 +32,7 @@ const dummyProjects = [
     district: "District B",
     category: "Agriculture",
   },
-{
+  {
     name: "project-3",
     title: "AI Healthcare Diagnostic",
     description: "Developing AI models for diagnosing diseases.",
@@ -178,11 +178,12 @@ const MyProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("ongoing"); // Default filter to "ongoing"
+  const [projects, setProjects] = useState([]); // State to hold the projects data
 
   // Paginate the projects (6 per page)
   const projectsPerPage = 6;
-  const filteredProjects = dummyProjects.filter((project) => {
-    const isOngoing = new Date(project.start_date) <= new Date() && new Date(project.end_date) >= new Date();
+  const filteredProjects = projects.filter((project) => {
+    const isOngoing = new Date(project.starting_date) <= new Date() && new Date(project.completed_date) >= new Date();
     if (filter === "ongoing") return isOngoing;
     return !isOngoing; // If not ongoing, it's considered completed
   });
@@ -192,6 +193,17 @@ const MyProjects = () => {
 
   const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
 
+
+  useEffect(() => {
+    get_data("Project", ["name", "title", "description", "attach_image", "starting_date", "completed_date", "brc_name", "district_name", "project_category_name"], "").then((data) => {
+      setProjects(data);
+      console.log(data[0])
+      console.log(data[1])
+
+    });
+
+  }, []);
+
   return (
     <div className="container mt-5">
       {!selectedProject ? (
@@ -199,29 +211,29 @@ const MyProjects = () => {
           <h2>My Projects</h2>
           <div className="d-flex justify-content-center mb-3">
             <button
-  onClick={() => setFilter("ongoing")}
-  className={`btn ${filter === "ongoing" ? "btn-active" : "btn-light"}`}
-  style={{
-    backgroundColor: filter === "ongoing" ? "#F4B400" : "white", // Active: #F4B400, Inactive: white
-    color: filter === "ongoing" ? "white" : "#F4B400", // White text for active, yellow for inactive
-    border: filter === "ongoing" ? "1px solid #F4B400" : "1px solid #ddd", // Border color for active and inactive
-    margin: "0 10px",
-  }}
->
-  Ongoing
-</button>
-<button
-  onClick={() => setFilter("completed")}
-  className={`btn ${filter === "completed" ? "btn-active" : "btn-light"}`}
-  style={{
-    backgroundColor: filter === "completed" ? "#F4B400" : "white", // Active: #F4B400, Inactive: white
-    color: filter === "completed" ? "white" : "#F4B400", // White text for active, yellow for inactive
-    border: filter === "completed" ? "1px solid #F4B400" : "1px solid #ddd", // Border color for active and inactive
-    margin: "0 10px",
-  }}
->
-  Completed
-</button>
+              onClick={() => setFilter("ongoing")}
+              className={`btn ${filter === "ongoing" ? "btn-active" : "btn-light"}`}
+              style={{
+                backgroundColor: filter === "ongoing" ? "#F4B400" : "white", // Active: #F4B400, Inactive: white
+                color: filter === "ongoing" ? "white" : "#F4B400", // White text for active, yellow for inactive
+                border: filter === "ongoing" ? "1px solid #F4B400" : "1px solid #ddd", // Border color for active and inactive
+                margin: "0 10px",
+              }}
+            >
+              Ongoing
+            </button>
+            <button
+              onClick={() => setFilter("completed")}
+              className={`btn ${filter === "completed" ? "btn-active" : "btn-light"}`}
+              style={{
+                backgroundColor: filter === "completed" ? "#F4B400" : "white", // Active: #F4B400, Inactive: white
+                color: filter === "completed" ? "white" : "#F4B400", // White text for active, yellow for inactive
+                border: filter === "completed" ? "1px solid #F4B400" : "1px solid #ddd", // Border color for active and inactive
+                margin: "0 10px",
+              }}
+            >
+              Completed
+            </button>
           </div>
           <div className="row">
             {currentProjects.map((project) => (

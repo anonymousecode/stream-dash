@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { uploadFile, update } from '@/api/methods';
 
-const IdeaDevelopment = () => {
+const IdeaDevelopment = ({ projectId }) => {
   const [worksheetUrls, setWorksheetUrls] = useState({
     brainstorm: '',
     concept: '',
     outline: ''
   });
+  console.log("Project ID:", projectId);
 
   // const [form, setForm] = useState({
   //   brainstorm_map: '',
@@ -115,7 +116,7 @@ const IdeaDevelopment = () => {
       ]
     };
     console.log("Form data:", form);
-    const result = await update("Project", "P00006", form);
+    const result = await update("Project", projectId, form);
 
     if (!brainstormFile || !conceptFile || !outlineFile) {
       setErrorMessage('Please upload all three files: Brainstorming Map, Concept Map, and Project Outline.');

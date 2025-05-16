@@ -1,30 +1,53 @@
 'use client';
 import React, { useState } from 'react';
+import { uploadFile, update } from '@/api/methods';
+import { set } from 'lodash';
 
 const projectOptions = {
-  "Engineering Design": [
-    "Literature Review",
-    "Design / Concept / Flowchart",
-    "Gathering Requirements",
-    "Gantt Chart",
+  "engineering_design": [
+    "literature_review",
+    "design_chart",
+    "requirements",
+    "gantt_chart",
   ],
-  "Digital Product Development": [
-    "Literature Review",
-    "Gathering Requirements",
-    "System Design",
-    "Gantt Chart",
+  "digital_product_development": [
+    "literature_review",
+    "gathering_requirements",
+    "system_design",
+    "gantt_chart",
   ],
-  "Experimental Study": ["Literature Review", "Methodology", "Gantt Chart"],
-  "Non-Experimental Study": ["Literature Review", "Methodology", "Gantt Chart"],
-  "Qualitative Study": ["Literature Review", "Methodology", "Gantt Chart"],
-  "Others": ["Literature Review", "Methodology", "Gantt Chart"],
+  "experimental_study": ["literature_review", "methodology", "gantt_chart"],
+  "nonexperimental_study": ["literature_review", "methodology", "gantt_chart"],
+  "qualitative_study": ["literature_review", "methodology", "gantt_chart"],
+  "others": ["literature_review", "methodology", "gantt_chart"],
 };
 
-const PlanningPhase = () => {
+// const projectOptions = {
+//   "engineering_design": [
+//     "Literature Review",
+//     "Design / Concept / Flowchart",
+//     "Gathering Requirements",
+//     "Gantt Chart",
+//   ],
+//   "Digital Product Development": [
+//     "Literature Review",
+//     "Gathering Requirements",
+//     "System Design",
+//     "Gantt Chart",
+//   ],
+//   "Experimental Study": ["Literature Review", "Methodology", "Gantt Chart"],
+//   "Non-Experimental Study": ["Literature Review", "Methodology", "Gantt Chart"],
+//   "Qualitative Study": ["Literature Review", "Methodology", "Gantt Chart"],
+//   "Others": ["Literature Review", "Methodology", "Gantt Chart"],
+// };
+
+
+const PlanningPhase = ({ projectId }) => {
   const [selectedProject, setSelectedProject] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [form, setForm] = useState({})
 
   const handleProjectChange = (e) => {
     const selected = e.target.value;
@@ -34,8 +57,10 @@ const PlanningPhase = () => {
     setErrorMessage('');
   };
 
-  const handleFileChange = (e, field) => {
+  const handleFileChange = async (e, field) => {
     const file = e.target.files[0];
+    const uploded = await uploadFile(file);
+    setForm((prev) => ({ ...prev, [field]: uploded }));
     setUploadedFiles((prev) => ({ ...prev, [field]: file }));
     setFileNames((prev) => ({ ...prev, [field]: file?.name || '' }));
   };
@@ -54,7 +79,32 @@ const PlanningPhase = () => {
     document.getElementById(`${field}-upload`).value = '';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    // uploadedFiles.map((file) => {
+    //   console.log(file);
+    // });
+
+
+    // const uploadedResults = {};
+
+    // for (const [section, file] of Object.entries(uploadedFiles)) {
+    //   const uploadedUrl = await uploadFile(file);
+    //   uploadedResults[section] = uploadedUrl;
+    // }
+
+    // const entries = await Promise.all(
+    //   Object.entries(uploadedFiles).map(async ([section, file]) => {
+    //     const uploadedUrl = await uploadFile(file);
+    //     return [section, uploadedUrl];
+    //   })
+    // );
+
+    // const uploadedResults = Object.fromEntries(entries);
+    // console.log(uploadedResults);
+
+    ;
+
+
     e.preventDefault();
     if (!selectedProject) {
       setErrorMessage('Please select a project type first.');
@@ -71,6 +121,14 @@ const PlanningPhase = () => {
 
     setErrorMessage('');
     alert(`Submitted files:\n${requiredFields.map(f => `${f}: ${fileNames[f]}`).join('\n')}`);
+
+
+    const formData = { [selectedProject]: [form] }
+
+
+    console.log(formData)
+    const result = await update("Project", projectId, formData);
+    console.log(result);
   };
 
   const renderFileInputs = () => {
