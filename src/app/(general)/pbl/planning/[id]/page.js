@@ -1,16 +1,17 @@
 import React from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import ProblemIdentification from '@/components/pbl/IdeaDevelopment';
+import Planning from '@/components/pbl/Planning';
 
-const page = () => {
+const page = ({ params }) => {
+  const { id } = params;
   return (
     <>
-      {/* <PageHeader title="Problem Identification" />
+      <PageHeader title="Planning" />
       <div className='main-content'>
         <div className='row'>
-          <ProblemIdentification />
+          <Planning projectId={id} />
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

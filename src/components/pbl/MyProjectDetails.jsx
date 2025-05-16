@@ -46,9 +46,9 @@ const MyProjectDetails = ({ project, onBack }) => {
           <p style={{ color: "#333" }}><strong>Project Goal:</strong> {project.goal}</p>
           <p style={{ color: "#333" }}><strong>Task:</strong> {project.task}</p>
           <p style={{ color: "#333" }}><strong>School:</strong> {project.school}</p>
-          <p style={{ color: "#333" }}><strong>BRC:</strong> {project.brc}</p>
-          <p style={{ color: "#333" }}><strong>District:</strong> {project.district}</p>
-          <p style={{ color: "#333" }}><strong>Category:</strong> {project.category}</p>
+          <p style={{ color: "#333" }}><strong>BRC:</strong> {project.brc_name}</p>
+          <p style={{ color: "#333" }}><strong>District:</strong> {project.district_name}</p>
+          <p style={{ color: "#333" }}><strong>Category:</strong> {project.project_category_name}</p>
         </div>
 
         <div className="my-5">
@@ -66,7 +66,7 @@ const MyProjectDetails = ({ project, onBack }) => {
         <div className="row g-3">
           {phaseRoutes.map((route, i) => (
             <div key={route} className="col-md-3">
-              <Link
+              {/* <Link
                 href={`/pbl/${route}`}
                 className="btn"
                 style={{
@@ -88,6 +88,8 @@ const MyProjectDetails = ({ project, onBack }) => {
                   e.target.style.backgroundColor = "#F4B400";
                 }}
               >
+                Phase {i + 1} */}
+              <Link href={`/pbl/${route}/${project.name}`} >
                 Phase {i + 1}
               </Link>
             </div>

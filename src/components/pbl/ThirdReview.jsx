@@ -1,16 +1,20 @@
 'use client';
 import React, { useState } from 'react';
+import { uploadFile, update } from '@/api/methods';
 
-const ThirdReview = () => {
+const ThirdReview = ({ projectId }) => {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [form, setForm] = useState({})
 
-  const requiredField = 'Project Plan';
+  const requiredField = 'presentation';
   const optionalField = 'Revised Report';
 
-  const handleFileChange = (e, field) => {
+  const handleFileChange = async (e, field) => {
     const file = e.target.files[0];
+    const fileName = await uploadFile(file, 0);
+    setForm((prev) => ({ ...prev, [field]: fileName }));
     setUploadedFiles((prev) => ({ ...prev, [field]: file }));
     setFileNames((prev) => ({ ...prev, [field]: file?.name || '' }));
   };
@@ -29,7 +33,7 @@ const ThirdReview = () => {
     document.getElementById(`${field}-upload`).value = '';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!uploadedFiles[requiredField]) {
@@ -39,6 +43,12 @@ const ThirdReview = () => {
 
     setErrorMessage('');
     alert(`Submitted files:\n${[requiredField, optionalField].map(f => `${f}: ${fileNames[f] || 'Not uploaded'}`).join('\n')}`);
+
+
+    const formData = { ["third_review"]: [form] }
+    console.log('Form data to be sent:', formData);
+    const result = await update("Project", projectId, formData);
+    console.log(result);
   };
 
   const renderFileInput = (field, isRequired) => (

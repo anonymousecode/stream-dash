@@ -1,16 +1,17 @@
 import React from 'react';
 import PageHeader from '@/components/shared/pageHeader/PageHeader';
-import ProblemIdentification from '@/components/pbl/IdeaDevelopment';
+import ThirdReview from '@/components/pbl/ThirdReview';
 
-const page = () => {
+const page = ({ params }) => {
+  const { id } = params
   return (
     <>
-      {/* <PageHeader title="Problem Identification" />
+      <PageHeader title="Third Review Submission" />
       <div className='main-content'>
         <div className='row'>
-          <ProblemIdentification />
+          <ThirdReview projectId={id} />
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

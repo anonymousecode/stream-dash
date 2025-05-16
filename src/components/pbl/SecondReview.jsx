@@ -1,19 +1,27 @@
 'use client';
 import React, { useState } from 'react';
+import { uploadFile, update } from '@/api/methods';
+import { result, set } from 'lodash';
 
-const SecondReview = () => {
+const SecondReview = ({ projectId }) => {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [form, setForm] = useState({})
 
-  const requiredField = 'Project Plan';
+  const requiredField = 'presentation';
   const optionalField = 'Revised Report';
 
-  const handleFileChange = (e, field) => {
+  const handleFileChange = async (e, field) => {
     const file = e.target.files[0];
+    const fileName = await uploadFile(file, 0);
+    setForm((prev) => ({ ...prev, [field]: fileName }));
+
     setUploadedFiles((prev) => ({ ...prev, [field]: file }));
     setFileNames((prev) => ({ ...prev, [field]: file?.name || '' }));
   };
+
+
 
   const handleRemoveFile = (field) => {
     setUploadedFiles((prev) => {
@@ -29,8 +37,9 @@ const SecondReview = () => {
     document.getElementById(`${field}-upload`).value = '';
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Uploaded files:', uploadedFiles);
 
     if (!uploadedFiles[requiredField]) {
       setErrorMessage('Please upload the Project Plan.');
@@ -39,6 +48,12 @@ const SecondReview = () => {
 
     setErrorMessage('');
     alert(`Submitted files:\n${[requiredField, optionalField].map(f => `${f}: ${fileNames[f] || 'Not uploaded'}`).join('\n')}`);
+    console.log('Form data:', form);
+
+    const formData = { ["second_review"]: [form] }
+    console.log('Form data to be sent:', formData);
+    const result = await update("Project", projectId, formData);
+    console.log(result);
   };
 
   const renderFileInput = (field, isRequired) => (
