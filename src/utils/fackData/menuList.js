@@ -165,6 +165,12 @@ export const menuList = [
                 name: "My Projects",
                 path: "/pbl/my-projects",
                 subdropdownMenu: false
+            },
+            {
+                id: 6,
+                name: "Verify Projects",
+                path: "/pbl/verify",
+                subdropdownMenu: false
             }
         ]
     },
