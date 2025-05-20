@@ -1,65 +1,751 @@
 // 
 
+// 'use client'
+// import React, { useState, useEffect } from 'react'
+// import useDatePicker from '@/hooks/useDatePicker'
+// import useLocationData from '@/hooks/useLocationData'
+// import Loading from '@/components/shared/Loading'
+// import { insertDoc, uploadFile, get_data } from '@/api/methods'
+
+// const EventCreate = () => {
+//   const [districts, setDistricts] = useState([])
+//   const [states, setStates] = useState([])
+//   const [brcs, setBrcs] = useState([])
+//   const [labs, setLabs] = useState([])
+
+//   const [selectedLabType, setSelectedLabType] = useState(null)
+//   const [stateValue, setStateValue] = useState('')
+//   const { startDate, setStartDate } = useDatePicker()
+//   const { loading } = useLocationData()
+
+//   const [eventImages, setEventImages] = useState(null)
+//   const [partnerLogos, setPartnerLogos] = useState([])
+//   const [galleryImages, setGalleryImages] = useState([])
+
+//   const [selectedState, setSelectedState] = useState(null)
+//   const [selectedDistrict, setSelectedDistrict] = useState(null)
+//   const [showSuccessPopup, setShowSuccessPopup] = useState(false)
+//   const [errors, setErrors] = useState({})
+
+//   const [form, setForm] = useState({
+//     title: '', 
+//     short_description: '', 
+//     description: '', 
+//     event_image: '',
+//     venue: '', 
+//     place: '', 
+//     level: '', 
+//     host: '', 
+//     time: '', 
+//     date: '', 
+//     partner_name: '', 
+//     credit: '', 
+//     brc: '', 
+//     district: '', 
+//     lab_type: '', 
+//     state: ''
+//   });
+
+//   const handleChange = (e) => {
+//     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+//     // Clear the error for this field when the user makes a change
+//     if (errors[e.target.name]) {
+//       setErrors(prev => ({ ...prev, [e.target.name]: null }));
+//     }
+//   };
+
+//   const validateForm = () => {
+//     const newErrors = {};
+//     const requiredFields = [
+//       'title', 'short_description', 'description', 'venue', 
+//       'place', 'level', 'date', 'state', 'district', 'brc', 'lab_type'
+//     ];
+    
+//     requiredFields.forEach(field => {
+//       if (!form[field]) {
+//         newErrors[field] = 'This field is required';
+//       }
+//     });
+    
+//     if (!eventImages) {
+//       newErrors.event_image = 'Event image is required';
+//     }
+    
+//     setErrors(newErrors);
+//     return Object.keys(newErrors).length === 0;
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+    
+//     if (!validateForm()) {
+//       return;
+//     }
+    
+//     try {
+//       const imageUrl = eventImages ? await uploadFile(eventImages, 0) : '';
+      
+//       const updatedForm = {
+//         ...form,
+//         event_image: imageUrl,
+//       };
+      
+//       const result = await insertDoc("Events", updatedForm);
+      
+//       if (result) {
+//         setShowSuccessPopup(true);
+//         // Reset form after successful submission
+//         setForm({
+//           title: '', short_description: '', description: '', event_image: '',
+//           venue: '', place: '', level: '', host: '', time: '', date: '', 
+//           partner_name: '', credit: '', brc: '', district: '', lab_type: '', state: ''
+//         });
+//         setEventImages(null);
+//         setPartnerLogos([]);
+//         setGalleryImages([]);
+        
+//         // Hide success popup after 5 seconds
+//         setTimeout(() => {
+//           setShowSuccessPopup(false);
+//         }, 5000);
+//       }
+//     } catch (error) {
+//       console.error("Error submitting form:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     const fetchStates = async () => {
+//       const res = await get_data("State", ["state", "name"], "{}");
+      
+//       if (!res.error) {
+//         setStates(res);
+//       } else {
+//         console.error("Error fetching states:", res.error);
+//       }
+//     };
+
+//     fetchStates();
+//   }, []);
+
+//   useEffect(() => {
+//     const fetchDistricts = async () => {
+//       if (!selectedState) return;
+      
+//       const res = await get_data("District", ["district_name", "name"], [["state_id", "=", selectedState]]);
+
+//       if (!res.error) {
+//         setDistricts(res);
+//       } else {
+//         console.error("Error fetching districts:", res.error);
+//       }
+//     };
+
+//     fetchDistricts();
+//   }, [selectedState]);
+
+//   useEffect(() => {
+//     const fetchBRCs = async () => {
+//       if (!selectedDistrict) return;
+      
+//       const res = await get_data("BRC", ["brc_name", "name"], [["district_id", "=", selectedDistrict]]);
+
+//       if (!res.error) {
+//         setBrcs(res);
+//       } else {
+//         console.error("Error fetching BRCs:", res.error);
+//       }
+//     };
+
+//     fetchBRCs();
+//   }, [selectedDistrict]);
+
+//   useEffect(() => {
+//     const fetchLabs = async () => {
+//       const res = await get_data("Lab", ["title", "name"], "{}");
+
+//       if (!res.error) {
+//         setLabs(res);
+//       } else {
+//         console.error("Error fetching labs:", res.error);
+//       }
+//     };
+
+//     fetchLabs();
+//   }, []);
+
+//   return (
+//     <>
+//       {loading && <Loading />}
+      
+//       {/* Success Popup */}
+//       {showSuccessPopup && (
+//         <div className="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded shadow-lg" style={{ zIndex: 1050, width: '400px' }}>
+//           <div className="text-center">
+//             <div className="text-success mb-3">
+//               <i className="fas fa-check-circle fa-3x"></i>
+//             </div>
+//             <h4 className="mb-2">Success!</h4>
+//             <p className="mb-0">Event has been submitted successfully!</p>
+//           </div>
+//         </div>
+//       )}
+
+//       <div className="col-xl-12">
+//         <div className="card stretch stretch-full">
+//           <div className="card-body">
+
+//             {/* Title */}
+//             <div className="mb-4">
+//               <label className="form-label">Title <span className="text-danger">*</span></label>
+//               <input 
+//                 type="text" 
+//                 className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
+//                 placeholder="Event Title" 
+//                 name="title" 
+//                 value={form.title}
+//                 onChange={handleChange} 
+//               />
+//               {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+//             </div>
+
+//             {/* Short Description */}
+//             <div className="mb-4">
+//               <label className="form-label">Short Description <span className="text-danger">*</span></label>
+//               <input 
+//                 type="text" 
+//                 className={`form-control ${errors.short_description ? 'is-invalid' : ''}`} 
+//                 placeholder="Short description" 
+//                 name="short_description" 
+//                 value={form.short_description}
+//                 onChange={handleChange} 
+//               />
+//               {errors.short_description && <div className="invalid-feedback">{errors.short_description}</div>}
+//             </div>
+
+//             {/* Description */}
+//             <div className="mb-4">
+//               <label className="form-label">Description <span className="text-danger">*</span></label>
+//               <textarea 
+//                 className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
+//                 rows={4} 
+//                 placeholder="Full description" 
+//                 name="description" 
+//                 value={form.description}
+//                 onChange={handleChange}
+//               ></textarea>
+//               {errors.description && <div className="invalid-feedback">{errors.description}</div>}
+//             </div>
+
+//             {/* Event Images */}
+//             <div className="mb-4">
+//               <label className="form-label">Event Image <span className="text-danger">*</span></label>
+//               <input
+//                 type="file"
+//                 className={`form-control ${errors.event_image ? 'is-invalid' : ''}`}
+//                 accept="image/*"
+//                 name='event_image'
+//                 onChange={(e) => {
+//                   setEventImages(e.target.files[0]);
+//                   if (errors.event_image) {
+//                     setErrors(prev => ({ ...prev, event_image: null }));
+//                   }
+//                 }}
+//               />
+//               {errors.event_image && <div className="invalid-feedback">{errors.event_image}</div>}
+//               <div className="mt-3 d-flex gap-2 flex-wrap">
+//                 {eventImages &&
+//                   <img
+//                     src={URL.createObjectURL(eventImages)}
+//                     alt="event"
+//                     className="rounded"
+//                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+//                   />
+//                 }
+//               </div>
+//             </div>
+
+//             {/* Venue */}
+//             <div className="mb-4">
+//               <label className="form-label">Venue <span className="text-danger">*</span></label>
+//               <input 
+//                 type="text" 
+//                 className={`form-control ${errors.venue ? 'is-invalid' : ''}`} 
+//                 placeholder="Venue name" 
+//                 name="venue" 
+//                 value={form.venue}
+//                 onChange={handleChange} 
+//               />
+//               {errors.venue && <div className="invalid-feedback">{errors.venue}</div>}
+//             </div>
+
+//             {/* Place */}
+//             <div className="mb-4">
+//               <label className="form-label">Place <span className="text-danger">*</span></label>
+//               <input 
+//                 type="text" 
+//                 className={`form-control ${errors.place ? 'is-invalid' : ''}`} 
+//                 placeholder="City/Town/Village" 
+//                 name="place" 
+//                 value={form.place}
+//                 onChange={handleChange} 
+//               />
+//               {errors.place && <div className="invalid-feedback">{errors.place}</div>}
+//             </div>
+
+//             {/* Level */}
+// <div className="mb-4">
+//   <label className="form-label">Level <span className="text-danger">*</span></label><br />
+//   <select
+//     className={`form-control ${errors.level ? 'is-invalid' : ''}`}
+//     name="level"
+//     value={form.level}
+//     onChange={(e) => {
+//       setForm(prev => ({ ...prev, level: e.target.value }));
+//       if (errors.level) {
+//         setErrors(prev => ({ ...prev, level: null }));
+//       }
+//     }}
+//   >
+//     <option value="">Select</option>
+//     <option value="BRC">BRC</option>
+//     <option value="District">District</option>
+//     <option value="State">State</option>
+//   </select>
+//   {errors.level && <div className="invalid-feedback">{errors.level}</div>}
+// </div>
+
+//             {/* Host */}
+//             <div className="mb-4">
+//               <label className="form-label">Host</label>
+//               <input 
+//                 type="text" 
+//                 className="form-control" 
+//                 placeholder="Organizer / Host" 
+//                 name="host" 
+//                 value={form.host}
+//                 onChange={handleChange} 
+//               />
+//             </div>
+
+//             {/* Time and Date */}
+//             <div className="row">
+//               <div className="col-lg-6 mb-4">
+//                 <label className="form-label">Time</label>
+//                 <input 
+//                   type="time" 
+//                   className="form-control" 
+//                   name="time" 
+//                   value={form.time ? form.time.substring(0, 5) : ''}
+//                   onChange={(e) => {
+//                     const fullTime = e.target.value + ":00"; // always adds seconds
+//                     setForm(prev => ({ ...prev, time: fullTime }));
+//                   }} 
+//                 />
+//               </div>
+//               <div className="col-lg-6 mb-4">
+//                 <label className="form-label">Date <span className="text-danger">*</span></label>
+//                 <input 
+//                   type="date" 
+//                   className={`form-control ${errors.date ? 'is-invalid' : ''}`} 
+//                   name="date" 
+//                   value={form.date}
+//                   onChange={handleChange} 
+//                 />
+//                 {errors.date && <div className="invalid-feedback">{errors.date}</div>}
+//               </div>
+//             </div>
+
+//             {/* Partner Name */}
+//             <div className="mb-4">
+//               <label className="form-label">Partner Name</label>
+//               <input 
+//                 type="text" 
+//                 className="form-control" 
+//                 placeholder="Partner Organization" 
+//                 name="partner_name" 
+//                 value={form.partner_name}
+//                 onChange={handleChange} 
+//               />
+//             </div>
+
+//             {/* Partner Logos */}
+//             <div className="mb-4">
+//               <label className="form-label">Partner Logo</label>
+//               <input
+//                 type="file"
+//                 className="form-control"
+//                 accept="image/*"
+//                 multiple
+//                 onChange={(e) => setPartnerLogos(Array.from(e.target.files))}
+//               />
+//               <div className="mt-3 d-flex gap-2 flex-wrap">
+//                 {partnerLogos.map((file, index) => (
+//                   <img
+//                     key={index}
+//                     src={URL.createObjectURL(file)}
+//                     alt={`partner-${index}`}
+//                     className="rounded"
+//                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+//                   />
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Credit */}
+//             <div className="mb-4">
+//               <label className="form-label">Credit</label>
+//               <input 
+//                 type="text" 
+//                 className="form-control" 
+//                 placeholder="Credit details (if any)" 
+//                 name="credit" 
+//                 value={form.credit}
+//                 onChange={handleChange} 
+//               />
+//             </div>
+
+//             {/* State */}
+//             <div className="mb-4">
+//               <label className="form-label">State <span className="text-danger">*</span></label><br />
+//               <select 
+//                 className={`form-control ${errors.state ? 'is-invalid' : ''}`} 
+//                 name="state" 
+//                 value={form.state}
+//                 onChange={(e) => {
+//                   setForm(prev => ({ ...prev, state: e.target.value }));
+//                   setSelectedState(e.target.value);
+//                   if (errors.state) {
+//                     setErrors(prev => ({ ...prev, state: null }));
+//                   }
+//                 }}
+//               >
+//                 <option value="">Select</option>
+//                 {states.map((state, id) => (
+//                   <option key={id} value={state.name}>
+//                     {state.state}
+//                   </option>
+//                 ))}
+//               </select>
+//               {errors.state && <div className="invalid-feedback">{errors.state}</div>}
+//             </div>
+
+//             {/* District */}
+//             <div className="mb-4">
+//               <label className="form-label">District <span className="text-danger">*</span></label><br />
+//               <select 
+//                 className={`form-control ${errors.district ? 'is-invalid' : ''}`} 
+//                 name="district" 
+//                 value={form.district}
+//                 onChange={(e) => {
+//                   setForm(prev => ({ ...prev, district: e.target.value }));
+//                   setSelectedDistrict(e.target.value);
+//                   if (errors.district) {
+//                     setErrors(prev => ({ ...prev, district: null }));
+//                   }
+//                 }}
+//               >
+//                 <option value="">Select</option>
+//                 {districts.map((dist) => (
+//                   <option key={dist.name} value={dist.name}>
+//                     {dist.district_name}
+//                   </option>
+//                 ))}
+//               </select>
+//               {errors.district && <div className="invalid-feedback">{errors.district}</div>}
+//             </div>
+
+//             {/* BRC */}
+//             <div className="mb-4">
+//               <label className="form-label">BRC <span className="text-danger">*</span></label><br />
+//               <select 
+//                 className={`form-control ${errors.brc ? 'is-invalid' : ''}`} 
+//                 name="brc" 
+//                 value={form.brc}
+//                 onChange={handleChange}
+//               >
+//                 <option value="">Select</option>
+//                 {brcs.map((brc) => (
+//                   <option key={brc.name} value={brc.name}>
+//                     {brc.brc_name}
+//                   </option>
+//                 ))}
+//               </select>
+//               {errors.brc && <div className="invalid-feedback">{errors.brc}</div>}
+//             </div>
+
+//             {/* LAB TYPE */}
+//             <div className="mb-4">
+//               <label className="form-label">Lab Type <span className="text-danger">*</span></label><br />
+//               <select 
+//                 className={`form-control ${errors.lab_type ? 'is-invalid' : ''}`} 
+//                 name="lab_type" 
+//                 value={form.lab_type}
+//                 onChange={handleChange}
+//               >
+//                 <option value="">Select</option>
+//                 {labs.map((lab) => (
+//                   <option key={lab.name} value={lab.name}>
+//                     {lab.title}
+//                   </option>
+//                 ))}
+//               </select>
+//               {errors.lab_type && <div className="invalid-feedback">{errors.lab_type}</div>}
+//             </div>
+
+//             {/* Event Gallery */}
+//             <div className="mb-4">
+//               <label className="form-label">Event Gallery</label>
+//               <input
+//                 type="file"
+//                 className="form-control"
+//                 accept="image/*"
+//                 multiple
+//                 onChange={(e) => setGalleryImages(Array.from(e.target.files))}
+//               />
+//               <div className="mt-3 d-flex gap-2 flex-wrap">
+//                 {galleryImages.map((file, index) => (
+//                   <img
+//                     key={index}
+//                     src={URL.createObjectURL(file)}
+//                     alt={`gallery-${index}`}
+//                     className="rounded"
+//                     style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+//                   />
+//                 ))}
+//               </div>
+
+//               <div className="mb-4">
+//                 <button
+//                   type="button"
+//                   className="btn btn-primary mt-3"
+//                   onClick={handleSubmit}
+//                 >
+//                   Submit
+//                 </button>
+//               </div>
+//             </div>
+
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   )
+// }
+
+// export default EventCreate
+
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import useDatePicker from '@/hooks/useDatePicker'
 import useLocationData from '@/hooks/useLocationData'
 import Loading from '@/components/shared/Loading'
 import { insertDoc, uploadFile, get_data } from '@/api/methods'
+import "trix"
+import "trix/dist/trix.css"
+
+// Form initial state - defined outside component to avoid recreating on each render
+const initialForm = {
+  title: '', 
+  short_description: '', 
+  description: '', 
+  event_image: '',
+  venue: '', 
+  place: '', 
+  level: '', 
+  host: '', 
+  time: '', 
+  date: '', 
+  partner_name: '', 
+  credit: '', 
+  brc: '', 
+  district: '', 
+  lab_type: '', 
+  state: ''
+};
 
 const EventCreate = () => {
-  const [districts, setDistricts] = useState([])
-  const [states, setStates] = useState([])
-  const [brcs, setBrcs] = useState([])
-  const [labs, setLabs] = useState([])
-
-  const [selectedLabType, setSelectedLabType] = useState(null)
-  const [stateValue, setStateValue] = useState('')
-  const { startDate, setStartDate } = useDatePicker()
-  const { loading } = useLocationData()
-
-  const [eventImages, setEventImages] = useState(null)
-  const [partnerLogos, setPartnerLogos] = useState([])
-  const [galleryImages, setGalleryImages] = useState([])
-
-  const [selectedState, setSelectedState] = useState(null)
-  const [selectedDistrict, setSelectedDistrict] = useState(null)
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false)
-  const [errors, setErrors] = useState({})
-
-  const [form, setForm] = useState({
-    title: '', 
-    short_description: '', 
-    description: '', 
-    event_image: '',
-    venue: '', 
-    place: '', 
-    level: '', 
-    host: '', 
-    time: '', 
-    date: '', 
-    partner_name: '', 
-    credit: '', 
-    brc: '', 
-    district: '', 
-    lab_type: '', 
-    state: ''
+  const router = useRouter();
+  
+  // Combined state objects to reduce number of state variables
+  const [form, setForm] = useState(initialForm);
+  const [locationData, setLocationData] = useState({
+    districts: [],
+    states: [],
+    brcs: [],
+    labs: []
+  });
+  const [mediaFiles, setMediaFiles] = useState({
+    eventImage: null,
+    partnerLogos: [],
+    galleryImages: []
+  });
+  const [selectedLocations, setSelectedLocations] = useState({
+    state: null,
+    district: null,
+    labType: null
+  });
+  const [uiState, setUiState] = useState({
+    errors: {},
+    showSuccessPopup: false,
+    isSubmitting: false
   });
 
-  const handleChange = (e) => {
-    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    // Clear the error for this field when the user makes a change
-    if (errors[e.target.name]) {
-      setErrors(prev => ({ ...prev, [e.target.name]: null }));
-    }
-  };
+  const { startDate, setStartDate } = useDatePicker();
+  const { loading } = useLocationData();
 
-  const validateForm = () => {
-    const newErrors = {};
+  // Memoized error setter to reduce function creation
+  const clearError = useCallback((fieldName) => {
+    setUiState(prev => ({
+      ...prev,
+      errors: {
+        ...prev.errors,
+        [fieldName]: null
+      }
+    }));
+  }, []);
+
+  // Form change handler with error clearing
+  const handleChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    
+    // Only clear errors if they exist for this field
+    if (uiState.errors[name]) {
+      clearError(name);
+    }
+  }, [uiState.errors, clearError]);
+
+  // Fetch states - only runs once
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const res = await get_data("State", ["state", "name"], "{}");
+        if (!res.error) {
+          setLocationData(prev => ({ ...prev, states: res }));
+        }
+      } catch (error) {
+        console.error("Error fetching states:", error);
+      }
+    };
+
+    fetchStates();
+  }, []);
+
+  // Fetch districts - only runs when selectedState changes
+  useEffect(() => {
+    const fetchDistricts = async () => {
+      if (!selectedLocations.state) return;
+      
+      try {
+        const res = await get_data(
+          "District", 
+          ["district_name", "name"], 
+          [["state_id", "=", selectedLocations.state]]
+        );
+
+        if (!res.error) {
+          setLocationData(prev => ({ ...prev, districts: res }));
+        }
+      } catch (error) {
+        console.error("Error fetching districts:", error);
+      }
+    };
+
+    fetchDistricts();
+  }, [selectedLocations.state]);
+
+  // Fetch BRCs - only runs when selectedDistrict changes
+  useEffect(() => {
+    const fetchBRCs = async () => {
+      if (!selectedLocations.district) return;
+      
+      try {
+        const res = await get_data(
+          "BRC", 
+          ["brc_name", "name"], 
+          [["district_id", "=", selectedLocations.district]]
+        );
+
+        if (!res.error) {
+          setLocationData(prev => ({ ...prev, brcs: res }));
+        }
+      } catch (error) {
+        console.error("Error fetching BRCs:", error);
+      }
+    };
+
+    fetchBRCs();
+  }, [selectedLocations.district]);
+
+  // Fetch labs - only runs once
+  useEffect(() => {
+    const fetchLabs = async () => {
+      try {
+        const res = await get_data("Lab", ["title", "name"], "{}");
+        if (!res.error) {
+          setLocationData(prev => ({ ...prev, labs: res }));
+        }
+      } catch (error) {
+        console.error("Error fetching labs:", error);
+      }
+    };
+
+    fetchLabs();
+  }, []);
+
+  // Set up Trix editor listeners
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    const handleTrixChange = (e) => {
+      const editorId = e.target.getAttribute('input');
+      const fieldName = editorId; // In this case, ID matches field name
+      
+      setForm(prev => ({ 
+        ...prev, 
+        [fieldName]: e.target.innerHTML 
+      }));
+      
+      if (uiState.errors[fieldName]) {
+        clearError(fieldName);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener("trix-change", handleTrixChange);
+    
+    // Cleanup
+    return () => {
+      document.removeEventListener("trix-change", handleTrixChange);
+    };
+  }, [clearError, uiState.errors]);
+
+  // Reset Trix editors
+  const resetTrixEditors = useCallback(() => {
+    if (typeof window === "undefined") return;
+    
+    const shortDescEditor = document.querySelector("trix-editor[input='short_description']");
+    const fullDescEditor = document.querySelector("trix-editor[input='description']");
+    
+    if (shortDescEditor) {
+      shortDescEditor.editor.loadHTML("");
+    }
+    
+    if (fullDescEditor) {
+      fullDescEditor.editor.loadHTML("");
+    }
+  }, []);
+
+  // Form validation
+  const validateForm = useCallback(() => {
     const requiredFields = [
       'title', 'short_description', 'description', 'venue', 
       'place', 'level', 'date', 'state', 'district', 'brc', 'lab_type'
     ];
+    
+    const newErrors = {};
     
     requiredFields.forEach(field => {
       if (!form[field]) {
@@ -67,14 +753,35 @@ const EventCreate = () => {
       }
     });
     
-    if (!eventImages) {
+    if (!mediaFiles.eventImage) {
       newErrors.event_image = 'Event image is required';
     }
     
-    setErrors(newErrors);
+    setUiState(prev => ({
+      ...prev,
+      errors: newErrors
+    }));
+    
     return Object.keys(newErrors).length === 0;
-  };
+  }, [form, mediaFiles.eventImage]);
 
+  // Reset form completely
+  const resetForm = useCallback(() => {
+    setForm(initialForm);
+    setMediaFiles({
+      eventImage: null,
+      partnerLogos: [],
+      galleryImages: []
+    });
+    resetTrixEditors();
+  }, [resetTrixEditors]);
+
+  // Navigate to events management
+  const goToEventManagement = useCallback(() => {
+    router.push('/events/manage');
+  }, [router]);
+
+  // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -83,7 +790,11 @@ const EventCreate = () => {
     }
     
     try {
-      const imageUrl = eventImages ? await uploadFile(eventImages, 0) : '';
+      // Set submitting state to prevent multiple submissions
+      setUiState(prev => ({ ...prev, isSubmitting: true }));
+      
+      const imageUrl = mediaFiles.eventImage ? 
+        await uploadFile(mediaFiles.eventImage, 0) : '';
       
       const updatedForm = {
         ...form,
@@ -93,106 +804,131 @@ const EventCreate = () => {
       const result = await insertDoc("Events", updatedForm);
       
       if (result) {
-        setShowSuccessPopup(true);
-        // Reset form after successful submission
-        setForm({
-          title: '', short_description: '', description: '', event_image: '',
-          venue: '', place: '', level: '', host: '', time: '', date: '', 
-          partner_name: '', credit: '', brc: '', district: '', lab_type: '', state: ''
-        });
-        setEventImages(null);
-        setPartnerLogos([]);
-        setGalleryImages([]);
+        // Show success popup
+        setUiState(prev => ({ 
+          ...prev, 
+          showSuccessPopup: true,
+          isSubmitting: false 
+        }));
         
-        // Hide success popup after 5 seconds
+        // Reset form
+        resetForm();
+        
+        // Hide success popup after delay
         setTimeout(() => {
-          setShowSuccessPopup(false);
-        }, 5000);
+          setUiState(prev => ({ ...prev, showSuccessPopup: false }));
+        }, 3000);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setUiState(prev => ({ ...prev, isSubmitting: false }));
     }
   };
 
-  useEffect(() => {
-    const fetchStates = async () => {
-      const res = await get_data("State", ["state", "name"], "{}");
+  // Image change handler - memoized to prevent recreation
+  const handleImageChange = useCallback((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMediaFiles(prev => ({
+        ...prev,
+        eventImage: file
+      }));
       
-      if (!res.error) {
-        setStates(res);
-      } else {
-        console.error("Error fetching states:", res.error);
+      if (uiState.errors.event_image) {
+        clearError('event_image');
       }
-    };
+    }
+  }, [uiState.errors, clearError]);
 
-    fetchStates();
+  // Memoize partner logos handler
+  const handlePartnerLogosChange = useCallback((e) => {
+    setMediaFiles(prev => ({
+      ...prev,
+      partnerLogos: Array.from(e.target.files)
+    }));
   }, []);
 
-  useEffect(() => {
-    const fetchDistricts = async () => {
-      if (!selectedState) return;
-      
-      const res = await get_data("District", ["district_name", "name"], [["state_id", "=", selectedState]]);
-
-      if (!res.error) {
-        setDistricts(res);
-      } else {
-        console.error("Error fetching districts:", res.error);
-      }
-    };
-
-    fetchDistricts();
-  }, [selectedState]);
-
-  useEffect(() => {
-    const fetchBRCs = async () => {
-      if (!selectedDistrict) return;
-      
-      const res = await get_data("BRC", ["brc_name", "name"], [["district_id", "=", selectedDistrict]]);
-
-      if (!res.error) {
-        setBrcs(res);
-      } else {
-        console.error("Error fetching BRCs:", res.error);
-      }
-    };
-
-    fetchBRCs();
-  }, [selectedDistrict]);
-
-  useEffect(() => {
-    const fetchLabs = async () => {
-      const res = await get_data("Lab", ["title", "name"], "{}");
-
-      if (!res.error) {
-        setLabs(res);
-      } else {
-        console.error("Error fetching labs:", res.error);
-      }
-    };
-
-    fetchLabs();
+  // Memoize gallery images handler
+  const handleGalleryImagesChange = useCallback((e) => {
+    setMediaFiles(prev => ({
+      ...prev,
+      galleryImages: Array.from(e.target.files)
+    }));
   }, []);
+
+  // Memoize dropdown handlers to prevent recreation
+  const handleStateChange = useCallback((e) => {
+    const value = e.target.value;
+    setForm(prev => ({ ...prev, state: value }));
+    setSelectedLocations(prev => ({ ...prev, state: value }));
+    
+    if (uiState.errors.state) {
+      clearError('state');
+    }
+  }, [uiState.errors, clearError]);
+
+  const handleDistrictChange = useCallback((e) => {
+    const value = e.target.value;
+    setForm(prev => ({ ...prev, district: value }));
+    setSelectedLocations(prev => ({ ...prev, district: value }));
+    
+    if (uiState.errors.district) {
+      clearError('district');
+    }
+  }, [uiState.errors, clearError]);
+
+  // Memoized level options
+  const levelOptions = useMemo(() => (
+    <>
+      <option value="">Select</option>
+      <option value="BRC">BRC</option>
+      <option value="District">District</option>
+      <option value="State">State</option>
+    </>
+  ), []);
 
   return (
     <>
       {loading && <Loading />}
       
       {/* Success Popup */}
-      {showSuccessPopup && (
+      {uiState.showSuccessPopup && (
         <div className="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded shadow-lg" style={{ zIndex: 1050, width: '400px' }}>
           <div className="text-center">
             <div className="text-success mb-3">
               <i className="fas fa-check-circle fa-3x"></i>
             </div>
             <h4 className="mb-2">Success!</h4>
-            <p className="mb-0">Event has been submitted successfully!</p>
+            <p className="mb-3">Event has been submitted successfully!</p>
+            <div className="d-flex justify-content-center gap-2">
+              <button 
+                className="btn btn-outline-secondary" 
+                onClick={resetForm}
+              >
+                Add Another Event
+              </button>
+              <button 
+                className="btn btn-primary" 
+                onClick={goToEventManagement}
+              >
+                Manage Events
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       <div className="col-xl-12">
         <div className="card stretch stretch-full">
+          <div className="card-header d-flex justify-content-between align-items-center">
+            <h5 className="card-title mb-0">Create New Event</h5>
+            <button 
+              className="btn btn-outline-secondary btn-sm" 
+              onClick={goToEventManagement}
+            >
+              Back to Events
+            </button>
+          </div>
           <div className="card-body">
 
             {/* Title */}
@@ -200,41 +936,29 @@ const EventCreate = () => {
               <label className="form-label">Title <span className="text-danger">*</span></label>
               <input 
                 type="text" 
-                className={`form-control ${errors.title ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.title ? 'is-invalid' : ''}`} 
                 placeholder="Event Title" 
                 name="title" 
                 value={form.title}
                 onChange={handleChange} 
               />
-              {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+              {uiState.errors.title && <div className="invalid-feedback">{uiState.errors.title}</div>}
             </div>
 
-            {/* Short Description */}
+            {/* Short Description with Trix */}
             <div className="mb-4">
               <label className="form-label">Short Description <span className="text-danger">*</span></label>
-              <input 
-                type="text" 
-                className={`form-control ${errors.short_description ? 'is-invalid' : ''}`} 
-                placeholder="Short description" 
-                name="short_description" 
-                value={form.short_description}
-                onChange={handleChange} 
-              />
-              {errors.short_description && <div className="invalid-feedback">{errors.short_description}</div>}
+              <input type="hidden" id="short_description" name="short_description" />
+              <trix-editor input="short_description"></trix-editor>
+              {uiState.errors.short_description && <div className="invalid-feedback d-block">{uiState.errors.short_description}</div>}
             </div>
 
-            {/* Description */}
+            {/* Full Description with Trix */}
             <div className="mb-4">
-              <label className="form-label">Description <span className="text-danger">*</span></label>
-              <textarea 
-                className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
-                rows={4} 
-                placeholder="Full description" 
-                name="description" 
-                value={form.description}
-                onChange={handleChange}
-              ></textarea>
-              {errors.description && <div className="invalid-feedback">{errors.description}</div>}
+              <label className="form-label">Full Description <span className="text-danger">*</span></label>
+              <input type="hidden" id="description" name="description" />
+              <trix-editor input="description"></trix-editor>
+              {uiState.errors.description && <div className="invalid-feedback d-block">{uiState.errors.description}</div>}
             </div>
 
             {/* Event Images */}
@@ -242,25 +966,30 @@ const EventCreate = () => {
               <label className="form-label">Event Image <span className="text-danger">*</span></label>
               <input
                 type="file"
-                className={`form-control ${errors.event_image ? 'is-invalid' : ''}`}
+                className={`form-control ${uiState.errors.event_image ? 'is-invalid' : ''}`}
                 accept="image/*"
                 name='event_image'
-                onChange={(e) => {
-                  setEventImages(e.target.files[0]);
-                  if (errors.event_image) {
-                    setErrors(prev => ({ ...prev, event_image: null }));
-                  }
-                }}
+                onChange={handleImageChange}
               />
-              {errors.event_image && <div className="invalid-feedback">{errors.event_image}</div>}
+              {uiState.errors.event_image && <div className="invalid-feedback">{uiState.errors.event_image}</div>}
               <div className="mt-3 d-flex gap-2 flex-wrap">
-                {eventImages &&
-                  <img
-                    src={URL.createObjectURL(eventImages)}
-                    alt="event"
-                    className="rounded"
-                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                  />
+                {mediaFiles.eventImage &&
+                  <div className="position-relative">
+                    <img
+                      src={URL.createObjectURL(mediaFiles.eventImage)}
+                      alt="event"
+                      className="rounded"
+                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    />
+                    <button 
+                      type="button"
+                      className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                      style={{ margin: '-8px', borderRadius: '50%', width: '24px', height: '24px', padding: '0' }}
+                      onClick={() => setMediaFiles(prev => ({ ...prev, eventImage: null }))}
+                    >
+                      ×
+                    </button>
+                  </div>
                 }
               </div>
             </div>
@@ -270,13 +999,13 @@ const EventCreate = () => {
               <label className="form-label">Venue <span className="text-danger">*</span></label>
               <input 
                 type="text" 
-                className={`form-control ${errors.venue ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.venue ? 'is-invalid' : ''}`} 
                 placeholder="Venue name" 
                 name="venue" 
                 value={form.venue}
                 onChange={handleChange} 
               />
-              {errors.venue && <div className="invalid-feedback">{errors.venue}</div>}
+              {uiState.errors.venue && <div className="invalid-feedback">{uiState.errors.venue}</div>}
             </div>
 
             {/* Place */}
@@ -284,36 +1013,28 @@ const EventCreate = () => {
               <label className="form-label">Place <span className="text-danger">*</span></label>
               <input 
                 type="text" 
-                className={`form-control ${errors.place ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.place ? 'is-invalid' : ''}`} 
                 placeholder="City/Town/Village" 
                 name="place" 
                 value={form.place}
                 onChange={handleChange} 
               />
-              {errors.place && <div className="invalid-feedback">{errors.place}</div>}
+              {uiState.errors.place && <div className="invalid-feedback">{uiState.errors.place}</div>}
             </div>
 
             {/* Level */}
-<div className="mb-4">
-  <label className="form-label">Level <span className="text-danger">*</span></label><br />
-  <select
-    className={`form-control ${errors.level ? 'is-invalid' : ''}`}
-    name="level"
-    value={form.level}
-    onChange={(e) => {
-      setForm(prev => ({ ...prev, level: e.target.value }));
-      if (errors.level) {
-        setErrors(prev => ({ ...prev, level: null }));
-      }
-    }}
-  >
-    <option value="">Select</option>
-    <option value="BRC">BRC</option>
-    <option value="District">District</option>
-    <option value="State">State</option>
-  </select>
-  {errors.level && <div className="invalid-feedback">{errors.level}</div>}
-</div>
+            <div className="mb-4">
+              <label className="form-label">Level <span className="text-danger">*</span></label><br />
+              <select
+                className={`form-control ${uiState.errors.level ? 'is-invalid' : ''}`}
+                name="level"
+                value={form.level}
+                onChange={handleChange}
+              >
+                {levelOptions}
+              </select>
+              {uiState.errors.level && <div className="invalid-feedback">{uiState.errors.level}</div>}
+            </div>
 
             {/* Host */}
             <div className="mb-4">
@@ -337,22 +1058,19 @@ const EventCreate = () => {
                   className="form-control" 
                   name="time" 
                   value={form.time ? form.time.substring(0, 5) : ''}
-                  onChange={(e) => {
-                    const fullTime = e.target.value + ":00"; // always adds seconds
-                    setForm(prev => ({ ...prev, time: fullTime }));
-                  }} 
+                  onChange={handleChange} 
                 />
               </div>
               <div className="col-lg-6 mb-4">
                 <label className="form-label">Date <span className="text-danger">*</span></label>
                 <input 
                   type="date" 
-                  className={`form-control ${errors.date ? 'is-invalid' : ''}`} 
+                  className={`form-control ${uiState.errors.date ? 'is-invalid' : ''}`} 
                   name="date" 
                   value={form.date}
                   onChange={handleChange} 
                 />
-                {errors.date && <div className="invalid-feedback">{errors.date}</div>}
+                {uiState.errors.date && <div className="invalid-feedback">{uiState.errors.date}</div>}
               </div>
             </div>
 
@@ -377,17 +1095,31 @@ const EventCreate = () => {
                 className="form-control"
                 accept="image/*"
                 multiple
-                onChange={(e) => setPartnerLogos(Array.from(e.target.files))}
+                onChange={handlePartnerLogosChange}
               />
               <div className="mt-3 d-flex gap-2 flex-wrap">
-                {partnerLogos.map((file, index) => (
-                  <img
-                    key={index}
-                    src={URL.createObjectURL(file)}
-                    alt={`partner-${index}`}
-                    className="rounded"
-                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                  />
+                {mediaFiles.partnerLogos.map((file, index) => (
+                  <div key={index} className="position-relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`partner-${index}`}
+                      className="rounded"
+                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    />
+                    <button 
+                      type="button"
+                      className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                      style={{ margin: '-8px', borderRadius: '50%', width: '24px', height: '24px', padding: '0' }}
+                      onClick={() => {
+                        setMediaFiles(prev => ({
+                          ...prev,
+                          partnerLogos: prev.partnerLogos.filter((_, i) => i !== index)
+                        }));
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
@@ -409,88 +1141,76 @@ const EventCreate = () => {
             <div className="mb-4">
               <label className="form-label">State <span className="text-danger">*</span></label><br />
               <select 
-                className={`form-control ${errors.state ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.state ? 'is-invalid' : ''}`} 
                 name="state" 
                 value={form.state}
-                onChange={(e) => {
-                  setForm(prev => ({ ...prev, state: e.target.value }));
-                  setSelectedState(e.target.value);
-                  if (errors.state) {
-                    setErrors(prev => ({ ...prev, state: null }));
-                  }
-                }}
+                onChange={handleStateChange}
               >
                 <option value="">Select</option>
-                {states.map((state, id) => (
+                {locationData.states.map((state, id) => (
                   <option key={id} value={state.name}>
                     {state.state}
                   </option>
                 ))}
               </select>
-              {errors.state && <div className="invalid-feedback">{errors.state}</div>}
+              {uiState.errors.state && <div className="invalid-feedback">{uiState.errors.state}</div>}
             </div>
 
             {/* District */}
             <div className="mb-4">
               <label className="form-label">District <span className="text-danger">*</span></label><br />
               <select 
-                className={`form-control ${errors.district ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.district ? 'is-invalid' : ''}`} 
                 name="district" 
                 value={form.district}
-                onChange={(e) => {
-                  setForm(prev => ({ ...prev, district: e.target.value }));
-                  setSelectedDistrict(e.target.value);
-                  if (errors.district) {
-                    setErrors(prev => ({ ...prev, district: null }));
-                  }
-                }}
+                onChange={handleDistrictChange}
               >
                 <option value="">Select</option>
-                {districts.map((dist) => (
+                {locationData.districts.map((dist) => (
                   <option key={dist.name} value={dist.name}>
                     {dist.district_name}
                   </option>
                 ))}
               </select>
-              {errors.district && <div className="invalid-feedback">{errors.district}</div>}
+              {uiState.errors.district && <div className="invalid-feedback">{uiState.errors.district}</div>}
             </div>
 
             {/* BRC */}
             <div className="mb-4">
               <label className="form-label">BRC <span className="text-danger">*</span></label><br />
               <select 
-                className={`form-control ${errors.brc ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.brc ? 'is-invalid' : ''}`} 
                 name="brc" 
                 value={form.brc}
                 onChange={handleChange}
               >
                 <option value="">Select</option>
-                {brcs.map((brc) => (
+                {locationData.brcs.map((brc) => (
                   <option key={brc.name} value={brc.name}>
                     {brc.brc_name}
                   </option>
                 ))}
               </select>
-              {errors.brc && <div className="invalid-feedback">{errors.brc}</div>}
+              {uiState.errors.brc && <div className="invalid-feedback">{uiState.errors.brc}</div>}
             </div>
 
             {/* LAB TYPE */}
             <div className="mb-4">
               <label className="form-label">Lab Type <span className="text-danger">*</span></label><br />
               <select 
-                className={`form-control ${errors.lab_type ? 'is-invalid' : ''}`} 
+                className={`form-control ${uiState.errors.lab_type ? 'is-invalid' : ''}`} 
                 name="lab_type" 
                 value={form.lab_type}
                 onChange={handleChange}
               >
                 <option value="">Select</option>
-                {labs.map((lab) => (
+                {locationData.labs.map((lab) => (
                   <option key={lab.name} value={lab.name}>
                     {lab.title}
                   </option>
                 ))}
               </select>
-              {errors.lab_type && <div className="invalid-feedback">{errors.lab_type}</div>}
+              {uiState.errors.lab_type && <div className="invalid-feedback">{uiState.errors.lab_type}</div>}
             </div>
 
             {/* Event Gallery */}
@@ -501,27 +1221,50 @@ const EventCreate = () => {
                 className="form-control"
                 accept="image/*"
                 multiple
-                onChange={(e) => setGalleryImages(Array.from(e.target.files))}
+                onChange={handleGalleryImagesChange}
               />
               <div className="mt-3 d-flex gap-2 flex-wrap">
-                {galleryImages.map((file, index) => (
-                  <img
-                    key={index}
-                    src={URL.createObjectURL(file)}
-                    alt={`gallery-${index}`}
-                    className="rounded"
-                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                  />
+                {mediaFiles.galleryImages.map((file, index) => (
+                  <div key={index} className="position-relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`gallery-${index}`}
+                      className="rounded"
+                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    />
+                    <button 
+                      type="button"
+                      className="btn btn-sm btn-danger position-absolute top-0 end-0"
+                      style={{ margin: '-8px', borderRadius: '50%', width: '24px', height: '24px', padding: '0' }}
+                      onClick={() => {
+                        setMediaFiles(prev => ({
+                          ...prev,
+                          galleryImages: prev.galleryImages.filter((_, i) => i !== index)
+                        }));
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))}
               </div>
 
-              <div className="mb-4">
+              <div className="mt-4 d-flex gap-2">
                 <button
                   type="button"
-                  className="btn btn-primary mt-3"
+                  className="btn btn-primary"
                   onClick={handleSubmit}
+                  disabled={uiState.isSubmitting}
                 >
-                  Submit
+                  {uiState.isSubmitting ? 'Submitting...' : 'Submit'}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={resetForm}
+                  disabled={uiState.isSubmitting}
+                >
+                  Reset
                 </button>
               </div>
             </div>
