@@ -6,6 +6,8 @@ import useDatePicker from '@/hooks/useDatePicker'
 import useLocationData from '@/hooks/useLocationData'
 import Loading from '@/components/shared/Loading'
 import { insertDoc, uploadFile, get_data } from '@/api/methods'
+import "trix"
+import "trix/dist/trix.css"
 
 const EventCreate = () => {
   const [districts, setDistricts] = useState([])
@@ -173,6 +175,25 @@ const EventCreate = () => {
 
     fetchLabs();
   }, []);
+  useEffect(() => {
+  if (typeof window !== "undefined") {
+    const shortDescEditor = document.querySelector("trix-editor[input='short_description']");
+    const fullDescEditor = document.querySelector("trix-editor[input='description']");
+
+    if (shortDescEditor) {
+      shortDescEditor.addEventListener("trix-change", (e) => {
+        setForm(prev => ({ ...prev, short_description: e.target.innerHTML }));
+      });
+    }
+
+    if (fullDescEditor) {
+      fullDescEditor.addEventListener("trix-change", (e) => {
+        setForm(prev => ({ ...prev, description: e.target.innerHTML }));
+      });
+    }
+  }
+}, []);
+
 
   return (
     <>
@@ -209,8 +230,8 @@ const EventCreate = () => {
               {errors.title && <div className="invalid-feedback">{errors.title}</div>}
             </div>
 
-            {/* Short Description */}
-            <div className="mb-4">
+            {/*Short Description*/}
+            {/* <div className="mb-4">
               <label className="form-label">Short Description <span className="text-danger">*</span></label>
               <input 
                 type="text" 
@@ -221,10 +242,10 @@ const EventCreate = () => {
                 onChange={handleChange} 
               />
               {errors.short_description && <div className="invalid-feedback">{errors.short_description}</div>}
-            </div>
+            </div> */}
 
             {/* Description */}
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="form-label">Description <span className="text-danger">*</span></label>
               <textarea 
                 className={`form-control ${errors.description ? 'is-invalid' : ''}`} 
@@ -235,7 +256,24 @@ const EventCreate = () => {
                 onChange={handleChange}
               ></textarea>
               {errors.description && <div className="invalid-feedback">{errors.description}</div>}
-            </div>
+            </div> */}
+
+            {/* Short Description with Trix */}
+<div className="mb-4">
+  <label className="form-label">Short Description <span className="text-danger">*</span></label>
+  <input type="hidden" id="short_description" />
+  <trix-editor input="short_description"></trix-editor>
+  {errors.short_description && <div className="invalid-feedback d-block">{errors.short_description}</div>}
+</div>
+
+{/* Full Description with Trix */}
+<div className="mb-4">
+  <label className="form-label">Full Description <span className="text-danger">*</span></label>
+  <input type="hidden" id="description" />
+  <trix-editor input="description"></trix-editor>
+  {errors.description && <div className="invalid-feedback d-block">{errors.description}</div>}
+</div>
+
 
             {/* Event Images */}
             <div className="mb-4">
