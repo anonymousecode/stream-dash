@@ -58,14 +58,20 @@ export const menuList = [
         dropdownMenu: [
             {
                 id: 1,
-                name: "Manage blogs",
-                path: "/blogs/view",
+                name: "Create blogs",
+                path: "/blogs/create",
                 subdropdownMenu: false
             },
             {
                 id: 2,
-                name: " Create blogs",
-                path: "/blogs/create",
+                name: " My Blogs",
+                path: "/blogs/myblog",
+                subdropdownMenu: false
+            },
+            {
+                id: 3,
+                name: " View Blogs",
+                path: "/blogs/view",
                 subdropdownMenu: false
             }
         ]
