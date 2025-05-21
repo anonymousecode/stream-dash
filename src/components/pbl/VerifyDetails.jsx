@@ -11,11 +11,11 @@ const VerifyDetails = ({ project, onBack }) => {
   const phaseRoutes = [
     "verify-idea-development",
     "verify-first-review",
-    "planning",
-    "second-review",
-    "execution",
-    "third-review",
-    "presentation",
+    "verify-planning",
+    "verify-second-review",
+    "verify-execution",
+    "verify-third-review",
+    "verify-presentation",
   ];
 
   return (
