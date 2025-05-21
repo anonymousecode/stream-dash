@@ -14,7 +14,7 @@ const BlogsCreate = () => {
     author: "",
     attach_image: null,
     content: "",
-    short_description: "",
+    
   })
 
   useEffect(() => {
@@ -98,16 +98,8 @@ const BlogsCreate = () => {
           <trix-editor input="content"></trix-editor>
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Short Description</label>
-          <textarea
-            name="short_description"
-            className="form-control"
-            rows="4"
-            onChange={handleChange}
-            placeholder="Write a short description..."
-          ></textarea>
-        </div>
+
+ 
 
         <button type="submit" className="btn btn-primary">save</button>
       </form>
@@ -115,4 +107,4 @@ const BlogsCreate = () => {
   )
 }
 
-export default BlogsCreate
+export default BlogsCreate 

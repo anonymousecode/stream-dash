@@ -1,164 +1,159 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
-import { get_data } from '@/api/methods'
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { get_data } from '@/api/methods';
 
-// Sample blog data with dates
-// const blogData = [
-//   {
-//     id: 1,
-//     title: 'Top 10 AI Trends in 2025',
-//     author: 'Navya',
-//     date: '2025-01-10',
-//   },
-//   {
-//     id: 2,
-//     title: 'The Rise of Ethical Hacking',
-//     author: 'Rahul',
-//     date: '2025-01-14',
-//   },
-//   {
-//     id: 3,
-//     title: 'How Blockchain is Changing Finance',
-//     author: 'Ananya',
-//     date: '2025-02-01',
-//   },
-//   {
-//     id: 4,
-//     title: 'Introduction to Deep Learning',
-//     author: 'George',
-//     date: '2025-02-20',
-//   },
-//   {
-//     id: 5,
-//     title: 'Exploring Quantum Computing',
-//     author: 'Meera',
-//     date: '2025-03-01',
-//   },
-//   {
-//     id: 6,
-//     title: 'Cybersecurity Essentials',
-//     author: 'Arjun',
-//     date: '2025-03-18',
-//   },
-//   {
-//     id: 7,
-//     title: 'Cloud Computing Demystified',
-//     author: 'Kiran',
-//     date: '2025-04-01',
-//   },
-//   {
-//     id: 8,
-//     title: 'The Future of Remote Work',
-//     author: 'Sara',
-//     date: '2025-04-10',
-//   },
-// ]
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+const tabs = ['Latest Blogs', 'Old Blogs'];
 
-const BlogsView = () => {
+const BlogView = () => {
+  const router = useRouter();
+  const [blogsData, setBlogsData] = useState([]);
 
-  const [blogData, setBlogData] = useState([])
   useEffect(() => {
-
-    get_data("Blog", ["name", "title", "date", "author", "content", "short_description", "attach_image"], "{}")
+    get_data(
+      "Blog",
+      [
+        "name",
+        "title",
+        "date",
+        "author",
+        "short_description",
+        "attach_image",
+        "content"
+      ],
+      ""
+    )
       .then((res) => {
         console.log("Blog data:", res);
-        setBlogData(res);
-      }
-      ).catch((err) => {
-        console.log("Error fetching blog data:", err);
+        setBlogsData(res);
       })
-
+      .catch((err) => {
+        console.log("Error fetching blog data:", err);
+      });
   }, []);
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const blogsPerPage = 6
+  const [activeTab, setActiveTab] = useState('Latest Blogs');
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 8;
 
-  const totalPages = Math.ceil(blogData.length / blogsPerPage)
-  const startIndex = (currentPage - 1) * blogsPerPage
-  const currentBlogs = blogData.slice(startIndex, startIndex + blogsPerPage)
+  // Get today's date (without time)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Determine if blog is recent (last 1 year) or archived (older than 1 year)
+  const isLatest = (blogDate) => {
+    const date = new Date(blogDate);
+    return date >= new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+  };
+
+  const isArchived = (blogDate) => {
+    const date = new Date(blogDate);
+    return date < new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+  };
+
+  // Filter blogs based on active tab
+  const filteredBlogs = blogsData.filter((blog) =>
+    activeTab === 'Latest Blogs' ? isLatest(blog.date) : isArchived(blog.date)
+  );
+
+  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
+    setCurrentPage(pageNumber);
+  };
 
-  const handleEdit = (id) => {
-    console.log('Edit blog with id:', id)
-    // Add your edit logic here
-  }
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setCurrentPage(1); // reset page on tab change
+  };
 
-  const handleDelete = (id) => {
-    console.log('Delete blog with id:', id)
-    // Add your delete logic here
-  }
+  const handleViewBlogDetail = (blogId) => {
+    router.push(`/blogs/detail/${blogId}`);
+  };
 
   return (
-    <div className="container py-4 bg-white">
+    <div className="container py-3 rounded bg-white">
+      {/* Tabs */}
+      <div className="d-flex gap-3 mb-4">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            className={`btn fw-bold text-uppercase ${
+              tab === activeTab ? 'btn-warning text-white' : 'btn-outline-secondary'
+            }`}
+            onClick={() => handleTabChange(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
-      {currentBlogs.length > 0 ? (
-        <div className="table-responsive">
-          <table className="table table-bordered align-middle text-center">
-            <thead className="table-light">
-              <tr>
-                <th>#</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+      {/* Blog Cards */}
+      <div className="row g-4">
+        {currentBlogs.length > 0 ? (
+          currentBlogs.map((item) => (
+            <div className="col-sm-6 col-md-4 col-lg-3" key={item.name}>
+              <div className="card h-100 shadow-sm border-0">
+                {item.attach_image && (
+                  <img
+                    src={item.attach_image.startsWith('http') ? item.attach_image : `${apiBaseUrl}${item.attach_image}`}
+                    alt={item.title}
+                    className="card-img-top"
+                    style={{ height: '180px', objectFit: 'cover' }}
+                  />
+                )}
+                <div className="card-body pb-1">
+                  <h5 className="card-title text-truncate">{item.title}</h5>
+                  <p className="card-text text-muted mb-1 small">By {item.author}</p>
+                  <p className="card-text text-muted mb-2 small">
+                    {new Date(item.date).toLocaleDateString('en-GB')}
+                  </p>
+                  <p className="card-text small">
+                    {item.short_description?.slice(0, 80)}...
+                  </p>
+                  <button
+                    className="btn btn-warning btn-sm text-white rounded-2 mt-2"
+                    onClick={() => handleViewBlogDetail(item.name)}
+                  >
+                    Open
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-12 text-center text-muted">
+            No {activeTab === 'Latest Blogs' ? 'latest' : 'archived'} blogs available.
+          </div>
+        )}
+      </div>
 
-              {currentBlogs && currentBlogs.map(({ id, name, title, date, author }, index) => (
-
-                <tr key={name}>
-                  {/* <td>{startIndex + 1}</td> */}
-                  <td>{startIndex + index + 1}</td>
-                  <td className="text-start">{title}</td>
-                  <td>{author}</td>
-                  <td>{date}</td>
-                  <td className="d-flex justify-content-center">
-                    <button
-                      className="btn btn-sm btn-outline-primary me-2"
-                      onClick={() => handleEdit(id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDelete(id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-
-                </tr>
-
-              ))}
-            </tbody>
-          </table>
-
-          {/* Pagination */}
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="d-flex justify-content-center mt-4">
           <nav>
-            <ul className="pagination justify-content-center mt-4">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <ul className="pagination">
+              {Array.from({ length: totalPages }, (_, idx) => (
                 <li
-                  key={page}
-                  className={`page-item ${page === currentPage ? 'active' : ''}`}
+                  key={idx + 1}
+                  className={`page-item ${currentPage === idx + 1 ? 'active' : ''}`}
                 >
-                  <button className="page-link" onClick={() => handlePageChange(page)}>
-                    {page}
+                  <button className="page-link" onClick={() => handlePageChange(idx + 1)}>
+                    {idx + 1}
                   </button>
                 </li>
               ))}
             </ul>
           </nav>
         </div>
-      ) : (
-        <div className="text-center text-muted">No blogs available.</div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BlogsView
+export default BlogView;

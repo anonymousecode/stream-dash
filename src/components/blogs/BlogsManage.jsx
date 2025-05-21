@@ -1,0 +1,185 @@
+'use client'
+
+import React, { useState, useEffect } from 'react'
+import { get_data } from '@/api/methods'
+import { useRouter } from 'next/navigation'
+
+
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+const BlogsManage = () => {
+  const [blogData, setBlogData] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [openDropdown, setOpenDropdown] = useState(null)
+  const blogsPerPage = 4
+  const router = useRouter()
+
+  const currentUser = "UID00000003"
+
+  const userMap = {
+    "user_123": "Navya",
+    "user_456": "Jane Smith",
+    "user_789": "Alice Johnson",
+  }
+
+  useEffect(() => {
+    get_data(
+      "Blog",
+      ["name", "title", "date", "author", "content", "attach_image"],
+      "{}"
+    )
+      .then((res) => {
+        let fetchedBlogs = []
+        if (res && res.length) {
+          fetchedBlogs = res.map(blog => ({
+            ...blog,
+            author: userMap[blog.author] || blog.author,
+          }))
+        }
+
+        const allBlogs = [...fetchedBlogs]
+        const userBlogs = allBlogs.filter(blog => blog.author === currentUser)
+        setBlogData(userBlogs)
+      })
+      .catch((err) => {
+        console.log("Error fetching blog data:", err)
+      })
+  }, [])
+
+  const totalPages = Math.ceil(blogData.length / blogsPerPage)
+  const startIndex = (currentPage - 1) * blogsPerPage
+  const currentBlogs = blogData.slice(startIndex, startIndex + blogsPerPage)
+
+  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber)
+
+  const handleEdit = (blogId) => {
+    router.push(`/blogs/edit/${blogId}`)
+  }
+
+  const handleRemove = async (blogId) => {
+    try {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      setBlogData(prevData => prevData.filter(blog => blog.name !== blogId))
+      if ((blogData.length - 1) % blogsPerPage === 0 && currentPage > 1) {
+        setCurrentPage(currentPage - 1)
+      }
+      console.log("Blog deleted:", blogId)
+    } catch (err) {
+      console.error("Failed to delete blog:", err)
+    }
+  }
+
+  const handleOpen = (blogId) => {
+    router.push(`/blogs/view/${blogId}`) // Adjust route to your view blog page
+  }
+
+  const toggleDropdown = (blogId) => {
+    setOpenDropdown(openDropdown === blogId ? null : blogId)
+  }
+
+  return (
+    <div className="container py-4">
+      {/* Blog Cards */}
+      <div className="row">
+        {currentBlogs.length > 0 ? currentBlogs.map((blog) => (
+          <div key={blog.name} className="col-md-6 col-lg-3 mb-4 position-relative">
+            <div className="card h-100 shadow-sm">
+
+              {/* Dropdown menu */}
+              <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}>
+                <button
+                  className="btn btn-sm btn-light"
+                  onClick={() => toggleDropdown(blog.name)}
+                  aria-label="Toggle menu"
+                  style={{ border: 'none', background: 'transparent', fontSize: '1.5rem', lineHeight: 1 }}
+                >
+                  &#8942;
+                </button>
+                {openDropdown === blog.name && (
+                  <div
+                    className="shadow bg-white rounded"
+                    style={{
+                      position: 'absolute',
+                      top: '100%',
+                      right: 0,
+                      width: '100px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                    }}
+                  >
+                    <button
+                      className="dropdown-item btn btn-link"
+                      style={{ color: 'black' }}
+                      onClick={() => {
+                        handleEdit(blog.name)
+                        setOpenDropdown(null)
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="dropdown-item btn btn-link"
+                      style={{ color: 'black' }}
+                      onClick={() => {
+                        handleRemove(blog.name)
+                        setOpenDropdown(null)
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <img
+                src={`${apiBaseUrl}${blog.attach_image}`}
+                className="card-img-top"
+                alt={blog.title}
+                style={{ height: '180px', objectFit: 'cover' }}
+              />
+              <div className="card-body d-flex flex-column">
+                <h6 className="card-title fw-bold">
+                  {blog.title.length > 40 ? blog.title.slice(0, 40) + "..." : blog.title}
+                </h6>
+                <p className="text-muted mb-1">By {blog.author}</p>
+                <p className="text-muted" style={{ fontSize: '0.875rem' }}>
+                  {new Date(blog.date).toLocaleDateString('en-GB')}
+                </p>
+                <p className="card-text flex-grow-1">
+                  {blog.short_description?.slice(0, 80) || "..."}
+                </p>
+                <div className="mt-3">
+                  <button
+                    className="btn btn-outline-primary btn-sm w-100"
+                    onClick={() => handleOpen(blog.name)}
+                  >
+                    Open
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )) : (
+          <div className="text-center text-muted">No blogs available.</div>
+        )}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <nav className="mt-4">
+          <ul className="pagination justify-content-center">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(page)}>
+                  {page}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  )
+}
+
+export default BlogsManage
+
