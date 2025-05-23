@@ -1,3 +1,4 @@
+// 
 'use client'
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
@@ -10,9 +11,8 @@ const BlogEdit = () => {
 
   const [form, setForm] = useState({
     title: '',
-    
     content: '',
-    attached_image: '',
+    attach_image: '',
     author: '',
     date: ''
   })
@@ -29,8 +29,8 @@ const BlogEdit = () => {
       const res = await get_data('Blog', '*', [['name', '=', id]])
       if (res?.length) {
         setForm(res[0])
-        if (res[0].blog_image) {
-          setImagePreview(res[0].blog_image)
+        if (res[0].attach_image) {
+          setImagePreview(res[0].attach_image)
         }
       }
     } catch (err) {
@@ -56,11 +56,13 @@ const BlogEdit = () => {
   const handleImageChange = e => {
     const file = e.target.files[0]
     if (file) {
-      setImagePreview(URL.createObjectURL(file))
+      const previewUrl = URL.createObjectURL(file)
+      setImagePreview(previewUrl)
       setBlogImageFile(file)
       setImageError(false)
-      if (errors.blog_image) {
-        setErrors(prev => ({ ...prev, blog_image: null }))
+      
+      if (errors.attach_image) {
+        setErrors(prev => ({ ...prev, attach_image: null }))
       }
     }
   }
@@ -75,8 +77,8 @@ const BlogEdit = () => {
       }
     })
 
-    if (!form.blog_image && !blogImageFile) {
-      newErrors.blog_image = 'Blog image is required'
+    if (!form.attach_image && !blogImageFile) {
+      newErrors.attach_image = 'Blog image is required'
     }
 
     setErrors(newErrors)
@@ -88,7 +90,7 @@ const BlogEdit = () => {
     if (!validateForm()) return
 
     try {
-      let imageUrl = form.blog_image
+      let imageUrl = form.attach_image
 
       if (blogImageFile) {
         imageUrl = await uploadFile(blogImageFile, 0)
@@ -97,7 +99,7 @@ const BlogEdit = () => {
 
       const updatedForm = {
         ...form,
-        blog_image: imageUrl
+        attach_image: imageUrl
       }
 
       await update('Blog', updatedForm.name, updatedForm)
@@ -114,6 +116,11 @@ const BlogEdit = () => {
     if (imagePath.startsWith('http')) return imagePath
     const formattedPath = imagePath.startsWith('/') ? imagePath : `/${imagePath}`
     return `${apiBaseUrl}${formattedPath}`
+  }
+
+  const handleImageError = () => {
+    console.error('Failed to load image:', form.attach_image)
+    setImageError(true)
   }
 
   if (loadingData) return <Loading />
@@ -135,8 +142,6 @@ const BlogEdit = () => {
           />
           {errors.title && <div className="invalid-feedback">{errors.title}</div>}
         </div>
-
-     
 
         {/* Content */}
         <div className="mb-3">
@@ -168,36 +173,36 @@ const BlogEdit = () => {
           <label className="form-label">Published Date <span className="text-danger">*</span></label>
           <input
             type="date"
-            className={`form-control ${errors.published_date ? 'is-invalid' : ''}`}
-            name="published_date"
-            value={form.published_date}
+            className={`form-control ${errors.date ? 'is-invalid' : ''}`}
+            name="date"
+            value={form.date}
             onChange={handleChange}
           />
-          {errors.published_date && <div className="invalid-feedback">{errors.published_date}</div>}
+          {errors.date && <div className="invalid-feedback">{errors.date}</div>}
         </div>
 
-        {/* Blog Image */}
+        {/* Blog Image Upload with Error Handling */}
         <div className="mb-3">
           <label className="form-label">Blog Image <span className="text-danger">*</span></label>
-
-          {form.blog_image && !imageError ? (
-            <div className="mb-2">
+          
+          {form.attach_image && !imageError ? (
+            <div className="position-relative mb-2">
               <img
-                src={getCompleteImageUrl(form.blog_image)}
-                alt="Blog"
+                src={getCompleteImageUrl(form.attach_image)}
+                alt="Blog Preview"
                 className="img-thumbnail"
                 style={{ maxHeight: '150px' }}
-                onError={() => setImageError(true)}
+                onError={handleImageError}
               />
               <div className="small text-muted mt-1">
-                Current image: {form.blog_image.split('/').pop()}
+                Current image: {form.attach_image.split('/').pop()}
               </div>
             </div>
           ) : blogImageFile ? (
-            <div className="mb-2">
+            <div className="position-relative mb-2">
               <img
                 src={imagePreview}
-                alt="Preview"
+                alt="New Image Preview"
                 className="img-thumbnail"
                 style={{ maxHeight: '150px' }}
               />
@@ -207,19 +212,19 @@ const BlogEdit = () => {
             </div>
           ) : (
             <div className="alert alert-warning">
-              {imageError
-                ? "Couldn't load existing image. Please upload a new one."
-                : 'No image selected. Please upload one.'}
+              {imageError ? 
+                "Current image couldn't be displayed. Please upload a new image." : 
+                "No image available. Please upload a blog image."}
             </div>
           )}
 
-          <input
-            type="file"
-            className={`form-control ${errors.blog_image ? 'is-invalid' : ''}`}
-            accept="image/*"
-            onChange={handleImageChange}
+          <input 
+            type="file" 
+            className={`form-control ${errors.attach_image ? 'is-invalid' : ''}`} 
+            accept="image/*" 
+            onChange={handleImageChange} 
           />
-          {errors.blog_image && <div className="invalid-feedback">{errors.blog_image}</div>}
+          {errors.attach_image && <div className="invalid-feedback">{errors.attach_image}</div>}
         </div>
 
         {/* Submit */}

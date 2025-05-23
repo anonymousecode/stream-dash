@@ -93,45 +93,47 @@ const BlogView = () => {
         ))}
       </div>
 
-      {/* Blog Cards */}
-      <div className="row g-4">
-        {currentBlogs.length > 0 ? (
-          currentBlogs.map((item) => (
-            <div className="col-sm-6 col-md-4 col-lg-3" key={item.name}>
-              <div className="card h-100 shadow-sm border-0">
-                {item.attach_image && (
-                  <img
-                    src={item.attach_image.startsWith('http') ? item.attach_image : `${apiBaseUrl}${item.attach_image}`}
-                    alt={item.title}
-                    className="card-img-top"
-                    style={{ height: '180px', objectFit: 'cover' }}
-                  />
-                )}
-                <div className="card-body pb-1">
-                  <h5 className="card-title text-truncate">{item.title}</h5>
-                  <p className="card-text text-muted mb-1 small">By {item.author}</p>
-                  <p className="card-text text-muted mb-2 small">
-                    {new Date(item.date).toLocaleDateString('en-GB')}
-                  </p>
-                  <p className="card-text small">
-                    {item.short_description?.slice(0, 80)}...
-                  </p>
-                  <button
-                    className="btn btn-warning btn-sm text-white rounded-2 mt-2"
-                    onClick={() => handleViewBlogDetail(item.name)}
-                  >
-                    Open
-                  </button>
-                </div>
-              </div>
+      {/*Blog Cards*/}
+<div className="row g-4">
+  {currentBlogs.length > 0 ? (
+    currentBlogs.map((item) => (
+      <div className="col-sm-6 col-md-4 col-lg-3" key={item.name}>
+        <div className="card h-100 shadow-sm border-0">
+          {item.attach_image && (
+            <img
+              src={item.attach_image.startsWith('http') ? item.attach_image : `${apiBaseUrl}${item.attach_image}`}
+              alt={item.title}
+              className="card-img-top"
+              style={{ height: '180px', objectFit: 'cover' }}
+            />
+          )}
+          <div className="card-body d-flex flex-column">
+            <h5 className="card-title text-truncate">{item.title}</h5>
+            <p className="card-text text-muted mb-1 small">By {item.author}</p>
+            <p className="card-text text-muted mb-2 small">
+              {new Date(item.date).toLocaleDateString('en-GB')}
+            </p>
+            <p className="card-text small flex-grow-1">
+              {item.short_description?.slice(0, 80)}...
+            </p>
+            <div className="mt-auto pt-3 pb-2">
+              <button
+                className="btn btn-warning btn-sm text-white rounded-2"
+                onClick={() => handleViewBlogDetail(item.name)}
+              >
+                Open
+              </button>
             </div>
-          ))
-        ) : (
-          <div className="col-12 text-center text-muted">
-            No {activeTab === 'Latest Blogs' ? 'latest' : 'archived'} blogs available.
           </div>
-        )}
+        </div>
       </div>
+    ))
+  ) : (
+    <div className="col-12 text-center text-muted">
+      No {activeTab === 'Latest Blogs' ? 'latest' : 'archived'} blogs available.
+    </div>
+  )}
+</div>
 
       {/* Pagination */}
       {totalPages > 1 && (

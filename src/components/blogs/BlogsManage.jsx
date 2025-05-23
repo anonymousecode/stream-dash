@@ -1,9 +1,9 @@
+
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { get_data } from '@/api/methods'
+import { get_data, getUser } from '@/api/methods'
 import { useRouter } from 'next/navigation'
-
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -11,39 +11,58 @@ const BlogsManage = () => {
   const [blogData, setBlogData] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [openDropdown, setOpenDropdown] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const blogsPerPage = 4
   const router = useRouter()
 
-  const currentUser = "UID00000003"
-
-  const userMap = {
-    "user_123": "Navya",
-    "user_456": "Jane Smith",
-    "user_789": "Alice Johnson",
-  }
+  
 
   useEffect(() => {
-    get_data(
-      "Blog",
-      ["name", "title", "date", "author", "content", "attach_image"],
-      "{}"
-    )
-      .then((res) => {
-        let fetchedBlogs = []
-        if (res && res.length) {
-          fetchedBlogs = res.map(blog => ({
-            ...blog,
-            author: userMap[blog.author] || blog.author,
-          }))
+    const fetchUserAndBlogs = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        // Fetch current user
+        const userData = await getUser()
+        if (!userData) {
+          throw new Error("Failed to fetch user data")
         }
 
-        const allBlogs = [...fetchedBlogs]
-        const userBlogs = allBlogs.filter(blog => blog.author === currentUser)
+        console.log("my details "+ userData.name);
+        
+        // Assuming the user data contains an ID field - adjust based on your API response structure
+        const userId = userData.name 
+        setCurrentUser(userId)
+
+        // Fetch blogs
+        const res = await get_data(
+          "Blog",
+          ["name", "title", "date", "author", "content", "attach_image"],
+          "{}"
+        )
+
+        let fetchedBlogs = []
+        if (res && res.length) {
+          fetchedBlogs = res
+          }
+        
+
+        // Filter blogs for current user
+        const userBlogs = fetchedBlogs.filter(blog => blog.author === userId)
         setBlogData(userBlogs)
-      })
-      .catch((err) => {
-        console.log("Error fetching blog data:", err)
-      })
+        
+      } catch (err) {
+        console.error("Error fetching data:", err)
+        setError("Failed to load blogs. Please try again.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUserAndBlogs()
   }, [])
 
   const totalPages = Math.ceil(blogData.length / blogsPerPage)
@@ -70,11 +89,34 @@ const BlogsManage = () => {
   }
 
   const handleOpen = (blogId) => {
-    router.push(`/blogs/view/${blogId}`) // Adjust route to your view blog page
+    router.push(`/blogs/detail/${blogId}`)
   }
 
   const toggleDropdown = (blogId) => {
     setOpenDropdown(openDropdown === blogId ? null : blogId)
+  }
+
+  if (loading) {
+    return (
+      <div className="container py-4">
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-2">Loading your blogs...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="container py-4">
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -159,7 +201,9 @@ const BlogsManage = () => {
             </div>
           </div>
         )) : (
-          <div className="text-center text-muted">No blogs available.</div>
+          <div className="text-center text-muted">
+            {currentUser ? "You haven't created any blogs yet." : "No blogs available."}
+          </div>
         )}
       </div>
 
@@ -182,4 +226,3 @@ const BlogsManage = () => {
 }
 
 export default BlogsManage
-
