@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { get_data, getUser } from '@/api/methods'
+import { get_data, getUser,trash } from '@/api/methods'
 import { useRouter } from 'next/navigation'
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -76,17 +76,24 @@ const BlogsManage = () => {
   }
 
   const handleRemove = async (blogId) => {
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      setBlogData(prevData => prevData.filter(blog => blog.name !== blogId))
-      if ((blogData.length - 1) % blogsPerPage === 0 && currentPage > 1) {
-        setCurrentPage(currentPage - 1)
-      }
-      console.log("Blog deleted:", blogId)
-    } catch (err) {
-      console.error("Failed to delete blog:", err)
+  try {
+    // Call backend delete API
+    await trash("Blog", blogId);
+
+    // Remove from local state only after successful deletion
+    setBlogData(prevData => prevData.filter(blog => blog.name !== blogId));
+
+    // Handle pagination if needed
+    if ((blogData.length - 1) % blogsPerPage === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
     }
+
+    console.log("Blog deleted:", blogId);
+  } catch (err) {
+    console.error("Failed to delete blog:", err);
+    alert("Failed to delete blog. Please try again.");
   }
+};
 
   const handleOpen = (blogId) => {
     router.push(`/blogs/detail/${blogId}`)
