@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MyProjectDetails from "./VerifyDetails";
+import { get_data } from '@/api/methods';
+import Link from "next/link";
 
 const dummyProjects = [
   {
@@ -178,12 +180,23 @@ const VerifyProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("ongoing");
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    get_data("Project", ["name", "title", "description", "attach_image", "starting_date", "completed_date", "brc_name", "district_name", "project_category_name", "current_phase"], "").then((data) => {
+      setProjects(data);
+      console.log(data[0])
+      console.log(data[1])
+
+    });
+
+  }, []);
 
   const projectsPerPage = 6;
-  const filteredProjects = dummyProjects.filter((project) => {
+  const filteredProjects = projects.filter((project) => {
     const isOngoing =
-      new Date(project.start_date) <= new Date() &&
-      new Date(project.end_date) >= new Date();
+      new Date(project.starting_date) <= new Date() &&
+      project.completed_date == null;
     return filter === "ongoing" ? isOngoing : !isOngoing;
   });
   const indexOfLastProject = currentPage * projectsPerPage;
@@ -236,12 +249,14 @@ const VerifyProjects = () => {
                   <div className="card-body">
                     <h5 className="card-title">{project.title}</h5>
                     <p className="card-text">{project.description}</p>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => setSelectedProject(project)}
-                    >
-                      View Details
-                    </button>
+                    <Link href={`/pbl/verify-project-details/${project.name}`}>
+                      <button
+                        className="btn btn-primary"
+                      // onClick={() => setSelectedProject(project)}
+                      >
+                        View Details
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

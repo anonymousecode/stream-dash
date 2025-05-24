@@ -1,12 +1,50 @@
 "use client";
-
+import { useEffect, useState } from "react";
+import { get_data } from "@/api/methods";
 import React from "react";
 import Link from "next/link";
+import VerifyIdeaDevelopment from "./VerifyIdeaDevelopment";
+import VerifyFirstReview from "./VerifyFirstReview";
+import VerificationComponent from "./VerifyPlanning";
+import VerifySecondReview from "./VerifySecondReview";
+import VerifyExecution from "./VerifyExecution";
+import VerifyThirdReview from "./VerifyThirdReview";
+import VerifyPresentation from "./VerifyPresentation";
+import Roadmap from "./RoadMap";
 
-const VerifyDetails = ({ project, onBack }) => {
+
+const VerifyDetails = ({ projectId }) => {
+
+  const [project, setProjects] = useState({});
+
+  useEffect(() => {
+
+    get_data("Project", ["name", "title", "description", "attach_image", "starting_date", "completed_date", "brc_name", "district_name", "project_category_name", "current_phase"], [["name", "=", projectId]]).then((data) => {
+      setProjects(data[0]);
+      console.log(data[0])
+      console.log(data[1])
+
+    });
+
+  }, []);
+
+
   if (!project) {
     return <div className="container mt-5">No project selected.</div>;
   }
+
+  const phaseComponentsMap = {
+    "Idea Development": VerifyIdeaDevelopment,
+    "First Review": VerifyFirstReview,
+    "Planning": VerificationComponent,
+    "Second Review": VerifySecondReview,
+    "Execution": VerifyExecution,
+    "Third Review": VerifyThirdReview,
+    "Final Presentation": VerifyPresentation,
+
+    // map all your phase labels to components
+  };
+
 
   const phaseRoutes = [
     "verify-idea-development",
@@ -18,11 +56,13 @@ const VerifyDetails = ({ project, onBack }) => {
     "verify-presentation",
   ];
 
+  const PhaseComponent = phaseComponentsMap[project.current_phase] || (() => <div>Select a phase</div>);
+
   return (
     <div className="container mt-5">
-      <button className="btn btn-secondary mb-3" onClick={onBack}>
+      {/* <button className="btn btn-secondary mb-3" onClick={onBack}>
         ← Back to Projects
-      </button>
+      </button> */}
 
       <div className="card p-4" style={{ backgroundColor: "#fff", border: "1px solid #ccc" }}>
         <h2 className="fw-bold mb-4" style={{ color: "#333" }}>
@@ -45,9 +85,9 @@ const VerifyDetails = ({ project, onBack }) => {
           <p style={{ color: "#333" }}><strong>Project Goal:</strong> {project.goal}</p>
           <p style={{ color: "#333" }}><strong>Task:</strong> {project.task}</p>
           <p style={{ color: "#333" }}><strong>School:</strong> {project.school}</p>
-          <p style={{ color: "#333" }}><strong>BRC:</strong> {project.brc}</p>
-          <p style={{ color: "#333" }}><strong>District:</strong> {project.district}</p>
-          <p style={{ color: "#333" }}><strong>Category:</strong> {project.category}</p>
+          <p style={{ color: "#333" }}><strong>BRC:</strong> {project.brc_name}</p>
+          <p style={{ color: "#333" }}><strong>District:</strong> {project.district_name}</p>
+          <p style={{ color: "#333" }}><strong>Category:</strong> {project.project_category_name}</p>
         </div>
 
         <div className="my-5">
@@ -57,12 +97,12 @@ const VerifyDetails = ({ project, onBack }) => {
 
         <hr className="my-4" style={{ borderColor: "#F4B400" }} />
 
-        <h4 style={{ color: "#333" }} className="mb-4">Phases</h4>
+        {/* <h4 style={{ color: "#333" }} className="mb-4">Phases</h4> */}
         <div className="row g-3">
-          {phaseRoutes.map((route, i) => (
+          {/* {phaseRoutes.map((route, i) => (
             <div key={route} className="col-md-3">
               <Link
-                href={`/pbl/${route}`}
+                href={`/pbl/${route}/${project.name}`}
                 className="btn"
                 style={{
                   backgroundColor: "#F4B400",
@@ -86,7 +126,9 @@ const VerifyDetails = ({ project, onBack }) => {
                 Phase {i + 1}
               </Link>
             </div>
-          ))}
+          ))} */}
+          <Roadmap currentPhase={project.current_phase} />
+          <PhaseComponent projectId={project.name} />
         </div>
       </div>
     </div>

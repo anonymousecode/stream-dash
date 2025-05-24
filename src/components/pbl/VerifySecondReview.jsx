@@ -1,13 +1,73 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { get_data, update } from '@/api/methods';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const VerifySecondReview = () => {
+const VerifySecondReview = ({ projectId }) => {
   const [showReworkReason, setShowReworkReason] = useState(false);
+  const [presentationFile, setPresentationFile] = useState('SDfasdf');
   const [reason, setReason] = useState('');
 
-  const handleAccept = () => {
-    setShowReworkReason(false);
-    alert('Submission Accepted');
+  useEffect(() => {
+    const fetchPresentaion = async () => {
+      console.log("the project is", projectId)
+
+      get_data("Second Review", ["presentation"], [["parent", "=", projectId]]).then((data) => {
+        console.log("the data is", data)
+        console.log("the message is", data?.[0])
+        const fileData = data?.[0] || {}; // safely access first item
+
+        setPresentationFile(fileData.presentation || '');
+      });
+
+    };
+
+    fetchPresentaion();
+  }, []);
+
+
+
+  const handleOpenFile = (url) => {
+    if (!url) {
+      alert('File not available.');
+      return;
+    }
+    // window.open(apiBaseUrl + url, '_blank', 'noopener,noreferrer');
+    console.log("handleDownload is called")
+    console.log("the url is", url)
+    const link = document.createElement('a');
+    link.href = apiBaseUrl + url;
+    console.log("the link is", link.href)
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.click();
+  };
+
+
+  // const handleAccept = () => {
+  //   setShowReworkReason(false);
+  //   alert('Submission Accepted');
+  // };
+
+  const handleAccept = async () => {
+    // setReviewStatus('Approved');
+    setReason('');
+    const form = {
+      "second_review": [
+        {
+          "presentation": presentationFile,
+          "status": "Approved",
+          "remark": "Presentation file is approved.",
+        }
+      ]
+
+    }
+    alert('Review accepted.');
+    console.log("the form is", form)
+
+
+    const result = await update("Project", projectId, form);
+    console.log("the result is", result)
   };
 
   const handleRework = () => {
@@ -19,13 +79,46 @@ const VerifySecondReview = () => {
     setReason('');
   };
 
-  const handleSubmitReview = () => {
+  // const handleSubmitReview = () => {
+  //   if (!reason.trim()) {
+  //     alert('Please provide a reason for rework.');
+  //     return;
+  //   }
+  //   alert(`Rework requested with reason:\n${reason}`);
+  //   setShowReworkReason(false);
+  // };
+
+
+  const handleSubmitReview = async () => {
     if (!reason.trim()) {
-      alert('Please provide a reason for rework.');
+      alert('Please provide a reason before submitting.');
       return;
     }
-    alert(`Rework requested with reason:\n${reason}`);
-    setShowReworkReason(false);
+
+    const form = {
+      "second_review": [
+        {
+          "presentation": presentationFile,
+          "status": "Rework",
+          "remark": reason,
+        }
+      ]
+
+    }
+
+
+
+    // Simulate rework submission
+    alert(`Rework submitted: ${reason}`);
+    console.log("the form is", form)
+
+
+    const result = await update("Project", projectId, form);
+    console.log("the result is", result)
+
+    // Reset state after submission
+    // setReviewStatus(null);
+    setReason('');
   };
 
   return (
@@ -38,22 +131,51 @@ const VerifySecondReview = () => {
           <p className="text-dark mb-0">Open each of the following files for review:</p>
         </div>
 
-        
+
         <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">
-          <a href="/path/to/presentation" target="_blank" rel="noopener noreferrer">
+          {/* <a href="/path/to/presentation" target="_blank" rel="noopener noreferrer">
             <button className="btn fw-semibold border-2" style={{ borderColor: '#F4B400', color: '#F4B400' }}>
               PRESENTATION FILE
             </button>
-          </a>
+          </a> */}
 
-          
-          <a href="/path/to/revised-report" target="_blank" rel="noopener noreferrer">
+          {presentationFile && (
+            <button
+              className="btn fw-semibold border-2" style={{ borderColor: '#F4B400', color: '#F4B400' }}
+              onClick={() => handleOpenFile(presentationFile)}
+            >
+              Presentation File
+            </button>
+          )}
+
+          {!presentationFile && (
+            <p className="text-muted">No files submitted.</p>
+          )}
+
+
+          {/* <a href="/path/to/revised-report" target="_blank" rel="noopener noreferrer">
             <button className="btn btn-outline-secondary fw-semibold">
               REVISED REPORT
             </button>
-          </a>
+          </a> */}
 
         </div>
+        {/* <div className="mb-4 text-center">
+           <p className="mb-3">Open each of the following files for review:</p> 
+        <div className="d-flex flex-wrap justify-content-center gap-3">
+          {presentationFile && (
+            <button
+              className="btn btn-outline-primary fw-bold"
+              onClick={() => handleOpenFile(presentationFile)}
+            >
+              Presentation File
+            </button>
+          )}
+          {!presentationFile && (
+            <p className="text-muted">No files submitted.</p>
+          )}
+        </div>
+      </div> */}
 
         {/* Action buttons */}
         <div className="d-flex justify-content-center gap-3 mb-4">
@@ -95,7 +217,7 @@ const VerifySecondReview = () => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
