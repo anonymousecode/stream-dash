@@ -1,6 +1,6 @@
 'use client';
-import React, { useState } from 'react';
-import { uploadFile, update } from '@/api/methods';
+import React, { useState, useEffect } from 'react';
+import { uploadFile, update, get_data } from '@/api/methods';
 import { result, set } from 'lodash';
 
 const SecondReview = ({ projectId }) => {
@@ -8,6 +8,27 @@ const SecondReview = ({ projectId }) => {
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [form, setForm] = useState({})
+  const [showReworkModel, setShowReworkModel] = useState(false);
+  const [reworkReason, setReworkReason] = useState('');
+
+  useEffect(() => {
+    const fetchSubmittedWorksheets = async () => {
+      console.log("the project is", projectId)
+
+      get_data("Second Review", ["status", "remark"], [["parent", "=", projectId]]).then((data) => {
+        console.log("the data is", data)
+        if (data?.[0]?.status === "Rework") {
+          setShowReworkModel(true);
+          setReworkReason(data?.[0]?.remark || '');
+        }
+
+      });
+
+    };
+
+    fetchSubmittedWorksheets();
+  }, []);
+
 
   const requiredField = 'presentation';
   const optionalField = 'Revised Report';
@@ -86,6 +107,16 @@ const SecondReview = ({ projectId }) => {
   return (
     <div className="container-fluid py-5 px-3">
       <div className="bg-white p-5 rounded shadow-sm border w-100">
+        {showReworkModel && (
+          <div className="alert alert-warning mt-4 shadow-sm border border-warning">
+            <h4 className="alert-heading">⚠️ Rework Required</h4>
+            <p className="mb-0">Your submission has been marked for rework.</p><br />
+            <p className="mb-0">Reason for rework:</p>
+            <p>{reworkReason}</p>
+            <hr />
+            <p className="mb-0">Please review and submit again.</p>
+          </div>
+        )}
         <div className="text-center mb-4">
           <h2 className="fw-bold mb-3" style={{ color: '#F4B400' }}>Stage 5: Second Review</h2>
           <p className="text-dark mb-0">

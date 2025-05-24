@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import MyProjectDetails from "./MyProjectDetails";
 import { get_data } from '@/api/methods';
+import Link from "next/link";
 const dummyProjects = [
   {
     name: "project-1",
@@ -183,7 +184,8 @@ const MyProjects = () => {
   // Paginate the projects (6 per page)
   const projectsPerPage = 6;
   const filteredProjects = projects.filter((project) => {
-    const isOngoing = new Date(project.starting_date) <= new Date() && new Date(project.completed_date) >= new Date();
+    // const isOngoing = new Date(project.starting_date) <= new Date() && new Date(project.completed_date) >= new Date();
+    const isOngoing = new Date(project.starting_date) <= new Date() && project.completed_date == null;
     if (filter === "ongoing") return isOngoing;
     return !isOngoing; // If not ongoing, it's considered completed
   });
@@ -195,7 +197,7 @@ const MyProjects = () => {
 
 
   useEffect(() => {
-    get_data("Project", ["name", "title", "description", "attach_image", "starting_date", "completed_date", "brc_name", "district_name", "project_category_name"], "").then((data) => {
+    get_data("Project", ["name", "title", "description", "attach_image", "starting_date", "completed_date", "brc_name", "district_name", "project_category_name", "current_phase"], "").then((data) => {
       setProjects(data);
       console.log(data[0])
       console.log(data[1])
@@ -247,12 +249,14 @@ const MyProjects = () => {
                   <div className="card-body">
                     <h5 className="card-title">{project.title}</h5>
                     <p className="card-text">{project.description}</p>
-                    <button
-                      className="btn btn-primary"
-                      onClick={() => setSelectedProject(project)}
-                    >
-                      View Details
-                    </button>
+                    <Link href={`/pbl/project-details/${project.name}`} >
+                      <button
+                        className="btn btn-primary"
+                      // onClick={() => setSelectedProject(project)}
+                      >
+                        View Details
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

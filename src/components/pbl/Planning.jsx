@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from 'react';
-import { uploadFile, update } from '@/api/methods';
-import { set } from 'lodash';
+import React, { useState, useEffect } from 'react';
+import { uploadFile, update, get_data } from '@/api/methods';
+
 
 const projectOptions = {
   "engineering_design": [
@@ -21,6 +21,28 @@ const projectOptions = {
   "qualitative_study": ["literature_review", "methodology", "gantt_chart"],
   "others": ["literature_review", "methodology", "gantt_chart"],
 };
+
+const doctypes = {
+  "engineering_design": "Engineering Design",
+  "digital_product_development": "Digital Product Development",
+  "experimental_study": "Common Project Type",
+  "nonexperimental_study": "Common Project Type",
+  "qualitative_study": "Common Project Type",
+  "others": "Common Project Type"
+};
+
+const projectCategories = {
+  "Engineering Design": "engineering_design",
+  "Digital Product Development": "digital_product_development",
+  "Experimental Study": "experimental_study",
+  "Non Experimental Study": "nonexperimental_study",
+  "Qualitative Study": "qualitative_study",
+  "Others": "others"
+};
+
+
+
+
 
 // const projectOptions = {
 //   "engineering_design": [
@@ -48,6 +70,37 @@ const PlanningPhase = ({ projectId }) => {
   const [fileNames, setFileNames] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [form, setForm] = useState({})
+
+  const [showReworkModel, setShowReworkModel] = useState(false);
+  const [reworkReason, setReworkReason] = useState('');
+
+  useEffect(() => {
+    get_data("Project", ["project_category_name"], [["name", "=", projectId]]).then((data) => {
+      setSelectedProject(projectCategories[data[0]?.project_category_name] || '');
+      console.log(data[0])
+      console.log(data[1])
+
+    });
+
+  }, []);
+
+  useEffect(() => {
+    const fetchSubmittedWorksheets = async () => {
+      console.log("the project is", projectId)
+
+      get_data(doctypes[selectedProject], ["status", "remark"], [["parent", "=", projectId]]).then((data) => {
+        console.log("the data is", data)
+        if (data?.[0]?.status === "Rework") {
+          setShowReworkModel(true);
+          setReworkReason(data?.[0]?.remark || '');
+        }
+
+      });
+
+    };
+
+    fetchSubmittedWorksheets();
+  }, [selectedProject]);
 
   const handleProjectChange = (e) => {
     const selected = e.target.value;
@@ -138,7 +191,7 @@ const PlanningPhase = ({ projectId }) => {
     return fields.map((field) => (
       <div className="mb-4" key={field}>
         <label htmlFor={`${field}-upload`} className="form-label text-dark fw-semibold">
-          Upload {field} <span className="text-muted">(PDF/Image)</span>
+          Upload {field.replace(/_/g, ' ').toUpperCase()} <span className="text-muted">(PDF/Image)</span>
         </label>
         <input
           id={`${field}-upload`}
@@ -166,6 +219,17 @@ const PlanningPhase = ({ projectId }) => {
   return (
     <div className="container-fluid py-5 px-3">
       <div className="bg-white p-5 rounded shadow-sm border w-100">
+
+        {showReworkModel && (
+          <div className="alert alert-warning mt-4 shadow-sm border border-warning">
+            <h4 className="alert-heading">⚠️ Rework Required</h4>
+            <p className="mb-0">Your submission has been marked for rework.</p><br />
+            <p className="mb-0">Reason for rework:</p>
+            <p>{reworkReason}</p>
+            <hr />
+            <p className="mb-0">Please review and submit again.</p>
+          </div>
+        )}
         <div className="text-center mb-4">
           <h2 className="fw-bold mb-3" style={{ color: '#F4B400' }}>Stage 4: Planning</h2>
           <p className="text-dark mb-0">
@@ -177,7 +241,7 @@ const PlanningPhase = ({ projectId }) => {
         </div>
 
         {/* Project Type Selector */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label htmlFor="projectType" className="form-label text-dark fw-semibold">
             Select Project Type
           </label>
@@ -192,7 +256,7 @@ const PlanningPhase = ({ projectId }) => {
               <option key={type} value={type}>{type}</option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* Error Message */}
         {errorMessage && (
@@ -204,7 +268,8 @@ const PlanningPhase = ({ projectId }) => {
         {/* Upload Form */}
         {selectedProject && (
           <>
-            <h5 className="fw-semibold text-dark mb-3 text-center">Upload Required Documents</h5>
+
+            <h5 className="fw-semibold text-dark mb-3 text-center">The Project Category is <b>{selectedProject.replace(/_/g, ' ').toUpperCase()}</b> and Upload Required Documents</h5>
             <form onSubmit={handleSubmit}>
               {renderFileInputs()}
               <button

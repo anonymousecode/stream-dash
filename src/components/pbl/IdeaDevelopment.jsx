@@ -1,7 +1,7 @@
 'use client';
 // import { update } from 'lodash';
 import React, { useState, useEffect } from 'react';
-import { uploadFile, update } from '@/api/methods';
+import { uploadFile, update, get_data } from '@/api/methods';
 
 const IdeaDevelopment = ({ projectId }) => {
   const [worksheetUrls, setWorksheetUrls] = useState({
@@ -25,6 +25,27 @@ const IdeaDevelopment = ({ projectId }) => {
   const [outlineFileName, setOutlineFileName] = useState('');
 
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [showReworkModel, setShowReworkModel] = useState(false);
+  const [reworkReason, setReworkReason] = useState('');
+
+  useEffect(() => {
+    const fetchSubmittedWorksheets = async () => {
+      console.log("the project is", projectId)
+
+      get_data("Idea Development", ["status", "remark"], [["parent", "=", projectId]]).then((data) => {
+        console.log("the data is", data)
+        if (data?.[0]?.status === "Rework") {
+          setShowReworkModel(true);
+          setReworkReason(data?.[0]?.remark || '');
+        }
+
+      });
+
+    };
+
+    fetchSubmittedWorksheets();
+  }, []);
 
   useEffect(() => {
     const fetchWorksheets = async () => {
@@ -132,8 +153,23 @@ const IdeaDevelopment = ({ projectId }) => {
 
   return (
     <div className="container-fluid py-5 px-3">
+
+
+
+
       <div className="bg-white p-5 rounded shadow-sm border w-100">
         {/* Title and Phase Description */}
+
+        {showReworkModel && (
+          <div className="alert alert-warning mt-4 shadow-sm border border-warning">
+            <h4 className="alert-heading">⚠️ Rework Required</h4>
+            <p className="mb-0">Your submission has been marked for rework.</p><br />
+            <p className="mb-0">Reason for rework:</p>
+            <p>{reworkReason}</p>
+            <hr />
+            <p className="mb-0">Please review and submit again.</p>
+          </div>
+        )}
         <div className="text-center mb-4">
           <h2 className="fw-bold mb-3" style={{
             color: '#F4B400'

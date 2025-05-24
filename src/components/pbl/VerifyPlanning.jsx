@@ -1,29 +1,84 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, use } from 'react';
+import { get_data, update } from '@/api/methods';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 
 const projectOptions = {
-  engineering_design: [
-    'Presentation File',
-    'Design Chart',
-    'Requirements',
-    'Gantt Chart',
+  "Engineering_Design": [
+    'literature_review',
+    'design_chart',
+    'requirements',
+    'gantt_chart',
   ],
-  digital_product_development: [
-    'Presentation File',
-    'Gathering Requirements',
-    'System Design',
-    'Gantt Chart',
+  "Digital_Product_Development": [
+    'literature_review',
+    'requirements',
+    'system_design',
+    'gantt_chart',
   ],
-  experimental_study: ['Presentation File', 'Methodology', 'Gantt Chart'],
-  nonexperimental_study: ['Presentation File', 'Methodology', 'Gantt Chart'],
-  qualitative_study: ['Presentation File', 'Methodology', 'Gantt Chart'],
-  others: ['Presentation File', 'Methodology', 'Gantt Chart'],
+  "Experimental_Study": ['literature_review', 'methodology', 'gantt_chart'],
+  "Nonexperimental_Study": ['literature_review', 'methodology', 'gantt_chart'],
+  "Qualitative_Study": ['literature_review', 'methodology', 'gantt_chart'],
+  "Others": ['literature_review', 'methodology', 'gantt_chart'],
+};
+const doctypes = {
+  "Engineering_Design": "Engineering Design",
+  "Digital_Product_Development": "Digital Product Development",
+
+  "Experimental_Study": "Common Project Type",
+  "Nonexperimental_Study": "Common Project Type",
+  "Qualitative_Study": "Common Project Type",
+  "Others": "Common Project Type"
+}
+
+const projectCategories = {
+  "Engineering Design": "Engineering_Design",
+  "Digital Product Development": "Digital_Product_Development",
+  "Experimental Study": "Experimental_Study",
+  "Non Experimental Study": "Nonexperimental_Study",
+  "Qualitative Study": "Qualitative_Study",
+  "Others": "Others"
 };
 
-const VerificationComponent = () => {
+const VerificationComponent = ({ projectId }) => {
   const [selectedType, setSelectedType] = useState('');
   const [action, setAction] = useState('');
   const [reason, setReason] = useState('');
+  const [files, setFiles] = useState({});
+
+  useEffect(() => {
+    get_data("Project", ["project_category_name"], [["name", "=", projectId]]).then((data) => {
+      setSelectedType(projectCategories[data[0]?.project_category_name] || '');
+      console.log(data[0])
+      console.log(data[1])
+
+    });
+
+  }, []);
+
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await get_data(doctypes[selectedType], projectOptions[selectedType], [["parent", "=", projectId]]);
+      console.log("the data is", res)
+
+      if (!res.error) {
+        setFiles(res[0]);
+      } else {
+        console.error("Error fetching categories:", res.error);
+      }
+    };
+
+    fetchCategories();
+  }, [selectedType]);
+
+
+  useEffect(() => {
+    console.log("the files are", files)
+
+  }, [files])
 
   const handleTypeChange = (e) => {
     setSelectedType(e.target.value);
@@ -31,13 +86,83 @@ const VerificationComponent = () => {
     setReason('');
   };
 
-  const handleSubmitReview = () => {
+  const handleApprove = async () => {
     if (action === 'rework' && !reason.trim()) {
       alert('Please provide a reason for rework.');
       return;
     }
     console.log('Review submitted:', { selectedType, action, reason });
     // Add submission logic here
+
+
+    const form = {
+      [selectedType.toLocaleLowerCase()]: [
+        {
+          ...files,
+          status: 'Approved',
+          remark: "Approved"
+        }
+      ]
+
+
+    }
+    console.log("the form is", form)
+
+    const result = await update("Project", projectId, form);
+    console.log("the result is", result)
+    alert("Approved")
+  };
+
+
+  const handleRework = async () => {
+    if (!reason.trim()) {
+      alert('Please provide a reason before submitting.');
+      return;
+    }
+
+    const form = {
+      [selectedType.toLocaleLowerCase()]: [
+        {
+          ...files,
+          status: 'Rework',
+          remark: reason
+        }
+      ]
+
+
+    }
+    console.log("the form is", form)
+
+
+
+    // Simulate rework submission
+    alert(`Rework submitted: ${reason}`);
+    console.log("the form is", form)
+
+
+    const result = await update("Project", projectId, form);
+    console.log("the result is", result)
+
+    // Reset state after submission
+    // setReviewStatus(null);
+    setReason('');
+  };
+
+
+  const handleOpenFile = (url) => {
+    if (!url) {
+      alert('File not available.');
+      return;
+    }
+    // window.open(apiBaseUrl + url, '_blank', 'noopener,noreferrer');
+    console.log("handleDownload is called")
+    console.log("the url is", url)
+    const link = document.createElement('a');
+    link.href = apiBaseUrl + url;
+    console.log("the link is", link.href)
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.click();
   };
 
   return (
@@ -45,7 +170,7 @@ const VerificationComponent = () => {
       <div className="bg-white p-5 rounded shadow-sm border w-100">
         <div className="text-center mb-4">
           <h2 className="fw-bold mb-3" style={{ color: '#F4B400' }}>
-            Verify First Review Submissions
+            Verify Planning Phase Submissions
           </h2>
           <p className="text-dark mb-0">
             Open each of the following files for review:
@@ -53,7 +178,7 @@ const VerificationComponent = () => {
         </div>
 
         {/* Project Type Dropdown */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="form-label text-dark fw-semibold">
             Select Project Type
           </label>
@@ -69,21 +194,41 @@ const VerificationComponent = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         {/* Files */}
         {selectedType && (
           <div className="d-flex flex-wrap justify-content-center gap-3 mb-4">
-            {projectOptions[selectedType].map((file, idx) => (
+            {/* {projectOptions[selectedType].map((file, idx) => (
               <button
                 key={idx}
-                className={`btn border ${
-                  idx === 0 ? 'btn-warning text-white' : 'btn-outline-dark'
-                }`}
+                className={`btn border ${idx === 0 ? 'btn-warning text-white' : 'btn-outline-dark'
+                  }`}
+              >
+                {file.toUpperCase()}
+                onClick={handleOpenFile(files[file])}
+              </button>
+            ))} */}
+            {/* {files && files.map((file, idx) => (
+              <button
+                key={idx}
+                className={`btn border ${idx === 0 ? 'btn-warning text-white' : 'btn-outline-dark'
+                  }`}
               >
                 {file.toUpperCase()}
               </button>
+            ))} */}
+
+            {files && Object.keys(files).map((file, idx) => (
+              <button
+                key={idx}
+                className={`btn border ${idx === 0 ? 'btn-warning text-white' : 'btn-outline-dark'}`}
+                onClick={() => handleOpenFile(files[file])}
+              >
+                {file.replace(/_/g, ' ').toUpperCase()}
+              </button>
             ))}
+
           </div>
         )}
 
@@ -94,6 +239,7 @@ const VerificationComponent = () => {
             onClick={() => {
               setAction('accept');
               setReason('');
+              handleApprove();
             }}
           >
             ACCEPT
@@ -131,7 +277,7 @@ const VerificationComponent = () => {
             </button>
             <button
               className="btn btn-warning text-white fw-bold"
-              onClick={handleSubmitReview}
+              onClick={handleRework}
             >
               SUBMIT REVIEW
             </button>
