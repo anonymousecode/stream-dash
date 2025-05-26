@@ -38,13 +38,19 @@ export const menuList = [
             {
                 id: 1,
                 name: "Manage Facilities",
-                path: "/facilities/view",
+                path: "/facilities/manage",
                 subdropdownMenu: false
             },
             {
                 id: 2,
                 name: "Create Facilities",
                 path: "/facilities/create",
+                subdropdownMenu: false
+            },
+            {
+                id: 2,
+                name: "View Facilities",
+                path: "/facilities/view",
                 subdropdownMenu: false
             },
 
@@ -82,28 +88,17 @@ export const menuList = [
         path: "#",
         icon: 'feather-book',
         dropdownMenu: [
+            
             {
                 id: 1,
-                name: "Overview",
-                path: "/lms/statistics",
-                subdropdownMenu: false
-            },
-            {
-                id: 2,
-                name: "View Certificates",
-                path: "/lms/view-certificate",
-                subdropdownMenu: false
-            },
-            {
-                id: 3,
                 name: "View Courses",
                 path: "/lms/view-courses",
                 subdropdownMenu: false
             },
             {
-                id: 4,
-                name: "Manage Courses",
-                path: "/lms/manage",
+                id: 2,
+                name: "View Certificates",
+                path: "/lms/view-certificates",
                 subdropdownMenu: false
             },
 

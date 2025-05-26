@@ -77,7 +77,7 @@ const BlogView = () => {
   };
 
   return (
-    <div className="container py-3 rounded bg-white">
+    <div className="container py-3 bg-white p-4 rounded shadow-lg">
       {/* Tabs */}
       <div className="d-flex gap-3 mb-4">
         {tabs.map((tab) => (
