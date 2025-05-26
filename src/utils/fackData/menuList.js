@@ -223,12 +223,12 @@ export const menuList = [
                 path: "/actions/school",
                 subdropdownMenu: false
             },
-            {
-                id: 9,
-                name: "Manage Teacher",
-                path: "/actions/teacher",
-                subdropdownMenu: false
-            },
+            // {
+            //     id: 9,
+            //     name: "Manage Teacher",
+            //     path: "/actions/teacher",
+            //     subdropdownMenu: false
+            // },
 
             {
                 id: 9,
@@ -255,6 +255,18 @@ export const menuList = [
                 path: "/actions/student",
                 subdropdownMenu: false
             },
+            {
+                id:13,
+                name:"Mentor Request",
+                path:"/actions/mentor_request",
+                subdropdownMenu:false
+            },
+            {
+                id:14,
+                name:"Coordinator Request",
+                path:"/actions/coordinator_request",
+                subdropdownMenu:false
+            }
         ]
     },
     {
