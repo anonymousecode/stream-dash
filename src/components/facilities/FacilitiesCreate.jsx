@@ -100,7 +100,7 @@ const FacilitiesCreate = () => {
 
   const handleSave = () => {
     // You can collect and validate your form data here.
-    alert("Proposal saved! (you can replace this with actual logic)");
+    alert("Facility successfully saved!");
   }
 
   useEffect(() => {
@@ -147,7 +147,7 @@ const FacilitiesCreate = () => {
   }
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 bg-white p-4 rounded shadow-lg">
       <form onSubmit={handleSubmit}>
 
         {/* Title */}

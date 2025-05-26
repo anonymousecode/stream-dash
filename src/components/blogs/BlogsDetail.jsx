@@ -123,7 +123,8 @@ const BlogDetail = () => {
         <div className="col-12 mt-4">
           <h4 className="mb-3">Content</h4>
           <div className="p-4 bg-light rounded">
-            <p style={{ whiteSpace: "pre-line" }}>{blog.content}</p>
+            <p style={{ whiteSpace: "pre-line" }} dangerouslySetInnerHTML={{ __html: blog.content }} />
+
           </div>
         </div>
 

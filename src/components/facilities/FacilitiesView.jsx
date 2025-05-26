@@ -1,169 +1,94 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
-import { get_data } from '@/api/methods'
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { get_data } from '@/api/methods';
 
-// // Sample facility data
-// const facilityData = [
-//   {
-//     id: 1,
-//     name: 'Govt HSS Aluva Lab',
-//     labType: 'ICT Lab',
-//     brc: 'Aluva BRC',
-//     district: 'Ernakulam',
-//   },
-//   {
-//     id: 2,
-//     name: 'Model School Palakkad',
-//     labType: 'Science Lab',
-//     brc: 'Palakkad North BRC',
-//     district: 'Palakkad',
-//   },
-//   {
-//     id: 3,
-//     name: 'St. Joseph’s HS',
-//     labType: 'Computer Lab',
-//     brc: 'Thrissur Central BRC',
-//     district: 'Thrissur',
-//   },
-//   {
-//     id: 4,
-//     name: 'GHSS Varkala',
-//     labType: 'Math Lab',
-//     brc: 'Varkala BRC',
-//     district: 'Thiruvananthapuram',
-//   },
-//   {
-//     id: 5,
-//     name: 'GHSS Manjeri',
-//     labType: 'ICT Lab',
-//     brc: 'Manjeri BRC',
-//     district: 'Malappuram',
-//   },
-//   {
-//     id: 6,
-//     name: 'Govt Model Boys School',
-//     labType: 'Language Lab',
-//     brc: 'Kollam City BRC',
-//     district: 'Kollam',
-//   },
-//   {
-//     id: 7,
-//     name: 'SRV GHSS Ernakulam',
-//     labType: 'Science Lab',
-//     brc: 'Ernakulam BRC',
-//     district: 'Ernakulam',
-//   },
-//   {
-//     id: 8,
-//     name: 'GHSS Neyyattinkara',
-//     labType: 'ICT Lab',
-//     brc: 'Neyyattinkara BRC',
-//     district: 'Thiruvananthapuram',
-//   },
-// ]
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const FacilitiesView = () => {
+  const router = useRouter();
+  const [facilitiesData, setFacilitiesData] = useState([]);
 
-  const [facilityData, setFacilityData] = useState([])
   useEffect(() => {
-
-    get_data("Facility", ["name", "title", "description", "attach_image", "state", "district", "brc", "lab_type", "address", "lab_name", "brc_name", "district_name"], "")
+    get_data(
+      "Facility",
+      [
+        "title",
+        "name",
+        "lab_type",
+        "lab_name",
+        "brc",
+        "district",
+        "address",
+        "description",
+        "attach_image",
+        "state",
+        "state_name",
+        "district_name",
+        "brc_name"
+      ],
+      ""
+    )
       .then((res) => {
-        console.log("Blog data:", res);
-        setFacilityData(res);
-      }
-      ).catch((err) => {
-        console.log("Error fetching blog data:", err);
+        console.log("Facilities data:", res);
+        setFacilitiesData(res);
       })
-
+      .catch((err) => {
+        console.log("Error fetching facilities data:", err);
+      });
   }, []);
 
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const facilitiesPerPage = 6
-
-  const totalPages = Math.ceil(facilityData.length / facilitiesPerPage)
-  const startIndex = (currentPage - 1) * facilitiesPerPage
-  const currentFacilities = facilityData.slice(startIndex, startIndex + facilitiesPerPage)
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
-
-  const handleEdit = (id) => {
-    console.log('Edit facility with id:', id)
-    // Add your edit logic here
-  }
-
-  const handleDelete = (id) => {
-    console.log('Delete facility with id:', id)
-    // Add your delete logic here
-  }
+  const handleViewFacilityDetail = (facilityId) => {
+    router.push(`/facilities/details/${facilityId}`);
+  };
 
   return (
-    <div className="container py-4 bg-white">
-      {currentFacilities.length > 0 ? (
-        <div className="table-responsive">
-          <table className="table table-bordered align-middle text-center">
-            <thead className="table-light">
-              <tr>
-                <th>#</th>
-                <th>Facility Name</th>
-                <th>Lab Type</th>
-                <th>BRC</th>
-                <th>District</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentFacilities && currentFacilities.map(({ id, name, title, lab_name, brc_name, district_name }, index) => (
-                <tr key={id}>
-                  <td>{startIndex + index + 1}</td>
-                  <td className="text-start">{title}</td>
-                  <td>{lab_name}</td>
-                  <td>{brc_name}</td>
-                  <td>{district_name}</td>
-                  <td className="d-flex justify-content-center">
-                    <button
-                      className="btn btn-sm btn-outline-primary me-2"
-                      onClick={() => handleEdit(id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDelete(id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="container py-3 rounded bg-white">
+      <h3 className="mb-4">Facilities</h3>
 
-          {/* Pagination */}
-          <nav>
-            <ul className="pagination justify-content-center mt-4">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <li
-                  key={page}
-                  className={`page-item ${page === currentPage ? 'active' : ''}`}
-                >
-                  <button className="page-link" onClick={() => handlePageChange(page)}>
-                    {page}
+      {/* Facility Cards */}
+      <div className="row g-4">
+        {facilitiesData.length > 0 ? (
+          facilitiesData.map((item) => (
+            <div className="col-sm-6 col-md-4 col-lg-3" key={item.facility_name}>
+              <div className="card h-100 shadow-sm border-0">
+                {item.attach_image ? (
+                  <img  
+                    src={`${apiBaseUrl}${item.attach_image}`}
+                    alt={item.facility_name}
+                    className="card-img-top"
+                    style={{ height: '180px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div
+                    className="card-img-top d-flex align-items-center justify-content-center bg-secondary text-white"
+                    style={{ height: '180px' }}
+                  >
+                    No Image
+                  </div>
+                )}
+                <div className="card-body pb-1">
+                  <h5 className="card-title text-truncate">{item.facility_name}</h5>
+                  <p className="card-text text-muted mb-1">Lab Type: {item.lab_type || "-"}</p>
+                  <p className="card-text text-muted mb-2">District: {item.district || "-"}</p>
+
+                  <button
+                    className="btn btn-warning btn-sm text-white rounded-2"
+                    onClick={() => handleViewFacilityDetail(item.name)}
+                  >
+                    View Details
                   </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      ) : (
-        <div className="text-center text-muted">No facilities found.</div>
-      )}
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="col-12 text-center text-muted">No facilities available.</div>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default FacilitiesView
+export default FacilitiesView;

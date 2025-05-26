@@ -142,7 +142,7 @@ const EventDetail = () => {
 
           <div className="mb-4">
             <h5 className="text-secondary">Short Description</h5>
-            <p>{event.short_description}</p>
+            <p dangerouslySetInnerHTML={{ __html: event.short_description}} />  
           </div>
 
           <div className="row mb-4">
@@ -183,7 +183,7 @@ const EventDetail = () => {
         <div className="col-12 mt-4">
           <h4 className="mb-3">Description</h4>
           <div className="p-4 bg-light rounded">
-            <p style={{ whiteSpace: "pre-line" }}>{event.description}</p>
+            <p style={{ whiteSpace: "pre-line" }} dangerouslySetInnerHTML={{ __html: event.description }} />
           </div>
         </div>
 

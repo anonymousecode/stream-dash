@@ -118,7 +118,7 @@ const BlogsManage = () => {
 
   if (error) {
     return (
-      <div className="container py-4">
+      <div className="container py-4 bg-white p-4 rounded shadow-sm">
         <div className="alert alert-danger" role="alert">
           {error}
         </div>

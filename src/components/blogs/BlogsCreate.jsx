@@ -100,7 +100,7 @@ const BlogsCreate = () => {
   }
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 bg-white p-4 rounded shadow-sm">
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Title</label>
