@@ -129,7 +129,7 @@ const ThirdReview = ({ projectId }) => {
 
         <form onSubmit={handleSubmit}>
           {renderFileInput(requiredField, true)}
-          {renderFileInput(optionalField, false)}
+          {/* {renderFileInput(optionalField, false)} */}
 
           <button
             type="submit"

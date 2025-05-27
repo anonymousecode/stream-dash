@@ -171,7 +171,7 @@ const ProblemIdentification = ({ instructionsFileUrl }) => {
       </div>
 
       {/* BRC */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label className="form-label">BRC</label>
         <select className="form-control" name="brc_id" onChange={handleChange}>
           <option value="">Select</option>
@@ -181,7 +181,7 @@ const ProblemIdentification = ({ instructionsFileUrl }) => {
             </option>
           ))}
         </select>
-      </div>
+      </div> */}
 
       {/* Upload Section */}
       <form onSubmit={handleSubmit}>
