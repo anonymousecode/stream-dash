@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react"
 import "trix"
 import "trix/dist/trix.css"
 import { insertDoc, uploadFile, get_data } from '@/api/methods'
+import { getUser } from "@/api/methods"
+
 
 const BlogsCreate = () => {
   const [blogImage, setBlogImage] = useState(null)
@@ -17,22 +19,49 @@ const BlogsCreate = () => {
     author: "",
     attach_image: null,
     content: "",
+    short_description :""
   })
 
   // Fetch STREAM User list
-  useEffect(() => {
-    const fetchAuthors = async () => {
-      try {
-        const fields = ["name", "fname"]
-        const res = await get_data("STREAM User", fields, {})
-        setAuthors(res || [])
-      } catch (error) {
-        console.error("Error fetching authors:", error)
-      }
-    }
+  // useEffect(() => {
+  //   const fetchAuthors = async () => {
+  //     try {
+  //       const fields = ["name", "fname"]
+  //       const res = await get_data("STREAM User", fields, {})
+  //       setAuthors(res || [])
+  //     } catch (error) {
+  //       console.error("Error fetching authors:", error)
+  //     }
+  //   }
 
-    fetchAuthors()
-  }, [])
+  //   fetchAuthors()
+  // }, [])
+  
+
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      console.log("Fetching user...")
+      const userData = await getUser()
+
+      console.log("User fetched:", userData)
+
+      if (!userData?.name) throw new Error("User 'name' not found")
+
+      setForm(prev => ({
+        ...prev,
+        author: userData.name
+      }))
+    } catch (err) {
+      console.error("Error fetching user:", err)
+    }
+  }
+
+  fetchUser()
+}, [])
+
+
+
 
   // Trix editor handler
   useEffect(() => {
@@ -78,6 +107,7 @@ const BlogsCreate = () => {
           author: "",
           attach_image: null,
           content: "",
+          short_description:""
         })
 
         setBlogImage(null)
@@ -123,7 +153,7 @@ const BlogsCreate = () => {
           />
         </div>
 
-        <div className="mb-3" style={{ marginBottom: "5rem" }}>
+        {/* <div className="mb-3" style={{ marginBottom: "5rem" }}>
           <label className="form-label">Author</label>
           <select
             name="author"
@@ -138,7 +168,18 @@ const BlogsCreate = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
+        <div className="mb-3">
+  <label className="form-label">Author</label>
+  <input
+    type="text"
+    name="author"
+    className="form-control"
+    value={form.author}
+    readOnly
+  />
+</div>
+
 
         <div className="mb-3">
           <label className="form-label">Attach Image</label>
@@ -160,6 +201,24 @@ const BlogsCreate = () => {
             )}
           </div>
         </div>
+
+      <div className="mb-4">
+  <label htmlFor="short_description" className="form-label">
+    Short Description
+  </label>
+  <textarea
+    id="short_description"
+    name="short_description"
+    className="form-control"
+    placeholder="Enter a short description..."
+    rows="4"
+    value={form.short_description}
+    onChange={handleChange}
+  ></textarea>
+</div>
+
+
+        
 
         <div className="mb-3">
           <label className="form-label">Content</label>
