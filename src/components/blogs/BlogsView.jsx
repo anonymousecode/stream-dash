@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { get_data } from '@/api/methods';
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-const tabs = ['Latest Blogs', 'Old Blogs'];
 
 const BlogView = () => {
   const router = useRouter();
@@ -19,6 +18,7 @@ const BlogView = () => {
         "title",
         "date",
         "author",
+        "author_name",
         "short_description",
         "attach_image",
         "content"
@@ -42,26 +42,11 @@ const BlogView = () => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Determine if blog is recent (last 1 year) or archived (older than 1 year)
-  const isLatest = (blogDate) => {
-    const date = new Date(blogDate);
-    return date >= new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-  };
 
-  const isArchived = (blogDate) => {
-    const date = new Date(blogDate);
-    return date < new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
-  };
-
-  // Filter blogs based on active tab
-  const filteredBlogs = blogsData.filter((blog) =>
-    activeTab === 'Latest Blogs' ? isLatest(blog.date) : isArchived(blog.date)
-  );
-
-  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  const totalPages = Math.ceil(blogsData.length / blogsPerPage);
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const currentBlogs = blogsData.slice(indexOfFirstBlog, indexOfLastBlog);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -78,20 +63,6 @@ const BlogView = () => {
 
   return (
     <div className="container py-3 bg-white p-4 rounded shadow-lg">
-      {/* Tabs */}
-      <div className="d-flex gap-3 mb-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            className={`btn fw-bold text-uppercase ${
-              tab === activeTab ? 'btn-warning text-white' : 'btn-outline-secondary'
-            }`}
-            onClick={() => handleTabChange(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
 
       {/*Blog Cards*/}
 <div className="row g-4">
@@ -109,13 +80,14 @@ const BlogView = () => {
           )}
           <div className="card-body d-flex flex-column">
             <h5 className="card-title text-truncate">{item.title}</h5>
-            <p className="card-text text-muted mb-1 small">By {item.author}</p>
+            <p className="card-text text-muted mb-1 small">By {item.author_name}</p>
             <p className="card-text text-muted mb-2 small">
               {new Date(item.date).toLocaleDateString('en-GB')}
             </p>
-            <p className="card-text small flex-grow-1">
-              {item.short_description?.slice(0, 80)}...
-            </p>
+            <p
+  className="card-text small flex-grow-1"
+  dangerouslySetInnerHTML={{ __html: item.short_description?.slice(0, 100)+"..." }}/>
+
             <div className="mt-auto pt-3 pb-2">
               <button
                 className="btn btn-warning btn-sm text-white rounded-2"

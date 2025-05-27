@@ -40,7 +40,7 @@ const BlogsManage = () => {
         // Fetch blogs
         const res = await get_data(
           "Blog",
-          ["name", "title", "date", "author", "content", "attach_image"],
+          ["name", "title", "date", "author","author_name", "content", "attach_image","short_description"],
           "{}"
         )
 
@@ -75,7 +75,31 @@ const BlogsManage = () => {
     router.push(`/blogs/edit/${blogId}`)
   }
 
-  const handleRemove = async (blogId) => {
+//   const handleRemove = async (blogId) => {
+//   try {
+//     // Call backend delete API
+//     await trash("Blog", blogId);
+
+//     // Remove from local state only after successful deletion
+//     setBlogData(prevData => prevData.filter(blog => blog.name !== blogId));
+
+//     // Handle pagination if needed
+//     if ((blogData.length - 1) % blogsPerPage === 0 && currentPage > 1) {
+//       setCurrentPage(currentPage - 1);
+//     }
+
+//     console.log("Blog deleted:", blogId);
+//   } catch (err) {
+//     console.error("Failed to delete blog:", err);
+//     alert("Failed to delete blog. Please try again.");
+//   }
+// };
+
+const handleRemove = async (blogId) => {
+  const confirmed = window.confirm("Are you sure you want to delete this blog?");
+
+  if (!confirmed) return; // Stop if user cancels
+
   try {
     // Call backend delete API
     await trash("Blog", blogId);
@@ -94,6 +118,7 @@ const BlogsManage = () => {
     alert("Failed to delete blog. Please try again.");
   }
 };
+
 
   const handleOpen = (blogId) => {
     router.push(`/blogs/detail/${blogId}`)
@@ -189,12 +214,12 @@ const BlogsManage = () => {
                 <h6 className="card-title fw-bold">
                   {blog.title.length > 40 ? blog.title.slice(0, 40) + "..." : blog.title}
                 </h6>
-                <p className="text-muted mb-1">By {blog.author}</p>
+                <p className="text-muted mb-1">By {blog.author_name}</p>
                 <p className="text-muted" style={{ fontSize: '0.875rem' }}>
                   {new Date(blog.date).toLocaleDateString('en-GB')}
                 </p>
                 <p className="card-text flex-grow-1">
-                  {blog.short_description?.slice(0, 80) || "..."}
+                  {blog.short_description?.slice(0, 80)+"..."}
                 </p>
                 <div className="mt-3">
                   <button
