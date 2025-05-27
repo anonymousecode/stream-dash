@@ -98,7 +98,7 @@ const ProblemIdentification = ({ instructionsFileUrl }) => {
     const formattedMembers = ids.map((id) => ({ unique_id: id }));
     setForm((form) => ({
       ...form,
-      members_list: formattedMembers,
+      member_list: formattedMembers,
     }));
 
   };

@@ -27,6 +27,7 @@ const BlogDetail = () => {
             "name",
             "title",
             "author",
+            "author_name",
             "date",
             "content",
             "attach_image"
@@ -49,6 +50,12 @@ const BlogDetail = () => {
 
     fetchBlogDetail();
   }, [blogId]);
+
+  const formatDate = (dateString) => {
+  const options = { day: '2-digit', month: 'short', year: 'numeric' };
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', options); // Output: "06 May 2025"
+};
 
   const handleBack = () => {
     router.push("/blogs/view"); // Redirect back to blog listing page
@@ -94,13 +101,9 @@ const BlogDetail = () => {
           <h2 className="mb-3">{blog.title}</h2>
 
           <div className="mb-4">
-            <h6 className="text-secondary">Author</h6>
-            <p>{blog.author}</p>
-          </div>
-
-          {/* Date moved under author */}
-          <div className="mb-4 text-muted">
-            <small>{blog.date}</small>
+            <p className="mb-0">{blog.author_name}</p>
+            
+            <p  className="mt-0">{formatDate(blog.date)}</p>
           </div>
 
          
@@ -121,7 +124,6 @@ const BlogDetail = () => {
 
         {/* Full Content */}
         <div className="col-12 mt-4">
-          <h4 className="mb-3">Content</h4>
           <div className="p-4 bg-light rounded">
             <p style={{ whiteSpace: "pre-line" }} dangerouslySetInnerHTML={{ __html: blog.content }} />
 
