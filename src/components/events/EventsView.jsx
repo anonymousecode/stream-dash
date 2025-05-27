@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -11,7 +10,10 @@ const tabs = ['Up-Coming Events', 'Past Events'];
 const EventPage = () => {
   const router = useRouter();
   const [eventsData, setEventsData] = useState([]);
-  
+  const [activeTab, setActiveTab] = useState('Up-Coming Events');
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 8;
+
   useEffect(() => {
     get_data(
       "Events",
@@ -40,11 +42,6 @@ const EventPage = () => {
       });
   }, []);
 
-  const [activeTab, setActiveTab] = useState('Up-Coming Events');
-  const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 8;
-
-  // Get today's date (without time)
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -60,7 +57,6 @@ const EventPage = () => {
     return date < today;
   };
 
-  // Filter events based on selected tab
   const filteredEvents = eventsData.filter((event) =>
     activeTab === 'Up-Coming Events' ? isUpcoming(event.date) : isPast(event.date)
   );
@@ -76,7 +72,7 @@ const EventPage = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    setCurrentPage(1); // reset page on tab change
+    setCurrentPage(1);
   };
 
   const handleViewEventDetail = (eventId) => {
@@ -123,7 +119,7 @@ const EventPage = () => {
                     className="btn btn-warning btn-sm text-white rounded-2"
                     onClick={() => handleViewEventDetail(item.name)}
                   >
-                    Enrolled
+                    View
                   </button>
                 </div>
               </div>
@@ -140,17 +136,59 @@ const EventPage = () => {
       {totalPages > 1 && (
         <div className="d-flex justify-content-center mt-4">
           <nav>
-            <ul className="pagination">
-              {Array.from({ length: totalPages }, (_, idx) => (
-                <li
-                  key={idx + 1}
-                  className={`page-item ${currentPage === idx + 1 ? 'active' : ''}`}
+            <ul className="pagination mb-0">
+              {/* Prev */}
+              <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
                 >
-                  <button className="page-link" onClick={() => handlePageChange(idx + 1)}>
-                    {idx + 1}
-                  </button>
-                </li>
-              ))}
+                  Prev
+                </button>
+              </li>
+
+              {/* Page Numbers (max 5 visible) */}
+              {(() => {
+                const pages = [];
+                const maxVisible = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let endPage = startPage + maxVisible - 1;
+
+                if (endPage > totalPages) {
+                  endPage = totalPages;
+                  startPage = Math.max(1, endPage - maxVisible + 1);
+                }
+
+                for (let page = startPage; page <= endPage; page++) {
+                  pages.push(
+                    <li key={page} className="page-item">
+                      <button
+                        className={`page-link ${
+                          currentPage === page
+                            ? 'bg-warning text-white border-warning'
+                            : 'text-primary'
+                        }`}
+                        onClick={() => handlePageChange(page)}
+                      >
+                        {page}
+                      </button>
+                    </li>
+                  );
+                }
+                return pages;
+              })()}
+
+              {/* Next */}
+              <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
