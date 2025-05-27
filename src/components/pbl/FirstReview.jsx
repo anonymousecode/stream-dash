@@ -163,7 +163,7 @@ const FirstReview = ({ projectId }) => {
               </div>
 
               {/* Supporting Documents Upload */}
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <label htmlFor="supportingUpload" className="form-label 
 text-dark fw-semibold">
                   Upload Supporting Documents <span
@@ -203,7 +203,7 @@ text-success">{file.name}</span>
                     ))}
                   </div>
                 )}
-              </div>
+              </div> */}
 
               <button
                 type="submit"

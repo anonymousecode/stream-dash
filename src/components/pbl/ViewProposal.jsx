@@ -12,7 +12,7 @@ const ViewProposal = () => {
   const proposalsPerPage = 6
 
   useEffect(() => {
-    get_data("Project Proposal", ["name", "title", "description", "idea_sheet", "project_type", "brc_name", "status","coordinator","remark"], "")
+    get_data("Project Proposal", ["name", "title", "description", "idea_sheet", "project_type", "brc_name", "status", "coordinator", "remark"], "")
       .then((res) => setProposals(res))
       .catch((err) => console.error("Error fetching proposal data:", err))
   }, [])
@@ -31,6 +31,10 @@ const ViewProposal = () => {
 
   const handleRework = (id, remark) => {
     update("Project Proposal", id, { status: "Rework", remark: remark })
+  }
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber)
   }
 
   return selectedProposal ? (
@@ -103,7 +107,7 @@ const ViewProposal = () => {
           </tbody>
         </table>
 
-       
+
         {/* Pagination */}
         {totalPages > 1 && (
           <nav className="d-flex justify-content-center mt-4">

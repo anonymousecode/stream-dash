@@ -10,7 +10,7 @@ const MyProposal = () => {
   const [filterStatus, setFilterStatus] = useState('All')
 
   useEffect(() => {
-    get_data("Project Proposal", ["name", "title", "description", "project_type", "brc_name","coordinator","remark", "status"], "")
+    get_data("Project Proposal", ["name", "title", "description", "project_type", "brc_name", "coordinator", "remark", "status"], "")
       .then((res) => {
         setProposalData(res)
       }).catch((err) => {
@@ -69,7 +69,7 @@ const MyProposal = () => {
                 <th>Status</th>
                 <th>Coordinator</th>
                 <th>Remarks</th>
-                <th>Actions</th>
+                {/* <th>Actions</th> */}
               </tr>
             </thead>
             <tbody>
@@ -86,7 +86,7 @@ const MyProposal = () => {
                   </td>
                   <td>{proposal.coordinator}</td>
                   <td>{proposal.remark}</td>
-                  <td className="d-flex justify-content-center gap-2">
+                  {/* <td className="d-flex justify-content-center gap-2">
                     <button
                       className="btn btn-sm btn-outline-primary"
                       onClick={() => handleEdit(proposal.name)}
@@ -99,7 +99,7 @@ const MyProposal = () => {
                     >
                       Delete
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
