@@ -1,34 +1,64 @@
 
-
 'use client'
 
-import React, { useState } from 'react'
-
-// Dummy Data
-const initialMentorData = [
-  { id: 'MENTOR001', name: 'Emily Johnson', phone: '9996325871', email: 'emily@example.com', status: 'approval' },
-  { id: 'MENTOR002', name: 'Jacob Miller', phone: '9888745213', email: 'jake@example.com', status: 'verified' },
-  { id: 'MENTOR003', name: 'Madison Clark', phone: '9012345668', email: 'maddy@example.com', status: 'approval' },
-  { id: 'MENTOR004', name: 'Olivia Anderson', phone: '9255678123', email: 'olive@example.com', status: 'verified' },
-  { id: 'MENTOR005', name: 'Ethan Davis', phone: '9988766655', email: 'ethan@example.com', status: 'verified' },
-]
+import React, { useEffect, useState } from 'react'
+import { get_data } from '@/api/methods' // your custom API function
 
 const ManageMentor = () => {
-  const [mentorData, setMentorData] = useState(initialMentorData)
+  const [mentorData, setMentorData] = useState([])
   const [filter, setFilter] = useState('approval')
   const [currentPage, setCurrentPage] = useState(1)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [mentorToDelete, setMentorToDelete] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const mentorsPerPage = 6
+
+  useEffect(() => {
+    fetchMentors()
+  }, [])
+
+  const fetchMentors = async () => {
+    try {
+      setLoading(true)
+
+      const [activeMentors, pendingMentors] = await Promise.all([
+        get_data('Mentor', ['name', 'unique_id', 'workflow_state'], { workflow_state: 'Active' }),
+        get_data('Mentor', ['name', 'unique_id', 'workflow_state'], { workflow_state: 'Approval Pending' })
+      ])
+
+      const enrichWithUser = async (mentors, status) =>
+        await Promise.all(
+          mentors.map(async (mentor) => {
+            const userData = await get_data('STREAM User', ['fname', 'email', 'phone'], {
+              name: mentor.unique_id,
+            })
+
+            return {
+              id: mentor.name,
+              name: userData[0]?.fname || 'N/A',
+              phone: userData[0]?.phone || 'N/A',
+              email: userData[0]?.email || 'N/A',
+              status,
+            }
+          })
+        )
+
+      const enrichedActive = await enrichWithUser(activeMentors, 'verified')
+      const enrichedPending = await enrichWithUser(pendingMentors, 'approval')
+
+      setMentorData([...enrichedPending, ...enrichedActive])
+    } catch (error) {
+      console.error('Error fetching mentors:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const filteredMentors = mentorData.filter((mentor) => mentor.status === filter)
   const totalPages = Math.ceil(filteredMentors.length / mentorsPerPage)
   const startIndex = (currentPage - 1) * mentorsPerPage
   const currentMentors = filteredMentors.slice(startIndex, startIndex + mentorsPerPage)
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page)
-  }
 
   const handleAccept = (id) => {
     setMentorData((prevData) =>
@@ -48,6 +78,10 @@ const ManageMentor = () => {
       setShowDeleteModal(false)
       setMentorToDelete(null)
     }
+  }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
   }
 
   return (
@@ -78,7 +112,10 @@ const ManageMentor = () => {
         </button>
       </div>
 
-      {currentMentors.length > 0 ? (
+      {/* Mentor Table */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : currentMentors.length > 0 ? (
         <div className="table-responsive">
           <table className="table table-bordered align-middle text-center">
             <thead className="table-light">

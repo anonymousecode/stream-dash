@@ -1,51 +1,87 @@
+
 'use client'
 
-import React, { useState } from 'react'
-
-// Dummy Data
-const initialCoordinatorData = [
-  { id: 'COORD001', name: 'John Doe', phone: '9996325871', email: 'john@example.com', status: 'approval' },
-  { id: 'COORD002', name: 'Jane Smith', phone: '9888745213', email: 'jane@example.com', status: 'verified' },
-  { id: 'COORD003', name: 'Michael Brown', phone: '9012345668', email: 'mike@example.com', status: 'approval' },
-  { id: 'COORD004', name: 'Sophia Wilson', phone: '9255678123', email: 'sophia@example.com', status: 'verified' },
-  { id: 'COORD005', name: 'David Lee', phone: '9988766655', email: 'david@example.com', status: 'verified' },
-]
+import React, { useEffect, useState } from 'react'
+import { get_data } from '@/api/methods' // custom API method
 
 const ManageCoordinator = () => {
-  const [coordinatorData, setCoordinatorData] = useState(initialCoordinatorData)
+  const [coordinatorData, setCoordinatorData] = useState([])
   const [filter, setFilter] = useState('approval')
   const [currentPage, setCurrentPage] = useState(1)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [coordinatorToDelete, setCoordinatorToDelete] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const coordinatorsPerPage = 6
-  const filteredCoordinators = coordinatorData.filter((coordinator) => coordinator.status === filter)
+
+  useEffect(() => {
+    fetchCoordinators()
+  }, [])
+
+  const fetchCoordinators = async () => {
+    try {
+      setLoading(true)
+
+      const [activeCoordinators, pendingCoordinators] = await Promise.all([
+        get_data('Coordinator', ['name', 'unique_id', 'workflow_state'], { workflow_state: 'Active' }),
+        get_data('Coordinator', ['name', 'unique_id', 'workflow_state'], { workflow_state: 'Approval Pending' }),
+      ])
+
+      const enrichWithUser = async (coordinators, status) =>
+        await Promise.all(
+          coordinators.map(async (coordinator) => {
+            const userData = await get_data('STREAM User', ['fname', 'email', 'phone'], {
+              name: coordinator.unique_id,
+            })
+
+            return {
+              id: coordinator.name,
+              name: userData[0]?.fname || 'N/A',
+              phone: userData[0]?.phone || 'N/A',
+              email: userData[0]?.email || 'N/A',
+              status,
+            }
+          })
+        )
+
+      const enrichedActive = await enrichWithUser(activeCoordinators, 'verified')
+      const enrichedPending = await enrichWithUser(pendingCoordinators, 'approval')
+
+      setCoordinatorData([...enrichedPending, ...enrichedActive])
+    } catch (error) {
+      console.error('Error fetching coordinators:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const filteredCoordinators = coordinatorData.filter((c) => c.status === filter)
   const totalPages = Math.ceil(filteredCoordinators.length / coordinatorsPerPage)
   const startIndex = (currentPage - 1) * coordinatorsPerPage
   const currentCoordinators = filteredCoordinators.slice(startIndex, startIndex + coordinatorsPerPage)
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page)
-  }
-
   const handleAccept = (id) => {
     setCoordinatorData((prevData) =>
-      prevData.map((coordinator) =>
-        coordinator.id === id ? { ...coordinator, status: 'verified' } : coordinator
+      prevData.map((c) =>
+        c.id === id ? { ...c, status: 'verified' } : c
       )
     )
   }
 
   const handleReject = (id) => {
-    setCoordinatorData((prevData) => prevData.filter((coordinator) => coordinator.id !== id))
+    setCoordinatorData((prevData) => prevData.filter((c) => c.id !== id))
   }
 
   const handleDelete = () => {
     if (coordinatorToDelete) {
-      setCoordinatorData((prevData) => prevData.filter((coordinator) => coordinator.id !== coordinatorToDelete))
+      setCoordinatorData((prevData) => prevData.filter((c) => c.id !== coordinatorToDelete))
       setShowDeleteModal(false)
       setCoordinatorToDelete(null)
     }
+  }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
   }
 
   return (
@@ -76,7 +112,10 @@ const ManageCoordinator = () => {
         </button>
       </div>
 
-      {currentCoordinators.length > 0 ? (
+      {/* Coordinator Table */}
+      {loading ? (
+        <p>Loading...</p>
+      ) : currentCoordinators.length > 0 ? (
         <div className="table-responsive">
           <table className="table table-bordered align-middle text-center">
             <thead className="table-light">
@@ -183,3 +222,4 @@ const ManageCoordinator = () => {
 }
 
 export default ManageCoordinator
+
