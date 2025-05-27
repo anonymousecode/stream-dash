@@ -5,7 +5,7 @@ export const menuList = [
         path: "/dashboard",
         icon: 'feather-bar-chart-2',
         dropdownMenu: [
-           
+
         ]
     },
     {
@@ -88,7 +88,7 @@ export const menuList = [
         path: "#",
         icon: 'feather-book',
         dropdownMenu: [
-            
+
             {
                 id: 1,
                 name: "View Courses",
@@ -149,12 +149,12 @@ export const menuList = [
                 subdropdownMenu: false
             },
 
-            {
-                id: 3,
-                name: "Create Proposal",
-                path: "/pbl/create",
-                subdropdownMenu: false
-            },
+            // {
+            //     id: 3,
+            //     name: "Create Proposal",
+            //     path: "/pbl/create",
+            //     subdropdownMenu: false
+            // },
             {
                 id: 4,
                 name: "Problem Identification",
@@ -236,8 +236,8 @@ export const menuList = [
                 path: "/actions/stc",
                 subdropdownMenu: false
             },
-            
-             {
+
+            {
                 id: 10,
                 name: "Manage Mentor",
                 path: "/actions/mentor",
@@ -256,16 +256,16 @@ export const menuList = [
                 subdropdownMenu: false
             },
             {
-                id:13,
-                name:"Mentor Request",
-                path:"/actions/mentor_request",
-                subdropdownMenu:false
+                id: 13,
+                name: "Mentor Request",
+                path: "/actions/mentor_request",
+                subdropdownMenu: false
             },
             {
-                id:14,
-                name:"Coordinator Request",
-                path:"/actions/coordinator_request",
-                subdropdownMenu:false
+                id: 14,
+                name: "Coordinator Request",
+                path: "/actions/coordinator_request",
+                subdropdownMenu: false
             }
         ]
     },
@@ -434,5 +434,5 @@ export const menuList = [
     //         },
     //     ]
     // },
-    
+
 ]
