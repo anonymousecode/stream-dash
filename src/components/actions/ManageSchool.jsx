@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react'
 
-// Dummy School Data
 const initialSchoolData = [
   { id: 'SCH001', state: 'Kerala', district: 'Thiruvananthapuram', brc: 'BRC-TVPM', schoolName: 'Govt UPS Vattiyoorkavu', email: 'vattiyoorkavu@gov.ker.in', phone: '9847012345' },
   { id: 'SCH002', state: 'Kerala', district: 'Kozhikode', brc: 'BRC-KKD', schoolName: 'St. Mary\'s High School', email: 'stmaryskkd@edu.ker.in', phone: '9895011122' },
@@ -18,6 +17,7 @@ const ManageSchools = () => {
   const [schoolData, setSchoolData] = useState(initialSchoolData)
   const [currentPage, setCurrentPage] = useState(1)
   const [showModal, setShowModal] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
   const [newSchool, setNewSchool] = useState({
     id: '',
     state: '',
@@ -27,6 +27,7 @@ const ManageSchools = () => {
     email: '',
     phone: '',
   })
+  const [editingSchool, setEditingSchool] = useState(null)
 
   const schoolsPerPage = 6
   const totalPages = Math.ceil(schoolData.length / schoolsPerPage)
@@ -62,13 +63,32 @@ const ManageSchools = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to remove this school?')) {
-      setSchoolData(schoolData.filter((school) => school.id !== id))
+      const updated = schoolData.filter((school) => school.id !== id)
+      setSchoolData(updated)
+      if ((currentPage - 1) * schoolsPerPage >= updated.length && currentPage > 1) {
+        setCurrentPage(currentPage - 1)
+      }
     }
   }
 
   const handleEdit = (id) => {
-    console.log('Edit School with ID:', id)
-    // Implement edit functionality if needed
+    const selected = schoolData.find((s) => s.id === id)
+    setEditingSchool(selected)
+    setEditModalOpen(true)
+  }
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target
+    setEditingSchool({ ...editingSchool, [name]: value })
+  }
+
+  const handleUpdateSchool = () => {
+    const updated = schoolData.map((s) =>
+      s.id === editingSchool.id ? { ...editingSchool } : s
+    )
+    setSchoolData(updated)
+    setEditModalOpen(false)
+    setEditingSchool(null)
   }
 
   return (
@@ -136,10 +156,10 @@ const ManageSchools = () => {
         <div className="text-center text-muted">No schools found.</div>
       )}
 
-      {/* Add School Modal */}
+      {/* Add Modal */}
       {showModal && (
-        <div className="modal fade show d-block" tabIndex="-1" role="dialog">
-          <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal fade show d-block" tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Add New School</h5>
@@ -161,12 +181,41 @@ const ManageSchools = () => {
                 ))}
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                  Cancel
-                </button>
-                <button className="btn btn-primary" onClick={handleAddSchool}>
-                  Save
-                </button>
+                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleAddSchool}>Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {editModalOpen && editingSchool && (
+        <div className="modal fade show d-block" tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Edit School</h5>
+                <button type="button" className="btn-close" onClick={() => setEditModalOpen(false)} />
+              </div>
+              <div className="modal-body">
+                {['state', 'district', 'brc', 'schoolName', 'email', 'phone'].map((field) => (
+                  <div className="mb-3" key={field}>
+                    <label className="form-label text-capitalize">{field.replace(/([A-Z])/g, ' $1')}</label>
+                    <input
+                      type={field === 'email' ? 'email' : 'text'}
+                      className="form-control"
+                      name={field}
+                      value={editingSchool[field]}
+                      onChange={handleEditChange}
+                      placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" onClick={() => setEditModalOpen(false)}>Cancel</button>
+                <button className="btn btn-primary" onClick={handleUpdateSchool}>Update</button>
               </div>
             </div>
           </div>

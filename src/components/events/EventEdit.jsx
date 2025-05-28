@@ -196,7 +196,7 @@ const EventEdit = () => {
   }
 
   return (
-    <div className="container my-4">
+    <div className="container my-3 bg-white p-4 rounded shadow-sm ">
       <h3>Edit Event</h3>
       <form onSubmit={handleSubmit}>
 

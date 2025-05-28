@@ -1,17 +1,18 @@
+'use client';
 
-'use client'
-
-import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { get_data, trash } from '@/api/methods'
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { get_data, trash } from '@/api/methods';
 
 const EventManage = () => {
-  const [eventData, setEventData] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [removingId, setRemovingId] = useState(null)
-  const [removedEvents, setRemovedEvents] = useState([])
+  const [eventData, setEventData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [removingId, setRemovingId] = useState(null);
+  const [removedEvents, setRemovedEvents] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const router = useRouter()
+  const eventsPerPage = 6;
+  const router = useRouter();
 
   useEffect(() => {
     get_data(
@@ -34,53 +35,52 @@ const EventManage = () => {
       ''
     )
       .then((res) => {
-        setEventData(res)
+        setEventData(res);
       })
       .catch((err) => {
-        console.error('Error fetching event data:', err)
-      })
-  }, [])
+        console.error('Error fetching event data:', err);
+      });
+  }, []);
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const eventsPerPage = 6
-  const totalPages = Math.ceil(eventData.length / eventsPerPage)
-  const startIndex = (currentPage - 1) * eventsPerPage
-  const currentEvents = eventData.slice(startIndex, startIndex + eventsPerPage)
+  const totalPages = Math.ceil(eventData.length / eventsPerPage);
+  const startIndex = (currentPage - 1) * eventsPerPage;
+  const currentEvents = eventData.slice(startIndex, startIndex + eventsPerPage);
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
+    setCurrentPage(pageNumber);
+  };
 
   const handleEdit = (eventID) => {
-    router.push(`/events/edit/${eventID}`)
-  }
+    router.push(`/events/edit/${eventID}`);
+  };
 
   const handleDelete = async (docId) => {
-  const confirmDelete = window.confirm('Are you sure you want to delete this event?')
-  if (!confirmDelete) return
+    const confirmDelete = window.confirm('Are you sure you want to delete this event?');
+    if (!confirmDelete) return;
 
-  setRemovingId(docId)
-  setLoading(true)
+    setRemovingId(docId);
+    setLoading(true);
 
-  try {
-    await trash('Events', docId)  // Don't rely on the return value
-    // Mark as removed visually
-    setRemovedEvents((prev) => [...prev, docId])
-  } catch (error) {
-    console.error(error)
-    alert('An error occurred while deleting.')
-  } finally {
-    setLoading(false)
-    setRemovingId(null)
-  }
-}
-
-  const handleFrontendDelete = (eventName) => {
-    const confirmDelete = window.confirm('Are you sure you want to remove this event from view?')
-    if (confirmDelete) {
-      setRemovedEvents((prev) => [...prev, eventName])
+    try {
+      await trash('Events', docId);
+      setRemovedEvents((prev) => [...prev, docId]);
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred while deleting.');
+    } finally {
+      setLoading(false);
+      setRemovingId(null);
     }
-  }
+  };
+
+  // Format date to dd-mm-yy
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    if (isNaN(date)) return dateString;
+    return date
+      .toLocaleDateString('en-GB')
+      .replace(/(\d+)\/(\d+)\/(\d{4})/, (_, d, m, y) => `${d}-${m}-${y.slice(2)}`);
+  };
 
   return (
     <div className="container py-4 bg-white">
@@ -106,7 +106,7 @@ const EventManage = () => {
             </thead>
             <tbody>
               {currentEvents.map((event, index) => {
-                const isRemoved = removedEvents.includes(event.name)
+                const isRemoved = removedEvents.includes(event.name);
 
                 return (
                   <tr
@@ -122,7 +122,7 @@ const EventManage = () => {
                     <td>{event.place}</td>
                     <td>{event.level}</td>
                     <td>{event.district_name}</td>
-                    <td>{event.date}</td>
+                    <td>{formatDate(event.date)}</td>
                     <td>{event.lab_type}</td>
                     <td className="d-flex justify-content-center">
                       <button
@@ -133,26 +133,24 @@ const EventManage = () => {
                         Edit
                       </button>
                       <button
-  className="btn btn-sm btn-outline-danger"
-  onClick={() => handleDelete(event.name)}
-  disabled={isRemoved || removingId === event.name}
->
-  {isRemoved ? 'Removed' : 'Remove'}
-</button>
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDelete(event.name)}
+                        disabled={isRemoved || removingId === event.name}
+                      >
+                        {isRemoved ? 'Removed' : 'Remove'}
+                      </button>
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
 
+          {/* Pagination */}
           <nav>
             <ul className="pagination justify-content-center mt-4">
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <li
-                  key={page}
-                  className={`page-item ${page === currentPage ? 'active' : ''}`}
-                >
+                <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
                   <button className="page-link" onClick={() => handlePageChange(page)}>
                     {page}
                   </button>
@@ -165,10 +163,7 @@ const EventManage = () => {
         <div className="text-center text-muted">No events found.</div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default EventManage
-
-
-
+export default EventManage;
